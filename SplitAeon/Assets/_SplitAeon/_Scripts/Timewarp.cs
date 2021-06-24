@@ -31,14 +31,15 @@ public class Timewarp : MonoBehaviour
 
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.E))
-        {
-            SwapWorlds();
-        }
+        //if (Input.GetKeyDown(KeyCode.E))
+        //{
+        //    SwapWorlds();
+        //}
+
 
         if (cromAb.intensity.value >= 0)
         {
-            cromAb.intensity.value -= 0.5f * Time.deltaTime;
+            cromAb.intensity.value -= 1f * Time.deltaTime;
         }
 
         if (exposure.compensation.value >= 0)
@@ -51,6 +52,15 @@ public class Timewarp : MonoBehaviour
             bloom.intensity.value -= 2 * Time.deltaTime;
         }
     }
+
+    public void TryWarp()
+    {
+        // for now, just teleport, do check for objects here
+
+        SwapWorlds();
+
+    }
+
 
     public void SwapWorlds()
     {
@@ -80,6 +90,6 @@ public class Timewarp : MonoBehaviour
 
         cromAb.intensity.value = 1;
         bloom.intensity.value = 1;
-        exposure.compensation.value = 3;
+        exposure.compensation.value = 5;
     }
 }

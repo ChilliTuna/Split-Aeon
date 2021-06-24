@@ -33,8 +33,13 @@ public class Player : MonoBehaviour
     [Header("Camera Movement")]
     public float mouseSensitivity = 100f;
     private float xRotation = 0f;
-
     public Camera cam;
+
+    [Header("Animation")]
+    public Animator viewmodelAnimator;
+
+    [HideInInspector]
+    public bool isBusy;
 
     #endregion
 
@@ -99,7 +104,7 @@ public class Player : MonoBehaviour
 
         #endregion
 
-
+        #region Running & Crouching
 
         if (Input.GetKey(KeyCode.LeftShift) && !isCrouching)
         {
@@ -131,6 +136,20 @@ public class Player : MonoBehaviour
         {
             movementSpeed = walkSpeed;
         }
+
+        #endregion
+
+        #region Animation
+
+        if (Input.GetKeyDown(KeyCode.E))
+        {
+            viewmodelAnimator.SetTrigger("Warp");
+        }
+
+        viewmodelAnimator.SetBool("isRunning", isRunning);
+
+
+        #endregion
 
     }
 
