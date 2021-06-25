@@ -4,18 +4,9 @@ using UnityEngine;
 
 public class Target : MonoBehaviour
 {
-    public float health;
-
-    void Update()
+    public void Hit()
     {
-        if (health <= 0)
-        {
-            Destroy(this.gameObject);
-        }
-    }
-
-    public void TakeDamage(float damage)
-    {
-        health -= damage;
+        Debug.Log("Target Hit!");
+        this.transform.Rotate(new Vector3(Random.Range(0, 360), Random.Range(0, 360), Random.Range(0, 360)));
     }
 }

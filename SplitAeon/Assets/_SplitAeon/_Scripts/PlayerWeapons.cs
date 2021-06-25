@@ -34,6 +34,7 @@ public class PlayerWeapons : MonoBehaviour
 
     void Update()
     {
+        Debug.DrawRay(playerCam.transform.position, playerCam.transform.forward, Color.red);
 
         ammoPool.text = revolverAmmoPool.ToString();
         loadedAmmo.text = revolverAmmoLoaded.ToString();
@@ -59,20 +60,29 @@ public class PlayerWeapons : MonoBehaviour
     {
         // do shoot
 
+
         if (revolverAmmoLoaded > 0)
         {
+
+            Debug.LogWarning("Shooting");
+
             source.PlayOneShot(shootClips[Mathf.FloorToInt(Random.Range(0, shootClips.Length))]);
 
             revolverAmmoLoaded -= 1;
 
             RaycastHit hit;
-          
-            if (Physics.Raycast(playerCam.transform.position, playerCam.transform.forward, out hit, 20, 18))
+
+            int layerMask = 1 << 18;
+
+            if (Physics.Raycast(playerCam.transform.position, playerCam.transform.forward, out hit, float.PositiveInfinity, layerMask))
             {
-                if (hit.collider.GetComponent<Target>())
+                Debug.LogWarning(hit.collider.gameObject.name);
+
+                if (hit.collider.gameObject.GetComponent<Target>())
                 {
-                    hit.collider.GetComponent<Target>().TakeDamage(revolverDamage);
+                    hit.collider.gameObject.GetComponent<Target>().Hit();
                 }
+
             }
 
         }
