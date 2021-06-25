@@ -11,11 +11,17 @@ public class PlayerWeapons : MonoBehaviour
 
     [Header("Revolver")]
 
-    public int revolverAmmoPool;
+    public int revolverMaxAmmo;
     public int revolverReloadAmount;
     private int revolverAmmoLoaded;
     public float revolverReloadTime;
     public float revolverDamage;
+
+    public GameObject revolverImpactEffect;
+
+    [HideInInspector]
+    public int revolverAmmoPool;
+
 
     [Header("Ammo Display (Revolver)")]
     public Text ammoPool;
@@ -35,6 +41,7 @@ public class PlayerWeapons : MonoBehaviour
     void Start()
     {
         revolverAmmoLoaded = revolverReloadAmount;
+        revolverAmmoPool = revolverMaxAmmo; // Remove me later!
     }
 
     void Update()
@@ -76,7 +83,12 @@ public class PlayerWeapons : MonoBehaviour
             {
                 if (hit.collider.gameObject.GetComponent<Target>())
                 {
+
+                    CreateImpact(revolverImpactEffect, hit);
+
                     hit.collider.gameObject.GetComponent<Target>().Hit();
+
+
                 }
             }
 
@@ -115,6 +127,18 @@ public class PlayerWeapons : MonoBehaviour
     public void ClearBusyState()
     {
         player.isBusy = false;
+    }
+
+    public void CreateImpact(GameObject impactPrefab, RaycastHit hitData)
+    {
+
+        Debug.LogWarning("Creating bullet impact");
+
+        GameObject impact = Instantiate(impactPrefab, hitData.point, Quaternion.LookRotation(hitData.normal), hitData.collider.gameObject.transform);
+
+        //impact.transform.rotation.SetLookRotation(hitData.normal);
+        //impact.transform.position = hitData.point;
+
     }
 
 }

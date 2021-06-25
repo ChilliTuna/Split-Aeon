@@ -2774,10 +2774,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   player: {fileID: 2704591968084502966}
   playerCam: {fileID: 2704591967324688692}
-  revolverAmmoPool: 100
+  revolverMaxAmmo: 0
   revolverReloadAmount: 6
   revolverReloadTime: 2
   revolverDamage: 5
+  revolverAmmoPool: 100
   ammoPool: {fileID: 0}
   loadedAmmo: {fileID: 0}
   source: {fileID: 4281396830581689081}
@@ -2803,6 +2804,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   interactionDistance: 3
   interactionText: {fileID: 0}
+  key: 102
 --- !u!143 &2704591968084502961
 CharacterController:
   m_ObjectHideFlags: 0
