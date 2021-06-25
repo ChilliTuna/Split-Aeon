@@ -27,6 +27,11 @@ public class PlayerWeapons : MonoBehaviour
     public AudioClip gunClickClip;
     public AudioClip reloadClip;
 
+    [Header("Effects")]
+    public Transform revolverMuzzlePosition;
+    public GameObject revolverMuzzleFlashPrefab;
+
+
     void Start()
     {
         revolverAmmoLoaded = revolverReloadAmount;
@@ -58,31 +63,21 @@ public class PlayerWeapons : MonoBehaviour
 
     public void Shoot()
     {
-        // do shoot
-
-
         if (revolverAmmoLoaded > 0)
         {
-
-            Debug.LogWarning("Shooting");
-
             source.PlayOneShot(shootClips[Mathf.FloorToInt(Random.Range(0, shootClips.Length))]);
-
+            Instantiate(revolverMuzzleFlashPrefab, revolverMuzzlePosition);
             revolverAmmoLoaded -= 1;
 
             RaycastHit hit;
-
             int layerMask = 1 << 18;
 
             if (Physics.Raycast(playerCam.transform.position, playerCam.transform.forward, out hit, float.PositiveInfinity, layerMask))
             {
-                Debug.LogWarning(hit.collider.gameObject.name);
-
                 if (hit.collider.gameObject.GetComponent<Target>())
                 {
                     hit.collider.gameObject.GetComponent<Target>().Hit();
                 }
-
             }
 
         }
@@ -90,18 +85,11 @@ public class PlayerWeapons : MonoBehaviour
         {
             source.PlayOneShot(gunClickClip);
         }
-
-
     }
 
     public void TryReload()
     {
-        if (revolverAmmoLoaded == revolverReloadAmount)
-        {
-            return;
-        }
-
-        if (revolverAmmoLoaded == 0 && revolverAmmoPool == 0)
+        if (revolverAmmoLoaded == revolverReloadAmount || revolverAmmoPool == 0)
         {
             return;
         }
