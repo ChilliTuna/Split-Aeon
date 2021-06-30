@@ -11,4 +11,8 @@ public class AISettings : ScriptableObject
 
     [Header("Wander")]
     public float stoppingDistance = 0.5f;
+
+    [Header("Aggro")]
+    public float aggresionRadius = 4.0f;
+    public float attackRadius = 1.0f;
 }

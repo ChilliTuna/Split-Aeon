@@ -11,8 +11,11 @@ public class AIAgent : MonoBehaviour
     StateMachine m_stateMachine;
     NavMeshAgent m_navAgent;
 
-    public StateMachine stateMachine { get { return m_stateMachine; } }
     public NavMeshAgent navAgent { get { return m_navAgent; } }
+
+    float m_distToPlayerSquared;
+
+    public float distToPlayerSquared { get { return m_distToPlayerSquared; } }
 
     // Debug
     [Header("Debugging")]
@@ -22,6 +25,7 @@ public class AIAgent : MonoBehaviour
     public List<Transform> wanderNodes;
     public int currentWanderIndex = 0;
 
+    public Transform playerTransform;
 
     // Start is called before the first frame update
     void Start()
@@ -33,6 +37,8 @@ public class AIAgent : MonoBehaviour
 
         // Add States
         StateBucket.SetUpStateMachine(m_stateMachine);
+
+        m_distToPlayerSquared = (playerTransform.position - transform.position).sqrMagnitude;
     }
 
     // Update is called once per frame
@@ -42,5 +48,26 @@ public class AIAgent : MonoBehaviour
 
         // Debugging
         currentState = (StateIndex)m_stateMachine.currentIndex;
+    }
+
+    private void LateUpdate()
+    {
+        m_distToPlayerSquared = (playerTransform.position - transform.position).sqrMagnitude;
+    }
+
+    public void ChangeState(int stateIndex)
+    {
+        m_stateMachine.ChangeState(stateIndex);
+    }
+
+    public void ChangeState(StateIndex stateIndex)
+    {
+        ChangeState((int)stateIndex);
+    }
+
+    private void OnDrawGizmos()
+    {
+        Gizmos.color = Color.green;
+        Gizmos.DrawWireSphere(transform.position, settings.aggresionRadius);
     }
 }

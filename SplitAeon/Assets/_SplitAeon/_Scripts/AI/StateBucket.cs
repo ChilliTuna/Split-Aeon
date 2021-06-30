@@ -8,7 +8,7 @@ namespace AIStates
     {
         idle,
         wander,
-        attack
+        chasePlayer
     }
 
     public static class StateBucket
@@ -17,7 +17,7 @@ namespace AIStates
         {
             target.AddState(new Idle());
             target.AddState(new Wander());
-            target.AddState(new Attack());
+            target.AddState(new ChasePlayer());
 
             target.Init();
         }
@@ -39,11 +39,17 @@ namespace AIStates
 
         void IState.Update(AIAgent agent)
         {
+            // Check for player Radius
+            if(agent.settings.aggresionRadius * agent.settings.aggresionRadius > agent.distToPlayerSquared)
+            {
+                agent.ChangeState(StateIndex.chasePlayer);
+            }
+
             // Check Idle behaviour
             if(m_timer > m_currentTargetTime)
             {
                 // bam, no more idle
-                agent.stateMachine.ChangeState((int)StateIndex.wander);
+                agent.ChangeState(StateIndex.wander);
             }
 
             // Update idle timers
@@ -87,7 +93,7 @@ namespace AIStates
                     agent.currentWanderIndex = 0;
                 }
 
-                agent.stateMachine.ChangeState((int)StateIndex.idle);
+                agent.ChangeState(StateIndex.idle);
             }
         }
 
@@ -97,17 +103,27 @@ namespace AIStates
         }
     }
 
-    public class Attack : IState
+    public class ChasePlayer : IState
     {
+        Transform m_playerTransform;
+
         void IState.Enter(AIAgent agent)
         {
             // set up state values
+            m_playerTransform = agent.playerTransform;
+
+            agent.navAgent.isStopped = false;
+            agent.navAgent.SetDestination(m_playerTransform.position);
         }
 
         void IState.Update(AIAgent agent)
         {
-            // Check state behaviour
+            Vector3 toPlayer = (m_playerTransform.position - agent.transform.position).normalized;
+            toPlayer *= agent.settings.attackRadius;
 
+
+            // Check state behaviour
+            agent.navAgent.SetDestination(m_playerTransform.position - toPlayer);
         }
 
         void IState.Exit(AIAgent agent)
