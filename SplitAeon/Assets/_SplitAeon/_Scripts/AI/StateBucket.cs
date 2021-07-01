@@ -152,35 +152,47 @@ namespace AIStates
         void IState.Exit(AIAgent agent)
         {
             // clean up state Values
-            agent.navAgent.SetDestination(agent.transform.position);
+            //agent.navAgent.SetDestination(agent.transform.position);
         }
     }
 
     public class AttackPlayer : IState
     {
+        Transform m_playerTransform;
         Vector3 m_originalLocation;
         Vector3 m_attackDirection;
 
         void IState.Enter(AIAgent agent)
         {
             // set up state values
+            m_playerTransform = agent.playerTransform;
             m_originalLocation = agent.transform.position;
-            m_attackDirection = agent.playerTransform.position - agent.transform.position;
+            m_attackDirection = (agent.playerTransform.position - agent.transform.position).normalized;
 
             agent.StopNavigating();
-            //agent.navAgent.SetDestination(m_originalLocation);
 
             agent.anim.SetTrigger("attack");
             agent.anim.SetBool("isAttacking", true);
+            agent.anim.SetBool("lockRotation", true);
         }
 
         void IState.Update(AIAgent agent)
         {
             // this would be the logic where the attack could take place and wait until it has ended.
+            if(agent.anim.GetBool("lockRotation"))
+            {
+                // only aim towards the initial attack direction
+                agent.transform.forward = Vector3.Slerp(agent.transform.forward, m_attackDirection, agent.settings.rotationLerpSpeed);
+            }
+            else
+            {
+                // start looking towards the player
+                agent.transform.forward = Vector3.Slerp(agent.transform.forward, m_playerTransform.position - agent.transform.position, agent.settings.afterAttackLerpSpeed);
+            }
+
 
             if(!agent.anim.GetBool("isAttacking"))
             {
-                Debug.Log("Attack AnimEnd");
                 agent.ChangeState(StateIndex.chasePlayer);
             }
         }

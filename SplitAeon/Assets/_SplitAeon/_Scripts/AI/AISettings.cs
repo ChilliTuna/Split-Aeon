@@ -18,4 +18,8 @@ public class AISettings : ScriptableObject
     public float attackChargeRadius = 1.0f;
     public float attackChargeMax = 1.0f;
     public float attackChargeRate = 1.0f;
+
+    [Header("Attack")]
+    public float rotationLerpSpeed = 0.1f;
+    public float afterAttackLerpSpeed = 0.01f;
 }
