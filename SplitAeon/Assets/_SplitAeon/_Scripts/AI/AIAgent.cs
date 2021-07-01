@@ -11,6 +11,8 @@ public class AIAgent : MonoBehaviour
     StateMachine m_stateMachine;
     NavMeshAgent m_navAgent;
 
+    public Animator anim;
+
     public NavMeshAgent navAgent { get { return m_navAgent; } }
 
     float m_distToPlayerSquared;
@@ -46,6 +48,8 @@ public class AIAgent : MonoBehaviour
     {
         m_stateMachine.Update();
 
+        anim.SetFloat("moveSpeed", m_navAgent.speed);
+
         // Debugging
         currentState = (StateIndex)m_stateMachine.currentIndex;
     }
@@ -65,6 +69,18 @@ public class AIAgent : MonoBehaviour
         ChangeState((int)stateIndex);
     }
 
+    public void StartNavigating()
+    {
+        m_navAgent.isStopped = false;
+        m_navAgent.updatePosition = true;
+    }
+
+    public void StopNavigating()
+    {
+        m_navAgent.isStopped = true;
+        m_navAgent.updatePosition = false;
+    }
+
     private void OnDrawGizmos()
     {
         Gizmos.color = Color.green;
@@ -72,5 +88,8 @@ public class AIAgent : MonoBehaviour
 
         Gizmos.color = Color.red;
         Gizmos.DrawWireSphere(transform.position, settings.attackChargeRadius);
+
+        Gizmos.color = Color.blue;
+        Gizmos.DrawWireSphere(transform.position, settings.orbWalkRadius);
     }
 }

@@ -36,7 +36,7 @@ namespace AIStates
             m_timer = 0.0f;
             m_currentTargetTime = Random.Range(agent.settings.minIdleTime, agent.settings.maxIdleTime);
 
-            agent.navAgent.isStopped = true;
+            agent.StopNavigating();
         }
 
         void IState.Update(AIAgent agent)
@@ -73,14 +73,20 @@ namespace AIStates
             // set up state values
             m_wanderTarget = agent.wanderNodes[agent.currentWanderIndex].position;
 
-            agent.navAgent.isStopped = false;
+            agent.StartNavigating();
             agent.navAgent.SetDestination(m_wanderTarget);
         }
 
         void IState.Update(AIAgent agent)
         {
+            // Check for player Radius
+            if (agent.settings.aggresionRadius * agent.settings.aggresionRadius > agent.distToPlayerSquared)
+            {
+                agent.ChangeState(StateIndex.chasePlayer);
+            }
+
             // Check state behaviour
-            if(agent.navAgent.pathPending)
+            if (agent.navAgent.pathPending)
             {
                 return;
             }
@@ -115,7 +121,7 @@ namespace AIStates
             // set up state values
             m_playerTransform = agent.playerTransform;
 
-            agent.navAgent.isStopped = false;
+            agent.StartNavigating();
             agent.navAgent.SetDestination(m_playerTransform.position);
 
             attackCharge = 0.0f;
@@ -146,6 +152,7 @@ namespace AIStates
         void IState.Exit(AIAgent agent)
         {
             // clean up state Values
+            agent.navAgent.SetDestination(agent.transform.position);
         }
     }
 
@@ -160,21 +167,28 @@ namespace AIStates
             m_originalLocation = agent.transform.position;
             m_attackDirection = agent.playerTransform.position - agent.transform.position;
 
-            agent.navAgent.isStopped = true;
+            agent.StopNavigating();
+            //agent.navAgent.SetDestination(m_originalLocation);
+
+            agent.anim.SetTrigger("attack");
+            agent.anim.SetBool("isAttacking", true);
         }
 
         void IState.Update(AIAgent agent)
         {
-
-
             // this would be the logic where the attack could take place and wait until it has ended.
-            Debug.Log("Attack");
-            agent.ChangeState(StateIndex.chasePlayer);
+
+            if(!agent.anim.GetBool("isAttacking"))
+            {
+                Debug.Log("Attack AnimEnd");
+                agent.ChangeState(StateIndex.chasePlayer);
+            }
         }
 
         void IState.Exit(AIAgent agent)
         {
             // clean up state Values
+            agent.anim.SetBool("isAttacking", false);
         }
     }
 }
