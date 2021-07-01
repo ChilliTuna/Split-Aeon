@@ -8,7 +8,8 @@ namespace AIStates
     {
         idle,
         wander,
-        chasePlayer
+        chasePlayer,
+        attackPlayer
     }
 
     public static class StateBucket
@@ -18,6 +19,7 @@ namespace AIStates
             target.AddState(new Idle());
             target.AddState(new Wander());
             target.AddState(new ChasePlayer());
+            target.AddState(new AttackPlayer());
 
             target.Init();
         }
@@ -106,6 +108,7 @@ namespace AIStates
     public class ChasePlayer : IState
     {
         Transform m_playerTransform;
+        float attackCharge = 0.0f;
 
         void IState.Enter(AIAgent agent)
         {
@@ -114,16 +117,59 @@ namespace AIStates
 
             agent.navAgent.isStopped = false;
             agent.navAgent.SetDestination(m_playerTransform.position);
+
+            attackCharge = 0.0f;
         }
 
         void IState.Update(AIAgent agent)
         {
             Vector3 toPlayer = (m_playerTransform.position - agent.transform.position).normalized;
-            toPlayer *= agent.settings.attackRadius;
+            toPlayer *= agent.settings.orbWalkRadius;
 
 
             // Check state behaviour
             agent.navAgent.SetDestination(m_playerTransform.position - toPlayer);
+
+            if(agent.distToPlayerSquared < agent.settings.attackChargeRadius * agent.settings.attackChargeRadius)
+            {
+                // in range to charge attack
+                attackCharge += Time.deltaTime * agent.settings.attackChargeRate;
+
+                if(attackCharge > agent.settings.attackChargeMax)
+                {
+                    // The agent has successfully begun it's attack
+                    agent.ChangeState(StateIndex.attackPlayer);
+                }
+            }
+        }
+
+        void IState.Exit(AIAgent agent)
+        {
+            // clean up state Values
+        }
+    }
+
+    public class AttackPlayer : IState
+    {
+        Vector3 m_originalLocation;
+        Vector3 m_attackDirection;
+
+        void IState.Enter(AIAgent agent)
+        {
+            // set up state values
+            m_originalLocation = agent.transform.position;
+            m_attackDirection = agent.playerTransform.position - agent.transform.position;
+
+            agent.navAgent.isStopped = true;
+        }
+
+        void IState.Update(AIAgent agent)
+        {
+
+
+            // this would be the logic where the attack could take place and wait until it has ended.
+            Debug.Log("Attack");
+            agent.ChangeState(StateIndex.chasePlayer);
         }
 
         void IState.Exit(AIAgent agent)

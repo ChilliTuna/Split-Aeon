@@ -21,7 +21,6 @@ public class TriggerBox : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        Debug.Log("TriggerBox");
         if(other.CompareTag("Player"))
         {
             enterEvent.Invoke();

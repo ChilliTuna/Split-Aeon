@@ -69,5 +69,8 @@ public class AIAgent : MonoBehaviour
     {
         Gizmos.color = Color.green;
         Gizmos.DrawWireSphere(transform.position, settings.aggresionRadius);
+
+        Gizmos.color = Color.red;
+        Gizmos.DrawWireSphere(transform.position, settings.attackChargeRadius);
     }
 }
