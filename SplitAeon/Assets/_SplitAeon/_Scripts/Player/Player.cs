@@ -27,7 +27,7 @@ public class Player : MonoBehaviour
     [Header("Ground Check")]
     public Transform groundCheck;
     public float groundDistance = 0.3f;
-    public LayerMask groundMask;
+    public LayerMask playerMask;
     bool isGrounded;
 
     [Header("Camera Movement")]
@@ -42,6 +42,8 @@ public class Player : MonoBehaviour
     public bool isBusy;
 
     #endregion
+
+    float tempBlend;
 
     private void Start()
     {
@@ -63,7 +65,7 @@ public class Player : MonoBehaviour
         float zMovement = Input.GetAxis("Vertical");
 
         #region Ground Check
-        isGrounded = Physics.CheckSphere(groundCheck.position, groundDistance, groundMask);
+        isGrounded = Physics.CheckSphere(groundCheck.position, groundDistance, ~playerMask);
 
         if (isGrounded && playerVelocity.y < 0)
         {
@@ -146,7 +148,27 @@ public class Player : MonoBehaviour
             viewmodelAnimator.SetTrigger("Warp");
         }
 
-        viewmodelAnimator.SetBool("isRunning", isRunning);
+        if (xMovement != 0 || zMovement != 0)
+        {
+
+            viewmodelAnimator.SetBool("isMoving", true);
+
+            if (isRunning)
+            {
+                tempBlend = Mathf.Lerp(tempBlend, 1, Time.deltaTime * 4f);
+            }
+            else
+            {
+
+                tempBlend = Mathf.Lerp(tempBlend, 0f, Time.deltaTime * 4f);
+            }
+        }
+        else
+        {
+            viewmodelAnimator.SetBool("isMoving", false);
+        }
+
+        viewmodelAnimator.SetFloat("MovementBlend", tempBlend);
 
 
         #endregion
