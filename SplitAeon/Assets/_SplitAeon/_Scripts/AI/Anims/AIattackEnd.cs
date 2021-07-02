@@ -4,6 +4,9 @@ using UnityEngine;
 
 public class AIAttackEnd : StateMachineBehaviour
 {
+    public float hitBoxActiveStart = 0.2f;
+    public float hitBoxActiveEnd = 0.2f;
+
     // OnStateEnter is called when a transition starts and the state machine starts to evaluate this state
     //override public void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     //{
@@ -17,12 +20,28 @@ public class AIAttackEnd : StateMachineBehaviour
         {
             animator.SetBool("lockRotation", false);
         }
+
+        if(!animator.GetBool("hitBoxActive"))
+        {
+            if(stateInfo.normalizedTime > hitBoxActiveStart)
+            {
+                animator.SetBool("hitBoxActive", true);
+            }
+        }
+        else
+        {
+            //if (stateInfo.normalizedTime > hitBoxActiveEnd)
+            //{
+            //    animator.SetBool("hitBoxActive", false);
+            //}
+        }
     }
 
     // OnStateExit is called when a transition ends and the state machine finishes evaluating this state
     override public void OnStateExit(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
         animator.SetBool("isAttacking", false);
+        animator.SetBool("hitBoxActive", false);
     }
 
     // OnStateMove is called right after Animator.OnAnimatorMove()

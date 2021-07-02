@@ -1,10 +1,15 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class AIManager : MonoBehaviour
 {
     List<AIAgent> m_allAgents = new List<AIAgent>();
+
+    public Transform playerTransform;
+
+    public UnityEvent damagePlayerEvent;
 
     private void Awake()
     {
@@ -13,6 +18,7 @@ public class AIManager : MonoBehaviour
         foreach(var agent in agentArray)
         {
             m_allAgents.Add(agent);
+            agent.aiManager = this;
         }
     }
 

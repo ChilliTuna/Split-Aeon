@@ -9,7 +9,8 @@ namespace AIStates
         idle,
         wander,
         chasePlayer,
-        attackPlayer
+        attackPlayer,
+        dead
     }
 
     public static class StateBucket
@@ -20,6 +21,7 @@ namespace AIStates
             target.AddState(new Wander());
             target.AddState(new ChasePlayer());
             target.AddState(new AttackPlayer());
+            target.AddState(new Dead());
 
             target.Init();
         }
@@ -174,6 +176,7 @@ namespace AIStates
             agent.anim.SetTrigger("attack");
             agent.anim.SetBool("isAttacking", true);
             agent.anim.SetBool("lockRotation", true);
+            agent.armAttack.hitIsActive = true;
         }
 
         void IState.Update(AIAgent agent)
@@ -190,6 +193,7 @@ namespace AIStates
                 agent.transform.forward = Vector3.Slerp(agent.transform.forward, m_playerTransform.position - agent.transform.position, agent.settings.afterAttackLerpSpeed);
             }
 
+            agent.armAttack.hitIsActive = agent.anim.GetBool("hitBoxActive");
 
             if(!agent.anim.GetBool("isAttacking"))
             {
@@ -201,6 +205,31 @@ namespace AIStates
         {
             // clean up state Values
             agent.anim.SetBool("isAttacking", false);
+            agent.anim.SetBool("lockRotation", false);
+            agent.armAttack.hitIsActive = false;
+
+            agent.anim.SetBool("hitBoxActive", false);
+        }
+    }
+
+    public class Dead : IState
+    {
+        void IState.Enter(AIAgent agent)
+        {
+            // set up state values
+            agent.StopNavigating();
+            agent.ragdoll.RagdollOn = true;
+        }
+
+        void IState.Update(AIAgent agent)
+        {
+
+        }
+
+        void IState.Exit(AIAgent agent)
+        {
+            // clean up state Values
+            agent.ragdoll.RagdollOn = false;
         }
     }
 }

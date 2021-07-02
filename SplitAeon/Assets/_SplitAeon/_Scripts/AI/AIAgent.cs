@@ -6,18 +6,22 @@ using UnityEngine.AI;
 
 public class AIAgent : MonoBehaviour
 {
+    [HideInInspector]public AIManager aiManager;
+
     public AISettings settings;
+    public Animator anim;
+    public HitBox armAttack;
 
     StateMachine m_stateMachine;
     NavMeshAgent m_navAgent;
-
-    public Animator anim;
-
-    public NavMeshAgent navAgent { get { return m_navAgent; } }
+    Ragdoll m_ragdoll;
 
     float m_distToPlayerSquared;
 
+    public NavMeshAgent navAgent { get { return m_navAgent; } }
     public float distToPlayerSquared { get { return m_distToPlayerSquared; } }
+    public Transform playerTransform { get { return aiManager.playerTransform; } }
+    public Ragdoll ragdoll {  get { return m_ragdoll; } }
 
     // Debug
     [Header("Debugging")]
@@ -27,12 +31,12 @@ public class AIAgent : MonoBehaviour
     public List<Transform> wanderNodes;
     public int currentWanderIndex = 0;
 
-    public Transform playerTransform;
 
     // Start is called before the first frame update
     void Start()
     {
         m_navAgent = GetComponent<NavMeshAgent>();
+        m_ragdoll = GetComponent<Ragdoll>();
 
         // Create State Machine
         m_stateMachine = new StateMachine(this);
@@ -79,6 +83,18 @@ public class AIAgent : MonoBehaviour
     {
         m_navAgent.isStopped = true;
         m_navAgent.updatePosition = false;
+    }
+
+    public void DamagePlayer()
+    {
+        aiManager.damagePlayerEvent.Invoke();
+    }
+
+    public void Die()
+    {
+        // This would ideally have an animation as well as some sort of clean up for corpses
+        // For now just Change state to dead which will activate a ragdoll
+        ChangeState(StateIndex.dead);
     }
 
     private void OnDrawGizmos()

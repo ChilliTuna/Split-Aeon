@@ -66,6 +66,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6f155d84f8818d946b676acbd1b2d2df, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  hitBoxActiveStart: 0.2
+  hitBoxActiveEnd: 0.2
 --- !u!91 &9100000
 AnimatorController:
   m_ObjectHideFlags: 0
@@ -94,6 +96,12 @@ AnimatorController:
     m_DefaultBool: 0
     m_Controller: {fileID: 0}
   - m_Name: lockRotation
+    m_Type: 4
+    m_DefaultFloat: 0
+    m_DefaultInt: 0
+    m_DefaultBool: 0
+    m_Controller: {fileID: 0}
+  - m_Name: hitBoxActive
     m_Type: 4
     m_DefaultFloat: 0
     m_DefaultInt: 0
