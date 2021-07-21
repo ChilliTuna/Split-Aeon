@@ -7,21 +7,24 @@ public class ObjectiveList : MonoBehaviour
 {
     public string[] objectives;
 
+    public bool gameWin = false;
+
     [Header("Transition Times")]
-    public float initialTime = 0.2f;
+    public float stage0Time = 0.2f;
 
     public float stage1Time = 0.2f;
     public float stage2Time = 0.2f;
     public float stage3Time = 0.2f;
+    public float stage4Time = 0.2f;
 
     [Space]
-    public float fadeSpeed = 0.1f;
+    public float fadeDuration = 0.1f;
 
     private int currentObjective = -1;
 
     private TextMeshProUGUI objectiveText;
 
-    private bool isVisisble = false;
+    private bool isVisible = false;
 
     private void Start()
     {
@@ -37,30 +40,30 @@ public class ObjectiveList : MonoBehaviour
 
     public void CompleteObjective()
     {
-        if (currentObjective < objectives.Length - 1)
+        if (currentObjective < objectives.Length)
         {
-            if (!isVisisble)
-            {
-                ToggleObjectives(!isVisisble);
-            }
             StartCoroutine("TransitionObjective");
         }
-        else
+        if (gameWin)
         {
-            //Win Game!
+            //do fancy stuff
         }
     }
 
     public void ToggleObjectives(bool state)
     {
-        isVisisble = state;
-        if (!isVisisble)
+        CanvasGroup cg = GetComponent<CanvasGroup>();
+        if (cg.alpha == 0 || cg.alpha == 1)
         {
-            StartCoroutine(FadeOut(GetComponent<CanvasGroup>(), fadeSpeed));
-        }
-        else
-        {
-            StartCoroutine(FadeIn(GetComponent<CanvasGroup>(), fadeSpeed));
+            isVisible = state;
+            if (isVisible)
+            {
+                StartCoroutine(FadeIn(cg, fadeDuration));
+            }
+            else
+            {
+                StartCoroutine(FadeOut(cg, fadeDuration));
+            }
         }
     }
 
@@ -68,7 +71,7 @@ public class ObjectiveList : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.Tab))
         {
-            ToggleObjectives(!isVisisble);
+            ToggleObjectives(!isVisible);
         }
         if (Input.GetKeyDown(KeyCode.P))
         {
@@ -78,30 +81,81 @@ public class ObjectiveList : MonoBehaviour
 
     private IEnumerator TransitionObjective()
     {
+        bool wasVisible = isVisible;
+        CanvasGroup objectiveBlock = gameObject.transform.Find("Objective").gameObject.GetComponent<CanvasGroup>();
+        if (!isVisible)
+        {
+            ToggleObjectives(true);
+        }
         int i = 0;
-        while (i < 5)
+        while (i < 4)
         {
             switch (i)
             {
                 case (0):
+                    yield return new WaitForSeconds(stage0Time);
+
+                    objectiveBlock.gameObject.transform.Find("Complete image").gameObject.SetActive(true);
+                    objectiveText.fontStyle = FontStyles.Strikethrough;
+                    yield return new WaitForSeconds(stage1Time);
                     i++;
-                    yield return new WaitForSeconds(initialTime);
-                    break;
+                    goto case (1);
 
                 case (1):
-                    gameObject.transform.Find("Objective").Find("Complete image").gameObject.SetActive(true);
-                    objectiveText.fontStyle = FontStyles.Strikethrough;
-                    i++;
-                    yield return new WaitForSeconds(stage1Time);
+                    StartCoroutine(FadeOut(objectiveBlock, 0.5f));
+                    if (objectiveBlock.GetComponent<CanvasGroup>().alpha == 0)
+                    {
+                        i++;
+                        yield return new WaitForSeconds(stage2Time);
+                    }
+                    yield return null;
+                    break;
+
+                case (2):
+                    if (currentObjective < objectives.Length - 1)
+                    {
+                        NextObjective();
+                        objectiveBlock.gameObject.transform.Find("Complete image").gameObject.SetActive(false);
+                        objectiveText.fontStyle = FontStyles.Normal;
+                        i++;
+                        yield return new WaitForSeconds(stage3Time);
+                    }
+                    else
+                    {
+                        i++;
+                    }
+                    break;
+
+                case (3):
+                    if (!gameWin)
+                    {
+                        StartCoroutine(FadeIn(objectiveBlock, 0.5f));
+                        if (objectiveBlock.GetComponent<CanvasGroup>().alpha == 1)
+                        {
+                            if (currentObjective >= objectives.Length - 1)
+                            {
+                                gameWin = true;
+                            }
+                            i++;
+                            yield return new WaitForSeconds(stage4Time);
+                        }
+                        yield return null;
+                    }
+                    else
+                    {
+                        i++;
+                    }
                     break;
 
                 default:
+                    i = 5;
                     break;
             }
-            i++;
-            yield return null;
         }
-        NextObjective();
+        if (!wasVisible)
+        {
+            ToggleObjectives(false);
+        }
     }
 
     private bool IsApproximatelyEqual(float targetVal, float actualVal, float acceptableVariance = 0.1f)
@@ -109,60 +163,60 @@ public class ObjectiveList : MonoBehaviour
         return (targetVal - acceptableVariance <= actualVal && actualVal + acceptableVariance >= actualVal);
     }
 
-    private IEnumerator FadeOut(TextMeshProUGUI text, float rate = 1)
+    private IEnumerator FadeOut(TextMeshProUGUI text, float period = 1)
     {
         while (text.alpha > 0)
         {
-            text.alpha -= rate * Time.deltaTime;
+            text.alpha -= 1 / period * Time.deltaTime;
             yield return 0;
         }
     }
 
-    private IEnumerator FadeOut(Image image, float rate = 1)
+    private IEnumerator FadeOut(Image image, float period = 1)
     {
         while (image.color.a > 0)
         {
             Color tempCol = image.color;
-            tempCol.a -= rate * Time.deltaTime;
+            tempCol.a -= 1 / period * Time.deltaTime;
             image.color = tempCol;
             yield return 0;
         }
     }
 
-    private IEnumerator FadeOut(CanvasGroup canvasGroup, float rate = 1)
+    private IEnumerator FadeOut(CanvasGroup canvasGroup, float period = 1)
     {
         while (canvasGroup.alpha > 0)
         {
-            canvasGroup.alpha -= rate * Time.deltaTime;
+            canvasGroup.alpha -= 1 / period * Time.deltaTime;
             yield return 0;
         }
     }
 
-    private IEnumerator FadeIn(TextMeshProUGUI text, float rate = 1)
+    private IEnumerator FadeIn(TextMeshProUGUI text, float period = 1)
     {
         while (text.alpha < 1)
         {
-            text.alpha += rate * Time.deltaTime;
+            text.alpha += 1 / period * Time.deltaTime;
             yield return 0;
         }
     }
 
-    private IEnumerator FadeIn(Image image, float rate = 1)
+    private IEnumerator FadeIn(Image image, float period = 1)
     {
         while (image.color.a < 1)
         {
             Color tempCol = image.color;
-            tempCol.a += rate * Time.deltaTime;
+            tempCol.a += 1 / period * Time.deltaTime;
             image.color = tempCol;
             yield return 0;
         }
     }
 
-    private IEnumerator FadeIn(CanvasGroup canvasGroup, float rate = 1)
+    private IEnumerator FadeIn(CanvasGroup canvasGroup, float period = 1)
     {
         while (canvasGroup.alpha < 1)
         {
-            canvasGroup.alpha += rate * Time.deltaTime;
+            canvasGroup.alpha += 1 / period * Time.deltaTime;
             yield return 0;
         }
     }
