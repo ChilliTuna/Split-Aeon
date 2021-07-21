@@ -18,7 +18,7 @@ public class Player : MonoBehaviour
     public float jumpHeight;
     private Vector3 playerVelocity;
 
-    private bool isRunning;
+    public bool isRunning;
     private bool isCrouching;
 
     public GameObject cameraPosStanding;
@@ -108,7 +108,7 @@ public class Player : MonoBehaviour
 
         #region Running & Crouching
 
-        if (Input.GetKey(KeyCode.LeftShift) && !isCrouching)
+        if (Input.GetKey(KeyCode.LeftShift) && !isCrouching && Input.GetAxis("Vertical") > 0)
         {
             isRunning = true;
 
