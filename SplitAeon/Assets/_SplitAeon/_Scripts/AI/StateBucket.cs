@@ -15,7 +15,7 @@ namespace AIStates
 
     public static class StateBucket
     {
-        public static void SetUpStateMachine(StateMachine target)
+        public static void SetUpStateMachine(StateMachine<AIAgent> target)
         {
             target.AddState(new Idle());
             target.AddState(new Wander());
@@ -27,12 +27,12 @@ namespace AIStates
         }
     }
 
-    public class Idle : IState
+    public class Idle : IState<AIAgent>
     {
         float m_timer = 0.0f;
         float m_currentTargetTime = 0.0f;
 
-        void IState.Enter(AIAgent agent)
+        void IState<AIAgent>.Enter(AIAgent agent)
         {
             // set up idle values
             m_timer = 0.0f;
@@ -41,7 +41,7 @@ namespace AIStates
             agent.StopNavigating();
         }
 
-        void IState.Update(AIAgent agent)
+        void IState<AIAgent>.Update(AIAgent agent)
         {
             // Check for player Radius
             if(agent.settings.aggresionRadius * agent.settings.aggresionRadius > agent.distToPlayerSquared)
@@ -60,17 +60,17 @@ namespace AIStates
             m_timer += Time.deltaTime;
         }
 
-        void IState.Exit(AIAgent agent)
+        void IState<AIAgent>.Exit(AIAgent agent)
         {
             // clean up idle Values
         }
     }
 
-    public class Wander : IState
+    public class Wander : IState<AIAgent>
     {
         Vector3 m_wanderTarget = Vector3.zero;
 
-        void IState.Enter(AIAgent agent)
+        void IState<AIAgent>.Enter(AIAgent agent)
         {
             // set up state values
             m_wanderTarget = agent.wanderNodes[agent.currentWanderIndex].position;
@@ -79,7 +79,7 @@ namespace AIStates
             agent.navAgent.SetDestination(m_wanderTarget);
         }
 
-        void IState.Update(AIAgent agent)
+        void IState<AIAgent>.Update(AIAgent agent)
         {
             // Check for player Radius
             if (agent.settings.aggresionRadius * agent.settings.aggresionRadius > agent.distToPlayerSquared)
@@ -107,18 +107,18 @@ namespace AIStates
             }
         }
 
-        void IState.Exit(AIAgent agent)
+        void IState<AIAgent>.Exit(AIAgent agent)
         {
             // clean up state Values
         }
     }
 
-    public class ChasePlayer : IState
+    public class ChasePlayer : IState<AIAgent>
     {
         Transform m_playerTransform;
         float attackCharge = 0.0f;
 
-        void IState.Enter(AIAgent agent)
+        void IState<AIAgent>.Enter(AIAgent agent)
         {
             // set up state values
             m_playerTransform = agent.playerTransform;
@@ -129,7 +129,7 @@ namespace AIStates
             attackCharge = 0.0f;
         }
 
-        void IState.Update(AIAgent agent)
+        void IState<AIAgent>.Update(AIAgent agent)
         {
             Vector3 toPlayer = (m_playerTransform.position - agent.transform.position).normalized;
             toPlayer *= agent.settings.orbWalkRadius;
@@ -151,20 +151,20 @@ namespace AIStates
             }
         }
 
-        void IState.Exit(AIAgent agent)
+        void IState<AIAgent>.Exit(AIAgent agent)
         {
             // clean up state Values
             //agent.navAgent.SetDestination(agent.transform.position);
         }
     }
 
-    public class AttackPlayer : IState
+    public class AttackPlayer : IState<AIAgent>
     {
         Transform m_playerTransform;
         Vector3 m_originalLocation;
         Vector3 m_attackDirection;
 
-        void IState.Enter(AIAgent agent)
+        void IState<AIAgent>.Enter(AIAgent agent)
         {
             // set up state values
             m_playerTransform = agent.playerTransform;
@@ -179,7 +179,7 @@ namespace AIStates
             agent.armAttack.hitIsActive = true;
         }
 
-        void IState.Update(AIAgent agent)
+        void IState<AIAgent>.Update(AIAgent agent)
         {
             // this would be the logic where the attack could take place and wait until it has ended.
             if(agent.anim.GetBool("lockRotation"))
@@ -201,7 +201,7 @@ namespace AIStates
             }
         }
 
-        void IState.Exit(AIAgent agent)
+        void IState<AIAgent>.Exit(AIAgent agent)
         {
             // clean up state Values
             agent.anim.SetBool("isAttacking", false);
@@ -212,21 +212,21 @@ namespace AIStates
         }
     }
 
-    public class Dead : IState
+    public class Dead : IState<AIAgent>
     {
-        void IState.Enter(AIAgent agent)
+        void IState<AIAgent>.Enter(AIAgent agent)
         {
             // set up state values
             agent.StopNavigating();
             agent.ragdoll.RagdollOn = true;
         }
 
-        void IState.Update(AIAgent agent)
+        void IState<AIAgent>.Update(AIAgent agent)
         {
 
         }
 
-        void IState.Exit(AIAgent agent)
+        void IState<AIAgent>.Exit(AIAgent agent)
         {
             // clean up state Values
             agent.ragdoll.RagdollOn = false;

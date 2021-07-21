@@ -12,7 +12,7 @@ public class AIAgent : MonoBehaviour
     public Animator anim;
     public HitBox armAttack;
 
-    StateMachine m_stateMachine;
+    StateMachine<AIAgent> m_stateMachine;
     NavMeshAgent m_navAgent;
     Ragdoll m_ragdoll;
 
@@ -39,7 +39,7 @@ public class AIAgent : MonoBehaviour
         m_ragdoll = GetComponent<Ragdoll>();
 
         // Create State Machine
-        m_stateMachine = new StateMachine(this);
+        m_stateMachine = new StateMachine<AIAgent>(this);
 
         // Add States
         StateBucket.SetUpStateMachine(m_stateMachine);
