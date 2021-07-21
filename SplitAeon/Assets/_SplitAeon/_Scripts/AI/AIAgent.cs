@@ -18,18 +18,25 @@ public class AIAgent : MonoBehaviour
 
     float m_distToPlayerSquared;
 
+    List<Neighbour> m_neighbours = new List<Neighbour>();
+
     public NavMeshAgent navAgent { get { return m_navAgent; } }
     public float distToPlayerSquared { get { return m_distToPlayerSquared; } }
     public Transform playerTransform { get { return aiManager.playerTransform; } }
     public Ragdoll ragdoll {  get { return m_ragdoll; } }
+    public List<Neighbour> neighbours { get { return m_neighbours; } }
+
+    public float currentSpeed { get { return m_navAgent.velocity.magnitude; } }
 
     // Debug
     [Header("Debugging")]
     [SerializeField]
-    StateIndex currentState;
+    StateIndex debugCurrentState;
+
+    public int debugNeighbourCount = 0;
     
-    public List<Transform> wanderNodes;
-    public int currentWanderIndex = 0;
+    public List<Transform> patrolNodes;
+    public int currentPatrolIndex = 0;
 
 
     // Start is called before the first frame update
@@ -52,10 +59,11 @@ public class AIAgent : MonoBehaviour
     {
         m_stateMachine.Update();
 
-        anim.SetFloat("moveSpeed", m_navAgent.speed);
+        anim.SetFloat("moveSpeed", currentSpeed);
 
         // Debugging
-        currentState = (StateIndex)m_stateMachine.currentIndex;
+        debugCurrentState = (StateIndex)m_stateMachine.currentIndex;
+        debugNeighbourCount = neighbours.Count;
     }
 
     private void LateUpdate()
@@ -97,8 +105,29 @@ public class AIAgent : MonoBehaviour
         ChangeState(StateIndex.dead);
     }
 
+    public void Seek()
+    {
+        if(neighbours.Count == 0)
+        {
+            return;
+        }
+
+        Vector3 seekDir = Vector3.zero;
+
+        foreach(var neighbour in neighbours)
+        {
+            seekDir -= neighbour.offset;
+        }
+
+        seekDir /= neighbours.Count;
+        seekDir = Vector3.ClampMagnitude(seekDir, m_navAgent.speed);
+
+        m_navAgent.Move(seekDir * Time.deltaTime);
+    }
+
     private void OnDrawGizmos()
     {
+        return;
         Gizmos.color = Color.green;
         Gizmos.DrawWireSphere(transform.position, settings.aggresionRadius);
 
