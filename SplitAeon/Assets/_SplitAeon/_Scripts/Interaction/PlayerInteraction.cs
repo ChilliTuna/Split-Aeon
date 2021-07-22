@@ -1,11 +1,10 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
-using TMPro;
 
 public class PlayerInteraction : MonoBehaviour
 {
     public float interactionDistance;
-    public TextMeshProUGUI interactionText;
+    public Text interactionText;
 
     public KeyCode key;
 
@@ -16,7 +15,7 @@ public class PlayerInteraction : MonoBehaviour
     void Start()
     {
         cam = GetComponentInChildren<Camera>();
-        interactionText = GameObject.Find("InteractionTextField").GetComponent<TextMeshProUGUI>();
+        interactionText = GameObject.Find("InteractionTextField").GetComponent<Text>();
     }
 
     void Update()
