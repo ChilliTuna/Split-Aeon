@@ -93,6 +93,7 @@ namespace AIStates
             if(agent.settings.aggresionRadius * agent.settings.aggresionRadius > agent.distToPlayerSquared)
             {
                 agent.ChangeState(StateIndex.chasePlayer);
+                return;
             }
 
             // Check Idle behaviour
@@ -118,7 +119,7 @@ namespace AIStates
         }
     }
 
-    public class Patrol : MovementState
+    public class Patrol : AgentState
     {
         Vector3 m_patrolTarget = Vector3.zero;
 
@@ -137,6 +138,7 @@ namespace AIStates
             if (agent.settings.aggresionRadius * agent.settings.aggresionRadius > agent.distToPlayerSquared)
             {
                 agent.ChangeState(StateIndex.chasePlayer);
+                return;
             }
 
             // Check state behaviour
@@ -165,7 +167,7 @@ namespace AIStates
         }
     }
 
-    public class ChasePlayer : MovementState
+    public class ChasePlayer : AgentState
     {
         Transform m_playerTransform;
         float attackCharge = 0.0f;
@@ -199,6 +201,7 @@ namespace AIStates
                 {
                     // The agent has successfully begun it's attack
                     agent.ChangeState(StateIndex.attackPlayer);
+                    return;
                 }
             }
         }
@@ -250,6 +253,7 @@ namespace AIStates
             if(!agent.anim.GetBool("isAttacking"))
             {
                 agent.ChangeState(StateIndex.chasePlayer);
+                return;
             }
         }
 

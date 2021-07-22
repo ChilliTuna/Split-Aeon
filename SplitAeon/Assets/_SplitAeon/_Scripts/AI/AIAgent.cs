@@ -127,7 +127,10 @@ public class AIAgent : MonoBehaviour
 
     private void OnDrawGizmos()
     {
-        return;
+        if(aiManager == null || !aiManager.showEnemyGizmos)
+        {
+            return;
+        }
         Gizmos.color = Color.green;
         Gizmos.DrawWireSphere(transform.position, settings.aggresionRadius);
 

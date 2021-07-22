@@ -16,6 +16,10 @@ public class AIManager : MonoBehaviour
     public List<AIAgent> allAgents { get { return m_allAgents; } }
 
     //Debug
+    [Header("Debug")]
+    public bool showNeighbourRadius = false;
+    public bool showEnemyGizmos = false;
+
     bool isInitialised = false;
 
     private void Awake()
@@ -104,10 +108,13 @@ public class AIManager : MonoBehaviour
             }
         }
 
-        foreach(var agent in drawList)
+        if(showNeighbourRadius)
         {
-            Gizmos.color = Color.cyan;
-            Gizmos.DrawWireSphere(agent.transform.position, neighbourRadius);
+            foreach (var agent in drawList)
+            {
+                Gizmos.color = Color.cyan;
+                Gizmos.DrawWireSphere(agent.transform.position, neighbourRadius);
+            }
         }
     }
 }
