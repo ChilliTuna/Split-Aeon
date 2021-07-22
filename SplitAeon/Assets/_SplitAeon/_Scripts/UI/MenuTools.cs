@@ -18,6 +18,8 @@ public class MenuTools : MonoBehaviour
     {
         if (!pauseMenu.activeInHierarchy)
         {
+            Cursor.lockState = CursorLockMode.None;
+            Time.timeScale = 0;
             pauseMenu.SetActive(true);
         }
         else

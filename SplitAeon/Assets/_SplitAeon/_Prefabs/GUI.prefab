@@ -328,7 +328,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 1, g: 1, b: 1, a: 0.105882354}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -1239,18 +1239,6 @@ MonoBehaviour:
   onPressEscape:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 3510129350487100404}
-        m_TargetAssemblyTypeName: MenuTools, Assembly-CSharp
-        m_MethodName: ToggleActive
-        m_Mode: 2
-        m_Arguments:
-          m_ObjectArgument: {fileID: 6088576295449037945}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.GameObject, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
       - m_Target: {fileID: 3510129350487100404}
         m_TargetAssemblyTypeName: MenuTools, Assembly-CSharp
         m_MethodName: TogglePauseMenu
@@ -3010,7 +2998,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 34ca4d01e701532479dc5bfd1b1dd923, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  optionsMenu: {fileID: 2987816579431690486}
+  optionsMenu: {fileID: 7128103526811172682}
   mainPauseMenu: {fileID: 1612217477949183541}
 --- !u!1 &6300922029733163402
 GameObject:
@@ -3132,13 +3120,13 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 3510129350487100404}
-        m_TargetAssemblyTypeName: MenuTools, Assembly-CSharp
-        m_MethodName: ToggleActive
-        m_Mode: 2
+      - m_Target: {fileID: 8940518495879771276}
+        m_TargetAssemblyTypeName: PauseMenuManager, Assembly-CSharp
+        m_MethodName: ClosePauseMenu
+        m_Mode: 1
         m_Arguments:
-          m_ObjectArgument: {fileID: 6088576295449037945}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.GameObject, UnityEngine
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: 
