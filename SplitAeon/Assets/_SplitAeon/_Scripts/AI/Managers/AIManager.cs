@@ -15,6 +15,16 @@ public class AIManager : MonoBehaviour
 
     public List<AIAgent> allAgents { get { return m_allAgents; } }
 
+    [Header("Cultist")]
+    public GameObject cultistPrefab;
+    public uint maxCultistCount = 50;
+    public string containerName = "Cultist Container";
+
+    // Cultist object pool
+    List<GameObject> m_cultistPool = new List<GameObject>();
+    public List<GameObject> cultistPool { get { return m_cultistPool; } }
+    int m_currentCultistIndex = 0;
+
     //Debug
     [Header("Debug")]
     public bool showNeighbourRadius = false;
@@ -33,6 +43,8 @@ public class AIManager : MonoBehaviour
         }
 
         isInitialised = true;
+
+        InitialiseCultistObjectPool();
     }
 
     // Start is called before the first frame update
@@ -50,6 +62,52 @@ public class AIManager : MonoBehaviour
     private void LateUpdate()
     {
         FindNeighbours();
+    }
+
+    void InitialiseCultistObjectPool()
+    {
+        GameObject cultistContainer = new GameObject(containerName);
+
+        for (int i = 0; i < maxCultistCount; i++)
+        {
+            var newCultist = Instantiate(cultistPrefab, cultistContainer.transform);
+            m_cultistPool.Add(newCultist);
+
+            AIAgent agentComponent = newCultist.GetComponent<AIAgent>();
+            agentComponent.aiManager = this;
+            agentComponent.Init();
+
+            newCultist.SetActive(false);
+        }
+    }
+
+    public bool SetCultistActive(out GameObject cultistObject)
+    {
+        bool result = false;
+
+        int startIndex = m_currentCultistIndex;
+        cultistObject = null;
+
+        do
+        {
+            m_currentCultistIndex++;
+            if (m_currentCultistIndex >= maxCultistCount)
+            {
+                m_currentCultistIndex = 0;
+            }
+
+            var target = cultistPool[m_currentCultistIndex];
+            if (!target.activeInHierarchy)
+            {
+                cultistObject = target;
+                result = true;
+                cultistObject.SetActive(true);
+                break;
+            }
+
+        } while (m_currentCultistIndex != startIndex);
+
+        return result;
     }
 
     public void AllAggro()

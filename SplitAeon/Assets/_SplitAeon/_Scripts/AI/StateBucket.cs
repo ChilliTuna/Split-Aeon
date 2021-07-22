@@ -22,8 +22,6 @@ namespace AIStates
             target.AddState(new ChasePlayer());
             target.AddState(new AttackPlayer());
             target.AddState(new Dead());
-
-            target.Init();
         }
     }
 

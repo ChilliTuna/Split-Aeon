@@ -12,6 +12,8 @@ public class AIAgent : MonoBehaviour
     public Animator anim;
     public HitBox armAttack;
 
+
+    bool m_isInitialised = false;
     StateMachine<AIAgent> m_stateMachine;
     NavMeshAgent m_navAgent;
     Ragdoll m_ragdoll;
@@ -42,16 +44,7 @@ public class AIAgent : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        m_navAgent = GetComponent<NavMeshAgent>();
-        m_ragdoll = GetComponent<Ragdoll>();
-
-        // Create State Machine
-        m_stateMachine = new StateMachine<AIAgent>(this);
-
-        // Add States
-        StateBucket.SetUpStateMachine(m_stateMachine);
-
-        m_distToPlayerSquared = (playerTransform.position - transform.position).sqrMagnitude;
+        Init();
     }
 
     // Update is called once per frame
@@ -68,6 +61,28 @@ public class AIAgent : MonoBehaviour
 
     private void LateUpdate()
     {
+        m_distToPlayerSquared = (playerTransform.position - transform.position).sqrMagnitude;
+    }
+
+    public void Init()
+    {
+        if(m_isInitialised)
+        {
+            return;
+        }
+        m_isInitialised = true;
+
+        m_navAgent = GetComponent<NavMeshAgent>();
+        m_ragdoll = GetComponent<Ragdoll>();
+
+        // Create State Machine
+        m_stateMachine = new StateMachine<AIAgent>(this);
+
+        // Add States
+        StateBucket.SetUpStateMachine(m_stateMachine);
+
+        m_stateMachine.Init();
+
         m_distToPlayerSquared = (playerTransform.position - transform.position).sqrMagnitude;
     }
 
