@@ -1,6 +1,5 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class MenuTools : MonoBehaviour
 {
@@ -18,8 +17,7 @@ public class MenuTools : MonoBehaviour
     {
         if (!pauseMenu.activeInHierarchy)
         {
-            Cursor.lockState = CursorLockMode.None;
-            Time.timeScale = 0;
+            SetIsPaused(true);
             pauseMenu.SetActive(true);
         }
         else
@@ -27,4 +25,30 @@ public class MenuTools : MonoBehaviour
             pauseMenu.GetComponent<PauseMenuManager>().ClosePauseMenu();
         }
     }
+
+    public void SetIsPaused(bool shouldBePaused)
+    {
+        if (shouldBePaused)
+        {
+            Globals.isGamePaused = true;
+            Cursor.lockState = CursorLockMode.None;
+            Time.timeScale = 0;
+        }
+        else
+        {
+            Globals.isGamePaused = false;
+            Cursor.lockState = CursorLockMode.Locked;
+            Time.timeScale = 1;
+        }
+    }
+
+    public void ChangeScene(int sceneIndex)
+    {
+        SceneManager.LoadScene(sceneIndex);
+    }
+}
+
+public static class Globals
+{
+    public static bool isGamePaused = false;
 }
