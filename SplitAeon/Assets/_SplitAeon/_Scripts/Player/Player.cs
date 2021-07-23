@@ -35,11 +35,15 @@ public class Player : MonoBehaviour
     private float xRotation = 0f;
     public Camera cam;
 
+    public float recoilVertical, recoilHorizontal;
+
     [Header("Animation")]
     public Animator viewmodelAnimator;
 
     [HideInInspector]
     public bool isBusy;
+
+    float lerp;
 
     #endregion
 
@@ -97,6 +101,48 @@ public class Player : MonoBehaviour
 
         float mouseXAxis = Input.GetAxis("Mouse X") * mouseSensitivity * Time.deltaTime;
         float mouseYAxis = Input.GetAxis("Mouse Y") * mouseSensitivity * Time.deltaTime;
+
+        #region Recoil Management
+
+        mouseXAxis += recoilHorizontal;
+        mouseYAxis += recoilVertical;
+
+        if (recoilVertical > 0)
+        {
+            recoilVertical -= 0.4f * Time.deltaTime;
+
+            if (recoilVertical < 0)
+            {
+                recoilVertical = 0;
+            }
+        }
+
+        if (recoilHorizontal > 0)
+        {
+            recoilHorizontal -= 0.4f * Time.deltaTime;
+
+            if (recoilHorizontal < 0)
+            {
+                recoilHorizontal = 0;
+            }
+        }
+        else if (recoilHorizontal < 0)
+        {
+            recoilHorizontal += 0.4f * Time.deltaTime;
+
+            if (recoilHorizontal > 0)
+            {
+                recoilHorizontal = 0;
+            }
+
+        }
+
+        //lerp += Time.deltaTime * 0.2f;
+        //recoilHorizontal = Mathf.Lerp(recoilHorizontal, 0, lerp);
+
+        #endregion
+
+
 
         xRotation -= mouseYAxis;
         xRotation = Mathf.Clamp(xRotation, -90f, 90f);

@@ -123,7 +123,6 @@ public class PlayerWeapons : MonoBehaviour
             revolverAmmoLoaded -= 1;
 
             RaycastHit hit;
-            //int layerMask = 1 << 18;
 
             if (Physics.Raycast(playerCam.transform.position, playerCam.transform.forward, out hit, float.PositiveInfinity, ~playerMask))
             {
