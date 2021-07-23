@@ -11,7 +11,8 @@ GameObject:
   - component: {fileID: 1975229734319990499}
   - component: {fileID: 3226467870995228998}
   - component: {fileID: 802274218999897484}
-  - component: {fileID: 4641914164789926698}
+  - component: {fileID: 8894383843614930930}
+  - component: {fileID: 8533850776700122652}
   m_Layer: 0
   m_Name: Enviroment_Medium_TheaterChair_001
   m_TagString: Untagged
@@ -82,8 +83,8 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!64 &4641914164789926698
-MeshCollider:
+--- !u!65 &8894383843614930930
+BoxCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -92,7 +93,19 @@ MeshCollider:
   m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_Enabled: 1
-  serializedVersion: 4
-  m_Convex: 0
-  m_CookingOptions: 30
-  m_Mesh: {fileID: -6264831526926562434, guid: 404c6d3e1cc5837479d6c2947d8de5ce, type: 3}
+  serializedVersion: 2
+  m_Size: {x: 0.5888835, y: 0.7193756, z: 0.6886196}
+  m_Center: {x: 0, y: 0.3596878, z: -0.018122867}
+--- !u!65 &8533850776700122652
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1162698735619079257}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 0.5888835, y: 1.2833679, z: 0.14360687}
+  m_Center: {x: 0, y: 0.64168394, z: -0.36504227}
