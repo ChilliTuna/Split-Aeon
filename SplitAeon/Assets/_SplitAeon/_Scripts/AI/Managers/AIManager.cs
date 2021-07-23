@@ -2,18 +2,24 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
+using AIStates.Manager;
 
 public class AIManager : MonoBehaviour
 {
     List<AIAgent> m_allAgents = new List<AIAgent>();
 
     public Transform playerTransform;
+    public Camera playerCam;
 
     public UnityEvent damagePlayerEvent;
 
     public float neighbourRadius = 1.5f;
 
+    public bool playerInZone = true;
+
     public List<AIAgent> allAgents { get { return m_allAgents; } }
+
+    StateMachine<AIManager> zoneStateMachine;
 
     [Header("Cultist")]
     public GameObject cultistPrefab;
@@ -21,9 +27,12 @@ public class AIManager : MonoBehaviour
     public string containerName = "Cultist Container";
 
     // Cultist object pool
-    List<GameObject> m_cultistPool = new List<GameObject>();
-    public List<GameObject> cultistPool { get { return m_cultistPool; } }
+    List<EnemyPoolObject> m_cultistPool = new List<EnemyPoolObject>();
+    public List<EnemyPoolObject> cultistPool { get { return m_cultistPool; } }
     int m_currentCultistIndex = 0;
+    int m_activeCultistCount = 0;
+
+    public int activeCultistCount { get { return m_activeCultistCount; } }
 
     //Debug
     [Header("Debug")]
@@ -34,17 +43,14 @@ public class AIManager : MonoBehaviour
 
     private void Awake()
     {
-        var agentArray = FindObjectsOfType<AIAgent>();
-
-        foreach(var agent in agentArray)
-        {
-            m_allAgents.Add(agent);
-            agent.aiManager = this;
-        }
-
         isInitialised = true;
 
         InitialiseCultistObjectPool();
+
+        zoneStateMachine = new StateMachine<AIManager>(this);
+        zoneStateMachine.AddState(new InsideZone());
+        zoneStateMachine.AddState(new OutsideZone());
+        zoneStateMachine.Init();
     }
 
     // Start is called before the first frame update
@@ -56,11 +62,28 @@ public class AIManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+        // debug
+        if(Input.GetKeyDown(KeyCode.Space))
+        {
+            int index = zoneStateMachine.currentIndex;
+
+            index++;
+            if(index > (int)ZoneStateIndex.outside)
+            {
+                index = 0;
+            }
+
+            zoneStateMachine.ChangeState(index);
+        }
     }
 
     private void LateUpdate()
     {
+        if(!playerInZone)
+        {
+            return;
+        }
+
         FindNeighbours();
     }
 
@@ -68,16 +91,22 @@ public class AIManager : MonoBehaviour
     {
         GameObject cultistContainer = new GameObject(containerName);
 
+        // Find existing cultists
+        var agentArray = FindObjectsOfType<AIAgent>();
+        foreach (var agent in agentArray)
+        {
+            m_allAgents.Add(agent);
+            agent.aiManager = this;
+        }
+
+        // Create Object Pool
         for (int i = 0; i < maxCultistCount; i++)
         {
             var newCultist = Instantiate(cultistPrefab, cultistContainer.transform);
-            m_cultistPool.Add(newCultist);
+            EnemyPoolObject poolAgent = new EnemyPoolObject(newCultist, this);
+            m_cultistPool.Add(poolAgent);
 
-            AIAgent agentComponent = newCultist.GetComponent<AIAgent>();
-            agentComponent.aiManager = this;
-            agentComponent.Init();
-
-            newCultist.SetActive(false);
+            m_allAgents.Add(poolAgent.agent);
         }
     }
 
@@ -96,12 +125,14 @@ public class AIManager : MonoBehaviour
                 m_currentCultistIndex = 0;
             }
 
-            var target = cultistPool[m_currentCultistIndex];
-            if (!target.activeInHierarchy)
+            EnemyPoolObject target = m_cultistPool[m_currentCultistIndex];
+            if (!target.gameObject.activeInHierarchy)
             {
-                cultistObject = target;
-                result = true;
+                target.SetActive(true);
+                cultistObject = target.gameObject;
                 cultistObject.SetActive(true);
+                m_activeCultistCount++;
+                result = true;
                 break;
             }
 
@@ -144,6 +175,11 @@ public class AIManager : MonoBehaviour
                 }
             }
         }
+    }
+
+    public void ChangeZoneState(ZoneStateIndex state)
+    {
+        zoneStateMachine.ChangeState((int)state);
     }
 
     private void OnDrawGizmos()
