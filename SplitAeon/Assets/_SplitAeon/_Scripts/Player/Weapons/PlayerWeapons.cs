@@ -84,7 +84,10 @@ public class PlayerWeapons : MonoBehaviour
         {
             if (!player.isBusy)
             {
-                ShootRevolver();
+                if (!player.isRunning)
+                {
+                    ShootRevolver();
+                }
             }
         }
 
@@ -120,7 +123,6 @@ public class PlayerWeapons : MonoBehaviour
             revolverAmmoLoaded -= 1;
 
             RaycastHit hit;
-            //int layerMask = 1 << 18;
 
             if (Physics.Raycast(playerCam.transform.position, playerCam.transform.forward, out hit, float.PositiveInfinity, ~playerMask))
             {
@@ -153,8 +155,8 @@ public class PlayerWeapons : MonoBehaviour
             GameObject thrownLethal;
             thrownLethal = Instantiate(cardLethalPrefab, lethalSpawnLocation.transform.position, Quaternion.identity);
 
-            thrownLethal.GetComponent<Rigidbody>().velocity = lethalSpawnLocation.TransformDirection(Vector3.forward * 20);
-            thrownLethal.GetComponent<Rigidbody>().AddRelativeTorque(0, 50, 0); 
+            thrownLethal.GetComponent<Rigidbody>().velocity = lethalSpawnLocation.TransformDirection(0, 3, 20);
+            thrownLethal.GetComponent<Rigidbody>().AddRelativeTorque(0, 90, 0); 
 
             cardLethalPool -= 1;
 
