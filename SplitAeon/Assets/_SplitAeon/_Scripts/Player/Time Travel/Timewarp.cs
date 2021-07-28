@@ -31,10 +31,10 @@ public class Timewarp : MonoBehaviour
 
     private void Update()
     {
-        //if (Input.GetKeyDown(KeyCode.E))
-        //{
-        //    SwapWorlds();
-        //}
+        if (Input.GetKeyDown(KeyCode.E))
+        {
+            SwapWorlds();
+        }
 
 
         if (cromAb.intensity.value >= 0)
