@@ -21,8 +21,9 @@ public class WeaponManager : MonoBehaviour
     [Space(10)]
 
     [Header("Weapon GUI")]
-    public Text ammoPool;
-    public Text loadedAmmo;
+    public Text ammoPoolReadout;
+    public Text loadedAmmoReadout;
+    public Text cardPoolReadout;
 
     [Space(10)]
 
@@ -40,7 +41,7 @@ public class WeaponManager : MonoBehaviour
     [Header("Audio")]
     public AudioSource weaponAudioSource;
 
-    public AudioClip lethalThrowClip;
+    public AudioClip[] lethalThrowClips;
 
     [Space(10)]
 
@@ -53,20 +54,23 @@ public class WeaponManager : MonoBehaviour
     void Start()
     {
         SelectWeapon(0);
+        cardLethalPool = maxCardLethals;
     }
 
     void Update()
     {
         weapons[weaponIndex].mouseDown = Input.GetKey(KeyCode.Mouse0);
-  
 
-        ammoPool.text = weapons[weaponIndex].ammoPool.ToString();
-        loadedAmmo.text = weapons[weaponIndex].ammoLoaded.ToString();
+
+        ammoPoolReadout.text = weapons[weaponIndex].ammoPool.ToString();
+        loadedAmmoReadout.text = weapons[weaponIndex].ammoLoaded.ToString();
+        cardPoolReadout.text = cardLethalPool.ToString();
 
         if (Input.GetKeyDown(cardLethalKey))
         {
             if (!player.isBusy)
             {
+                Debug.Log("Throwing card");
                 ThrowCardLethal();
             }
         }
@@ -95,10 +99,10 @@ public class WeaponManager : MonoBehaviour
         }
 
         // REMOVE ME, DEBUG USE ONLY
-        if (Input.GetKeyDown(KeyCode.K))
+        if (Input.GetKeyDown(KeyCode.LeftBracket))
         {
-            weapons[weaponIndex].ammoPool = 100;
-            weapons[weaponIndex].ammoLoaded = 10;
+            weapons[weaponIndex].ammoPool = weapons[weaponIndex].maxAmmo;
+            weapons[weaponIndex].ammoLoaded = weapons[weaponIndex].clipSize;
         }
 
     }
@@ -132,6 +136,8 @@ public class WeaponManager : MonoBehaviour
         if (cardLethalPool > 0)
         {
             Debug.LogWarning("Throwing Card");
+
+            weaponAudioSource.PlayOneShot(lethalThrowClips[Mathf.FloorToInt(Random.Range(0, lethalThrowClips.Length))]);
 
             GameObject thrownLethal;
             thrownLethal = Instantiate(cardLethalPrefab, lethalSpawnLocation.transform.position, Quaternion.identity);
