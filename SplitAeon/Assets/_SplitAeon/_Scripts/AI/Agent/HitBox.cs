@@ -27,8 +27,8 @@ public class HitBox : MonoBehaviour
             Vector3 scale = new Vector3();
 
             scale.x = collider.radius;
-            scale.y = collider.radius;
-            scale.z = collider.height;
+            scale.y = collider.height;
+            scale.z = collider.radius;
 
             Gizmos.matrix = transform.localToWorldMatrix;
             Gizmos.color = Color.red;

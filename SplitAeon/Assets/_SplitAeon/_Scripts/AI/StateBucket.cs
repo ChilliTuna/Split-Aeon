@@ -15,24 +15,68 @@ namespace AIStates
 
     public static class StateBucket
     {
-        public static void SetUpStateMachine(StateMachine target)
+        public static void SetUpStateMachine(StateMachine<AIAgent> target)
         {
             target.AddState(new Idle());
-            target.AddState(new Wander());
+            target.AddState(new Patrol());
             target.AddState(new ChasePlayer());
             target.AddState(new AttackPlayer());
             target.AddState(new Dead());
-
-            target.Init();
         }
     }
 
-    public class Idle : IState
+    public abstract class AgentState : IState<AIAgent>
+    {
+        void IState<AIAgent>.Enter(AIAgent agent)
+        {
+            Enter(agent);
+        }
+
+        void IState<AIAgent>.Update(AIAgent agent)
+        {
+            Update(agent);
+        }
+
+        void IState<AIAgent>.Exit(AIAgent agent)
+        {
+            Exit(agent);
+        }
+
+        public abstract void Enter(AIAgent agent);
+        public abstract void Update(AIAgent agent);
+        public abstract void Exit(AIAgent agent);
+    }
+
+    public abstract class MovementState : IState<AIAgent>
+    {
+        void IState<AIAgent>.Enter(AIAgent agent)
+        {
+            Enter(agent);
+        }
+
+        void IState<AIAgent>.Update(AIAgent agent)
+        {
+            agent.Seek();
+
+            Update(agent);
+        }
+
+        void IState<AIAgent>.Exit(AIAgent agent)
+        {
+            Exit(agent);
+        }
+
+        public abstract void Enter(AIAgent agent);
+        public abstract void Update(AIAgent agent);
+        public abstract void Exit(AIAgent agent);
+    }
+
+    public class Idle : AgentState
     {
         float m_timer = 0.0f;
         float m_currentTargetTime = 0.0f;
 
-        void IState.Enter(AIAgent agent)
+        public override void Enter(AIAgent agent)
         {
             // set up idle values
             m_timer = 0.0f;
@@ -41,15 +85,22 @@ namespace AIStates
             agent.StopNavigating();
         }
 
-        void IState.Update(AIAgent agent)
+        public override void Update(AIAgent agent)
         {
             // Check for player Radius
             if(agent.settings.aggresionRadius * agent.settings.aggresionRadius > agent.distToPlayerSquared)
             {
                 agent.ChangeState(StateIndex.chasePlayer);
+                return;
             }
 
             // Check Idle behaviour
+            if(agent.patrolNodes.Count == 0)
+            {
+                agent.ChangeState(StateIndex.idle);
+                return;
+            }
+
             if(m_timer > m_currentTargetTime)
             {
                 // bam, no more idle
@@ -60,31 +111,32 @@ namespace AIStates
             m_timer += Time.deltaTime;
         }
 
-        void IState.Exit(AIAgent agent)
+        public override void Exit(AIAgent agent)
         {
             // clean up idle Values
         }
     }
 
-    public class Wander : IState
+    public class Patrol : AgentState
     {
-        Vector3 m_wanderTarget = Vector3.zero;
+        Vector3 m_patrolTarget = Vector3.zero;
 
-        void IState.Enter(AIAgent agent)
+        public override void Enter(AIAgent agent)
         {
             // set up state values
-            m_wanderTarget = agent.wanderNodes[agent.currentWanderIndex].position;
+            m_patrolTarget = agent.patrolNodes[agent.currentPatrolIndex].position;
 
             agent.StartNavigating();
-            agent.navAgent.SetDestination(m_wanderTarget);
+            agent.navAgent.SetDestination(m_patrolTarget);
         }
 
-        void IState.Update(AIAgent agent)
+        public override void Update(AIAgent agent)
         {
             // Check for player Radius
             if (agent.settings.aggresionRadius * agent.settings.aggresionRadius > agent.distToPlayerSquared)
             {
                 agent.ChangeState(StateIndex.chasePlayer);
+                return;
             }
 
             // Check state behaviour
@@ -96,29 +148,29 @@ namespace AIStates
             if(agent.navAgent.remainingDistance <= agent.settings.stoppingDistance)
             {
                 // arrived at wander node
-                agent.currentWanderIndex++;
+                agent.currentPatrolIndex++;
 
-                if(agent.currentWanderIndex >= agent.wanderNodes.Count)
+                if(agent.currentPatrolIndex >= agent.patrolNodes.Count)
                 {
-                    agent.currentWanderIndex = 0;
+                    agent.currentPatrolIndex = 0;
                 }
 
                 agent.ChangeState(StateIndex.idle);
             }
         }
 
-        void IState.Exit(AIAgent agent)
+        public override void Exit(AIAgent agent)
         {
             // clean up state Values
         }
     }
 
-    public class ChasePlayer : IState
+    public class ChasePlayer : AgentState
     {
         Transform m_playerTransform;
         float attackCharge = 0.0f;
 
-        void IState.Enter(AIAgent agent)
+        public override void Enter(AIAgent agent)
         {
             // set up state values
             m_playerTransform = agent.playerTransform;
@@ -129,7 +181,7 @@ namespace AIStates
             attackCharge = 0.0f;
         }
 
-        void IState.Update(AIAgent agent)
+        public override void Update(AIAgent agent)
         {
             Vector3 toPlayer = (m_playerTransform.position - agent.transform.position).normalized;
             toPlayer *= agent.settings.orbWalkRadius;
@@ -147,24 +199,25 @@ namespace AIStates
                 {
                     // The agent has successfully begun it's attack
                     agent.ChangeState(StateIndex.attackPlayer);
+                    return;
                 }
             }
         }
 
-        void IState.Exit(AIAgent agent)
+        public override void Exit(AIAgent agent)
         {
             // clean up state Values
             //agent.navAgent.SetDestination(agent.transform.position);
         }
     }
 
-    public class AttackPlayer : IState
+    public class AttackPlayer : AgentState
     {
         Transform m_playerTransform;
         Vector3 m_originalLocation;
         Vector3 m_attackDirection;
 
-        void IState.Enter(AIAgent agent)
+        public override void Enter(AIAgent agent)
         {
             // set up state values
             m_playerTransform = agent.playerTransform;
@@ -179,7 +232,7 @@ namespace AIStates
             agent.armAttack.hitIsActive = true;
         }
 
-        void IState.Update(AIAgent agent)
+        public override void Update(AIAgent agent)
         {
             // this would be the logic where the attack could take place and wait until it has ended.
             if(agent.anim.GetBool("lockRotation"))
@@ -198,10 +251,11 @@ namespace AIStates
             if(!agent.anim.GetBool("isAttacking"))
             {
                 agent.ChangeState(StateIndex.chasePlayer);
+                return;
             }
         }
 
-        void IState.Exit(AIAgent agent)
+        public override void Exit(AIAgent agent)
         {
             // clean up state Values
             agent.anim.SetBool("isAttacking", false);
@@ -212,21 +266,21 @@ namespace AIStates
         }
     }
 
-    public class Dead : IState
+    public class Dead : AgentState
     {
-        void IState.Enter(AIAgent agent)
+        public override void Enter(AIAgent agent)
         {
             // set up state values
             agent.StopNavigating();
             agent.ragdoll.RagdollOn = true;
         }
 
-        void IState.Update(AIAgent agent)
+        public override void Update(AIAgent agent)
         {
 
         }
 
-        void IState.Exit(AIAgent agent)
+        public override void Exit(AIAgent agent)
         {
             // clean up state Values
             agent.ragdoll.RagdollOn = false;
