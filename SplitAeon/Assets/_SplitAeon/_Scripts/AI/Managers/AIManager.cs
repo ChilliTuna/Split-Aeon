@@ -62,19 +62,7 @@ public class AIManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        // debug
-        if(Input.GetKeyDown(KeyCode.Space))
-        {
-            int index = zoneStateMachine.currentIndex;
 
-            index++;
-            if(index > (int)ZoneStateIndex.outside)
-            {
-                index = 0;
-            }
-
-            zoneStateMachine.ChangeState(index);
-        }
     }
 
     private void LateUpdate()
