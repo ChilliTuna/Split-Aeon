@@ -127,7 +127,13 @@ public class Weapon : MonoBehaviour
 
                 if (Physics.Raycast(manager.playerCam.transform.position, bulletDirection, out hit, float.PositiveInfinity, ~manager.playerMask))
                 {
-                    if (hit.collider.gameObject.GetComponent<Target>())
+                    if (hit.collider.gameObject.GetComponent<Health>())
+                    {
+                        CreateImpactChilded(hit);
+
+                        hit.collider.gameObject.GetComponent<Health>().Hit(damage);
+                    }
+                    else if (hit.collider.gameObject.GetComponent<Target>())
                     {
                         CreateImpactChilded(hit);
 
