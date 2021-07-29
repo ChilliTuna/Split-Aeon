@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
@@ -12,22 +10,25 @@ public class GameManager : MonoBehaviour
         -How are the enemies going to hit the player. Invoking a damage event currently, with a collider attached to their arm. It works horribly right now.
     */
 
-    public bool ShouldEnemiesSpawn;
+    public bool ShouldEnemiesSpawn = false;
+
+    public ZoneManager presentZoneManager;
+    public ZoneManager pastZoneManager;
 
     // Start is called before the first frame update
-    void Start()
+    private void Start()
     {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
+        AssignToZoneManagers();
     }
 
     public void WinGame()
     {
         //Do stuff (TBD)
+    }
+
+    private void AssignToZoneManagers()
+    {
+        presentZoneManager.gameManger = this;
+        pastZoneManager.gameManger = this;
     }
 }
