@@ -21,6 +21,9 @@ public class Player : MonoBehaviour
     public bool isRunning;
     private bool isCrouching;
 
+    [HideInInspector]
+    public bool isMoving;
+
     public GameObject cameraPosStanding;
     public GameObject cameraPosCrouched;
 
@@ -42,8 +45,6 @@ public class Player : MonoBehaviour
 
     [HideInInspector]
     public bool isBusy;
-
-    float lerp;
 
     #endregion
 
@@ -67,6 +68,17 @@ public class Player : MonoBehaviour
 
         float xMovement = Input.GetAxis("Horizontal");
         float zMovement = Input.GetAxis("Vertical");
+
+        if (xMovement == 0 & zMovement == 0)
+        {
+            isMoving = false;
+        }
+        else
+        {
+            isMoving = true;
+        }
+
+
 
         #region Ground Check
         isGrounded = Physics.CheckSphere(groundCheck.position, groundDistance, ~playerMask);
@@ -136,9 +148,6 @@ public class Player : MonoBehaviour
             }
 
         }
-
-        //lerp += Time.deltaTime * 0.2f;
-        //recoilHorizontal = Mathf.Lerp(recoilHorizontal, 0, lerp);
 
         #endregion
 

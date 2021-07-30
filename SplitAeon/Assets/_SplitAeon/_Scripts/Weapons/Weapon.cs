@@ -50,6 +50,8 @@ public class Weapon : MonoBehaviour
 
     public float impactDecay;
 
+    public ParticleSystem ejection;
+
 
 
     // Runtime Variables
@@ -113,6 +115,11 @@ public class Weapon : MonoBehaviour
             manager.player.viewmodelAnimator.SetTrigger("Shoot");
             CreateMuzzleFlash();
             ammoLoaded -= 1;
+
+            if (ejection)
+            {
+                ejection.Emit(1);
+            }
 
             AddRecoil(verticalRecoil, Random.Range(-horizontalRecoil, horizontalRecoil));
 

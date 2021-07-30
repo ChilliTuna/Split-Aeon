@@ -5,8 +5,9 @@ using UnityEngine;
 public class AmmoPickup : MonoBehaviour
 {
 
-    Player player;
-    PlayerWeapons playerWeapons;
+    WeaponManager playerWeapons;
+
+    public int weaponIndex;
 
     public int ammoPickupAmount;
 
@@ -14,24 +15,23 @@ public class AmmoPickup : MonoBehaviour
 
     void Start()
     {
-        player = GameObject.Find("Player").GetComponent<Player>();
-        playerWeapons = GameObject.Find("Player").GetComponent<PlayerWeapons>();
+        playerWeapons = GameObject.Find("Player").GetComponentInChildren<WeaponManager>();
 
     }
 
     private void OnTriggerEnter(Collider other)
     {
 
-        if (playerWeapons.revolverAmmoPool == playerWeapons.revolverMaxAmmo)
+        if (playerWeapons.weapons[weaponIndex].ammoPool == playerWeapons.weapons[weaponIndex].maxAmmo)
         {
             return;
         }
 
-        playerWeapons.revolverAmmoPool += ammoPickupAmount;
+        playerWeapons.weapons[weaponIndex].ammoPool += ammoPickupAmount;
 
-        if (playerWeapons.revolverAmmoPool > playerWeapons.revolverMaxAmmo)
+        if (playerWeapons.weapons[weaponIndex].ammoPool > playerWeapons.weapons[weaponIndex].maxAmmo)
         {
-            playerWeapons.revolverAmmoPool = playerWeapons.revolverMaxAmmo;
+            playerWeapons.weapons[weaponIndex].ammoPool = playerWeapons.weapons[weaponIndex].maxAmmo;
         }
 
         if (isOneTimePickup)
