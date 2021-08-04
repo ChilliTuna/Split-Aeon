@@ -11,14 +11,12 @@ public class RangedComponent : AttackType
     bool m_shotWaiting = true;
     float m_shotTimer = 0.0f;
 
-    Vector3 m_attackDir;
     Transform m_currentTarget;
 
     public override void AttackEnter(Transform attackTarget, Vector3 attackDir)
     {
         // Ranged attack
         m_shotWaiting = true;
-        this.m_attackDir = attackDir;
         m_currentTarget = attackTarget;
         m_shotTimer = 0.0f;
     }
@@ -36,7 +34,7 @@ public class RangedComponent : AttackType
             {
                 // shoot here
                 m_shotWaiting = false;
-                ShootProjectile(projectileOrigin.position, m_attackDir);
+                ShootProjectile(projectileOrigin.position);
             }
         }
     }
@@ -46,10 +44,10 @@ public class RangedComponent : AttackType
         m_currentTarget = null;
     }
 
-    public void ShootProjectile(Vector3 origin, Vector3 attackDir)
+    public void ShootProjectile(Vector3 origin)
     {
         var newProjectile = Instantiate(projectilePrefab);
         newProjectile.transform.position = origin;
-        newProjectile.transform.LookAt(projectilePrefab.transform.position + attackDir);
+        newProjectile.transform.LookAt(m_currentTarget.position);
     }
 }
