@@ -26,12 +26,12 @@ public class ZoneManager : MonoBehaviour
                 activeZone = zone;
             }
         }
-        SetSpawnerActiveness(activeZone, true);
+        ChangeSpawnerActiveness(activeZone, true);
     }
 
     public void ExitZone()
     {
-        SetSpawnerActiveness(activeZone, true);
+        ChangeSpawnerActiveness(activeZone, false);
         activeZone = null;
     }
 
@@ -47,7 +47,7 @@ public class ZoneManager : MonoBehaviour
     /// Inverts activeness
     /// </summary>
     /// <param name="zone"></param>
-    public void SetSpawnerActiveness(Zone zone)
+    public void ChangeSpawnerActiveness(Zone zone)
     {
         foreach (EnemySpawner enemySpawner in zone.enemySpawners)
         {
@@ -60,7 +60,7 @@ public class ZoneManager : MonoBehaviour
     /// </summary>
     /// <param name="zone"></param>
     /// <param name="newActive"></param>
-    public void SetSpawnerActiveness(Zone zone, bool newActive)
+    public void ChangeSpawnerActiveness(Zone zone, bool newActive)
     {
         foreach (EnemySpawner enemySpawner in zone.enemySpawners)
         {
