@@ -639,6 +639,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   neighbourRadius: 1.5
+  playerInZone: 1
   cultistPrefab: {fileID: 8888230849861157185, guid: 85a03666bf8df684db2a572a9f7a935f, type: 3}
   maxCultistCount: 50
   containerName: Cultist Container
@@ -1830,33 +1831,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   aiManager: {fileID: 458117779}
-  fixedSpawnLocations:
-  - {fileID: 978131382}
-  - {fileID: 1839322162}
-  - {fileID: 1393850541}
-  dynamicSpawnLocations:
-  - {fileID: 481329626}
-  - {fileID: 197567246}
-  - {fileID: 913766735}
-  - {fileID: 568092232}
-  - {fileID: 872397654}
-  - {fileID: 1781851904}
-  - {fileID: 256042352}
-  - {fileID: 384672622}
-  - {fileID: 1020574901}
-  - {fileID: 2029932329}
-  - {fileID: 982614622}
-  - {fileID: 533969046}
-  - {fileID: 28869027}
   miniWaveEnemyCount: 5
   miniWaveTime: 0.01
   targetEnemyCount: 5
   allowableOverSpawnLimit: 2
   spawnTime: 5
-  debugLocations:
-  - {fileID: 982614621}
-  - {fileID: 533969045}
-  - {fileID: 28869026}
+  boxSize: {x: 27.02, y: 5, z: 22.83}
 --- !u!1 &1902994181
 GameObject:
   m_ObjectHideFlags: 0
