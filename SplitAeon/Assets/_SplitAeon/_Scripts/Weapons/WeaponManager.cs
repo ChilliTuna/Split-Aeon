@@ -119,6 +119,7 @@ public class WeaponManager : MonoBehaviour
                 wep.gameObject.SetActive(true);
                 wep.crosshair.SetActive(true);
                 player.viewmodelAnimator = wep.animator;
+                player.isBusy = false;
             }
             else
             {

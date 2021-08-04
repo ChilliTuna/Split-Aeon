@@ -50,12 +50,13 @@ public class Weapon : MonoBehaviour
 
     public float impactDecay;
 
-    public ParticleSystem ejection;
+    public ParticleSystem shellParticle;
+    public bool emitOnShoot;
+    public int shellNumber;
 
     [Header("Animations")]
 
     public Animator animator;
-
 
     // Runtime Variables
 
@@ -130,9 +131,12 @@ public class Weapon : MonoBehaviour
             CreateMuzzleFlash();
             ammoLoaded -= 1;
 
-            if (ejection)
+            if (shellParticle)
             {
-                ejection.Emit(1);
+                if (emitOnShoot)
+                {
+                    EjectShell();
+                }
             }
 
             AddRecoil(verticalRecoil, Random.Range(-horizontalRecoil, horizontalRecoil));
@@ -180,7 +184,6 @@ public class Weapon : MonoBehaviour
             {
                 animator.SetBool("ShootHold", false);
             }
-
         }
     }
 
@@ -200,7 +203,7 @@ public class Weapon : MonoBehaviour
         manager.player.viewmodelAnimator.SetTrigger("Reload");  //-- this needs to call the reload through animation in the future
         manager.weaponAudioSource.PlayOneShot(reloadClip);
 
-        LoadAmmo(); // -- Get rid of me later, should be done through animation events
+        //LoadAmmo(); // -- Get rid of me later, should be done through animation events
 
     }
 
@@ -230,4 +233,26 @@ public class Weapon : MonoBehaviour
         GameObject impact = Instantiate(impactPrefab, hitData.point, Quaternion.LookRotation(hitData.normal));
         Destroy(impact, impactDecay);
     }
+
+    public void EnableBusyState()
+    {
+        manager.player.isBusy = true;
+        Debug.Log("Player is now busy");
+    }
+
+    public void DisableBusyState()
+    {
+        manager.player.isBusy = false;
+        Debug.Log("Player is no longer busy");
+    }
+
+    public void EjectShell()
+    {
+        if (shellParticle)
+        {
+            shellParticle.Emit(shellNumber);
+            
+        }
+    }
+
 }

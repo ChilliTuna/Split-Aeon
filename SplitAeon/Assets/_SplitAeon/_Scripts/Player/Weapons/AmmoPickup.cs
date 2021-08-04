@@ -16,7 +16,6 @@ public class AmmoPickup : MonoBehaviour
     void Start()
     {
         playerWeapons = GameObject.Find("Player").GetComponentInChildren<WeaponManager>();
-
     }
 
     private void OnTriggerEnter(Collider other)
