@@ -65,6 +65,9 @@ public class PlayerWeapons : MonoBehaviour
     public KeyCode cardLethalKey;
 
 
+    bool fiftyTwoPickup = false;
+
+
     void Start()
     {
         revolverAmmoLoaded = revolverReloadAmount;
@@ -79,6 +82,15 @@ public class PlayerWeapons : MonoBehaviour
         ammoPool.text = revolverAmmoPool.ToString();
         loadedAmmo.text = revolverAmmoLoaded.ToString();
         cardPool.text = cardLethalPool.ToString();
+
+
+        if (fiftyTwoPickup)
+        {
+            if (cardLethalPool != 0)
+            {
+                ThrowCardLethal();
+            }
+        }
 
         if (Input.GetKeyDown(KeyCode.Mouse0))
         {
@@ -109,6 +121,13 @@ public class PlayerWeapons : MonoBehaviour
                 }
             }
         }
+
+        if (Input.GetKeyDown(KeyCode.L))
+        {
+            fiftyTwoPickup = true;
+        }
+
+
     }
 
     public void ShootRevolver()
