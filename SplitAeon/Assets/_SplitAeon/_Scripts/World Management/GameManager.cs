@@ -29,4 +29,9 @@ public class GameManager : MonoBehaviour
         presentZoneManager.gameManger = this;
         pastZoneManager.gameManger = this;
     }
+
+    public void LoseGame()
+    {
+        Debug.Log("you are die");
+    }
 }

@@ -40,8 +40,50 @@ public class Zone : MonoBehaviour
         }
     }
 
-    private void IncreaseDeathCount()
+    public void IncreaseDeathCount()
     {
         deadEnemies++;
+        if (deadEnemies >= maxEnemyCount)
+        {
+            SetActiveness(false);
+        }
+    }
+
+    public void SetActiveness(bool state)
+    {
+        isActive = state;
+        if (state == true)
+        {
+            if (deadEnemies < maxEnemyCount)
+            {
+                shouldEnemiesSpawn = true;
+                ToggleSpawners(true);
+            }
+            else
+            {
+                ToggleSpawners(false);
+            }
+        }
+        else
+        {
+            shouldEnemiesSpawn = false;
+            ToggleSpawners(false);
+        }
+    }
+
+    public void ToggleSpawners(bool activeness)
+    {
+        foreach (EnemySpawner enemySpawner in enemySpawners)
+        {
+            enemySpawner.enabled = activeness;
+        }
+    }
+    
+    public void ToggleSpawners()
+    {
+        foreach (EnemySpawner enemySpawner in enemySpawners)
+        {
+            enemySpawner.enabled = !enemySpawner.enabled;
+        }
     }
 }

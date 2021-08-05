@@ -49,23 +49,17 @@ public class ZoneManager : MonoBehaviour
     /// <param name="zone"></param>
     public void ChangeSpawnerActiveness(Zone zone)
     {
-        foreach (EnemySpawner enemySpawner in zone.enemySpawners)
-        {
-            enemySpawner.enabled = !enemySpawner.isActiveAndEnabled;
-        }
+        zone.SetActiveness(!zone.isActive);
     }
 
     /// <summary>
     /// Sets activeness
     /// </summary>
     /// <param name="zone"></param>
-    /// <param name="newActive"></param>
-    public void ChangeSpawnerActiveness(Zone zone, bool newActive)
+    /// <param name="activeness"></param>
+    public void ChangeSpawnerActiveness(Zone zone, bool activeness)
     {
-        foreach (EnemySpawner enemySpawner in zone.enemySpawners)
-        {
-            enemySpawner.enabled = newActive;
-        }
+        zone.SetActiveness(activeness);
     }
 
 }

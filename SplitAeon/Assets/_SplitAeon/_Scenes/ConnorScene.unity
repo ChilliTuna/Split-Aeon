@@ -285,7 +285,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a06ca688de3f6574e897da72dcedaeb7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ShouldEnemiesSpawn: 0
   presentZoneManager: {fileID: 459165437}
   pastZoneManager: {fileID: 1021993388}
 --- !u!1 &81176381
@@ -2140,10 +2139,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 05171257b6c71364e83462d593121955, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxEnemyCount: 0
+  maxEnemyCount: 3
+  deadEnemies: 0
+  shouldEnemiesSpawn: 0
   zoneManager: {fileID: 0}
   enemySpawners:
   - {fileID: 86286808}
+  isActive: 0
 --- !u!1 &1214273714
 GameObject:
   m_ObjectHideFlags: 0
@@ -3359,10 +3361,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 05171257b6c71364e83462d593121955, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxEnemyCount: 0
+  maxEnemyCount: 2
+  deadEnemies: 0
+  shouldEnemiesSpawn: 0
   zoneManager: {fileID: 0}
   enemySpawners:
   - {fileID: 1389121782}
+  isActive: 0
 --- !u!1001 &2056657360
 PrefabInstance:
   m_ObjectHideFlags: 0
