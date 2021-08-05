@@ -7,10 +7,24 @@ public class HitBox : MonoBehaviour
     public AIAgent attachedAgent;
     public bool hitIsActive = false;
 
+    private void OnTriggerEnter(Collider other)
+    {
+        if (hitIsActive)
+        {
+            if (other.CompareTag("Player"))
+            {
+                Debug.Log("Hit Player");
+                attachedAgent.DamagePlayer();
+                hitIsActive = false;
+            }
+        }
+    }
+
     private void OnCollisionEnter(Collision collision)
     {
         if(hitIsActive)
         {
+            Debug.Log(collision.collider.name);
             if (collision.gameObject.CompareTag("Player"))
             {
                 attachedAgent.DamagePlayer();
@@ -22,13 +36,13 @@ public class HitBox : MonoBehaviour
     {
         if(hitIsActive)
         {
-            CapsuleCollider collider = GetComponent<CapsuleCollider>();
+            BoxCollider collider = GetComponent<BoxCollider>();
 
             Vector3 scale = new Vector3();
-
-            scale.x = collider.radius;
-            scale.y = collider.radius;
-            scale.z = collider.height;
+            scale = collider.size;
+            //scale.x = collider.radius;
+            //scale.y = collider.height;
+            //scale.z = collider.radius;
 
             Gizmos.matrix = transform.localToWorldMatrix;
             Gizmos.color = Color.red;

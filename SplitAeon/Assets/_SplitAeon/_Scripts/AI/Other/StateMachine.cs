@@ -2,19 +2,19 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class StateMachine
+public class StateMachine<T>
 {
-    AIAgent agentRef;
-    List<IState> m_states = new List<IState>();
+    T objRef;
+    List<IState<T>> m_states = new List<IState<T>>();
 
-    IState m_currentState;
+    IState<T> m_currentState;
     int m_currentIndex = 0;
 
     public int currentIndex { get { return m_currentIndex; } }
 
-    public StateMachine(AIAgent agent)
+    public StateMachine(T obj)
     {
-        agentRef = agent;
+        objRef = obj;
     }
 
     public bool Init()
@@ -22,39 +22,39 @@ public class StateMachine
         if(m_states.Count > 0)
         {
             m_currentState = m_states[0];
-            m_currentState.Enter(agentRef);
+            m_currentState.Enter(objRef);
             m_currentIndex = 0;
             return true;
         }
         return false;
     }
 
-    public void AddState(IState newState)
+    public void AddState(IState<T> newState)
     {
         m_states.Add(newState);
     }
 
     public void ChangeState(int index)
     {
-        m_currentState.Exit(agentRef);
+        m_currentState.Exit(objRef);
 
         m_currentState = m_states[index];
         m_currentIndex = index;
 
-        m_currentState.Enter(agentRef);
+        m_currentState.Enter(objRef);
     }
 
     public void Update()
     {
-        m_currentState.Update(agentRef);
+        m_currentState.Update(objRef);
     }
 }
 
-public interface IState
+public interface IState<T>
 {
-    void Enter(AIAgent agent);
+    void Enter(T obj);
 
-    void Exit(AIAgent agent);
+    void Exit(T obj);
 
-    void Update(AIAgent agent);
+    void Update(T obj);
 }

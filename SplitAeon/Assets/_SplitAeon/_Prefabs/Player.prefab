@@ -5336,7 +5336,7 @@ Camera:
   m_Depth: 0
   m_CullingMask:
     serializedVersion: 2
-    m_Bits: 3998007
+    m_Bits: 205324599
   m_RenderingPath: -1
   m_TargetTexture: {fileID: 0}
   m_TargetDisplay: 0
@@ -5567,9 +5567,10 @@ GameObject:
   - component: {fileID: 5946251821134137317}
   - component: {fileID: 7834470465212285063}
   - component: {fileID: 7834470465212285056}
+  - component: {fileID: 7341680661332708290}
   m_Layer: 20
   m_Name: Player
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -5911,6 +5912,39 @@ MonoBehaviour:
   - {fileID: 8300000, guid: afce6fc780fc2bb44a2ad0ba656fafc0, type: 3}
   walkConcreteClips: []
   runConcreteClips: []
+--- !u!114 &7341680661332708290
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5274002625647166297}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9c754db525d59e04c9c75bd83261d693, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  maxHealth: 100
+  health: 0
+  onHitEvents:
+    m_PersistentCalls:
+      m_Calls: []
+  destroyOnDeath: 0
+  onDeathEvents:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 7341680661332708290}
+        m_TargetAssemblyTypeName: Health, Assembly-CSharp
+        m_MethodName: LogHealth
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &5789618994240930118
 GameObject:
   m_ObjectHideFlags: 0
