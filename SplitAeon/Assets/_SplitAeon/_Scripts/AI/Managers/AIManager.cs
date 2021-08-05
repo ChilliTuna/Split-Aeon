@@ -24,16 +24,16 @@ public class AIManager : MonoBehaviour
 
     [Header("Cultist")]
     public GameObject cultistPrefab;
-    public uint maxCultistCount = 50;
-    public string containerName = "Cultist Container";
+    public int maxCultistCount = 50;
+    public string cultistContainerName = "Cultist Container";
 
     // Cultist object pool
-    List<EnemyPoolObject> m_cultistPool = new List<EnemyPoolObject>();
-    public List<EnemyPoolObject> cultistPool { get { return m_cultistPool; } }
-    int m_currentCultistIndex = 0;
-    int m_activeCultistCount = 0;
+    public List<EnemyPoolObject> cultistPool { get { return m_cultistAgentPool.objectPool; } }
 
-    public int activeCultistCount { get { return m_activeCultistCount; } }
+    AgentObjectPool m_cultistAgentPool;
+
+    public int activeCultistCount { get { return m_cultistAgentPool.activeCultistCount; } }
+
 
     //Debug
     [Header("Debug")]
@@ -46,7 +46,8 @@ public class AIManager : MonoBehaviour
     {
         isInitialised = true;
 
-        InitialiseCultistObjectPool();
+        m_cultistAgentPool = new AgentObjectPool();
+        m_cultistAgentPool.InitialiseCultistObjectPool(this, cultistContainerName, maxCultistCount, cultistPrefab);
 
         zoneStateMachine = new StateMachine<AIManager>(this);
         zoneStateMachine.AddState(new InsideZone());
@@ -76,58 +77,9 @@ public class AIManager : MonoBehaviour
         FindNeighbours();
     }
 
-    void InitialiseCultistObjectPool()
-    {
-        GameObject cultistContainer = new GameObject(containerName);
-
-        // Find existing cultists
-        var agentArray = FindObjectsOfType<AIAgent>();
-        foreach (var agent in agentArray)
-        {
-            m_allAgents.Add(agent);
-            agent.aiManager = this;
-        }
-
-        // Create Object Pool
-        for (int i = 0; i < maxCultistCount; i++)
-        {
-            var newCultist = Instantiate(cultistPrefab, cultistContainer.transform);
-            EnemyPoolObject poolAgent = new EnemyPoolObject(newCultist, this);
-            m_cultistPool.Add(poolAgent);
-
-            m_allAgents.Add(poolAgent.agent);
-        }
-    }
-
     public bool SetCultistActive(out GameObject cultistObject)
     {
-        bool result = false;
-
-        int startIndex = m_currentCultistIndex;
-        cultistObject = null;
-
-        do
-        {
-            m_currentCultistIndex++;
-            if (m_currentCultistIndex >= maxCultistCount)
-            {
-                m_currentCultistIndex = 0;
-            }
-
-            EnemyPoolObject target = m_cultistPool[m_currentCultistIndex];
-            if (!target.gameObject.activeInHierarchy)
-            {
-                target.SetActive(true);
-                cultistObject = target.gameObject;
-                cultistObject.SetActive(true);
-                m_activeCultistCount++;
-                result = true;
-                break;
-            }
-
-        } while (m_currentCultistIndex != startIndex);
-
-        return result;
+        return m_cultistAgentPool.SetCultistActive(out cultistObject);
     }
 
     public void AllAggro()
