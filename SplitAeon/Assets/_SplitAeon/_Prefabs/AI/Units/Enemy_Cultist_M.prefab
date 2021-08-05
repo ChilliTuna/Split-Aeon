@@ -167,7 +167,6 @@ GameObject:
   - component: {fileID: 8617707208611731100}
   - component: {fileID: 8617707208611731091}
   - component: {fileID: 8617707208611731090}
-  - component: {fileID: 8617707208611731101}
   m_Layer: 26
   m_Name: mixamorig:RightForeArm
   m_TagString: Untagged
@@ -186,6 +185,7 @@ Transform:
   m_LocalPosition: {x: -4.325061e-10, y: 0.23744348, z: 7.574158e-11}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
+  - {fileID: 996638499616172571}
   - {fileID: 7939164197185799128}
   m_Father: {fileID: 2656426431841067797}
   m_RootOrder: 0
@@ -265,20 +265,6 @@ CharacterJoint:
   m_EnablePreprocessing: 0
   m_MassScale: 1
   m_ConnectedMassScale: 1
---- !u!114 &8617707208611731101
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 895990990140851183}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: da0c03d6cf75744428749eced74ba4b8, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  attachedAgent: {fileID: 8617707209697044203}
-  hitIsActive: 0
 --- !u!1 &992840709768825235
 GameObject:
   m_ObjectHideFlags: 0
@@ -2056,7 +2042,7 @@ Transform:
   - {fileID: 654228871689181980}
   - {fileID: 189764954154838254}
   m_Father: {fileID: 6056041760684624312}
-  m_RootOrder: 0
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &6017407657055316681
 GameObject:
@@ -2848,6 +2834,65 @@ CharacterJoint:
   m_EnablePreprocessing: 0
   m_MassScale: 1
   m_ConnectedMassScale: 1
+--- !u!1 &8599586479210185166
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 996638499616172571}
+  - component: {fileID: 1169801717996355477}
+  - component: {fileID: 244612419321057485}
+  m_Layer: 26
+  m_Name: Cube
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &996638499616172571
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8599586479210185166}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 6056041760684624312}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!65 &1169801717996355477
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8599586479210185166}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 0.95, y: 0.86, z: 1.07}
+  m_Center: {x: 0, y: 0.45, z: 0}
+--- !u!114 &244612419321057485
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8599586479210185166}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: da0c03d6cf75744428749eced74ba4b8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  attachedAgent: {fileID: 8617707209697044203}
+  hitIsActive: 0
 --- !u!1 &8626832129595044585
 GameObject:
   m_ObjectHideFlags: 0
@@ -2988,6 +3033,7 @@ GameObject:
   - component: {fileID: 8617707209697044214}
   - component: {fileID: 7860700506989315476}
   - component: {fileID: 979904294751401325}
+  - component: {fileID: -5212587816441370148}
   m_Layer: 26
   m_Name: Enemy_Cultist_M
   m_TagString: Untagged
@@ -3123,4 +3169,37 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b421b947f96670647ab17ff25b290eb4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  armAttack: {fileID: 8617707208611731101}
+  armAttack: {fileID: 244612419321057485}
+--- !u!114 &-5212587816441370148
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8888230849861157185}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9c754db525d59e04c9c75bd83261d693, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  maxHealth: 20
+  health: 0
+  onHitEvents:
+    m_PersistentCalls:
+      m_Calls: []
+  destroyOnDeath: 0
+  onDeathEvents:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 8617707209697044203}
+        m_TargetAssemblyTypeName: AIAgent, Assembly-CSharp
+        m_MethodName: Die
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2

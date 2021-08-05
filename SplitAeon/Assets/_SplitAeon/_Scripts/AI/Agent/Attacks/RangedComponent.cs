@@ -46,8 +46,9 @@ public class RangedComponent : AttackType
 
     public void ShootProjectile(Vector3 origin)
     {
-        var newProjectile = Instantiate(projectilePrefab);
+        GameObject newProjectile = Instantiate(projectilePrefab);
         newProjectile.transform.position = origin;
         newProjectile.transform.LookAt(m_currentTarget.position);
+        newProjectile.GetComponent<Projectile>().owner = GetComponent<AIAgent>();
     }
 }

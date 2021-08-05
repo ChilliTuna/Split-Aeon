@@ -24,6 +24,11 @@ public class Health : MonoBehaviour
     public void Hit()
     {
         onHitEvents.Invoke();
+
+        if (health <= 0)
+        {
+            Death();
+        }
     }
 
     /// <summary>
@@ -32,9 +37,8 @@ public class Health : MonoBehaviour
     /// <param name="damage">The amount to damage the object by.</param>
     public void Hit(float damage)
     {
-        health -= damage;
-
-        onHitEvents.Invoke();
+        Damage(damage);
+        Hit();
     }
 
     /// <summary>
@@ -85,11 +89,6 @@ public class Health : MonoBehaviour
 
     private void Update()
     {
-        if (health <= 0)
-        {
-            Death();
-        }
-
         if (health > maxHealth)
         {
             health = maxHealth;

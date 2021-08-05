@@ -11,6 +11,8 @@ public class Projectile : MonoBehaviour
 
     Rigidbody m_body;
 
+    [HideInInspector] public AIAgent owner;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -35,6 +37,7 @@ public class Projectile : MonoBehaviour
     {
         if (collision.collider.CompareTag("Player"))
         {
+            owner.DamagePlayer();
             Destroy(gameObject);
         }
     }

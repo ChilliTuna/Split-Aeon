@@ -2086,6 +2086,7 @@ GameObject:
   - component: {fileID: 8920362174382616853}
   - component: {fileID: 8920362174382616850}
   - component: {fileID: 8920362174382616846}
+  - component: {fileID: -5281531638128700853}
   m_Layer: 26
   m_Name: Enemy_Belcher
   m_TagString: Untagged
@@ -2224,6 +2225,39 @@ MonoBehaviour:
   projectilePrefab: {fileID: 6962557043666448812, guid: 03109e6719265be41a153ffa952dfa88, type: 3}
   shootTime: 1.7
   projectileOrigin: {fileID: 3039179505967673353}
+--- !u!114 &-5281531638128700853
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8577694772799273008}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9c754db525d59e04c9c75bd83261d693, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  maxHealth: 30
+  health: 0
+  onHitEvents:
+    m_PersistentCalls:
+      m_Calls: []
+  destroyOnDeath: 0
+  onDeathEvents:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 8920362174382616853}
+        m_TargetAssemblyTypeName: AIAgent, Assembly-CSharp
+        m_MethodName: Die
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &8778743112063813415
 GameObject:
   m_ObjectHideFlags: 0
