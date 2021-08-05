@@ -29,8 +29,8 @@ Transform:
   m_LocalPosition: {x: 0, y: -0.0012, z: 0}
   m_LocalScale: {x: 0.13391925, y: 0.24185376, z: 0.24185376}
   m_Children: []
-  m_Father: {fileID: 5895201786854204352}
-  m_RootOrder: 1
+  m_Father: {fileID: 6488574930144655255}
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: -90, y: 0, z: 0}
 --- !u!33 &1355027181535114110
 MeshFilter:
@@ -110,8 +110,8 @@ Transform:
   m_LocalPosition: {x: 0, y: 0.0014, z: 0}
   m_LocalScale: {x: 0.13391925, y: 0.24185376, z: 0.24185376}
   m_Children: []
-  m_Father: {fileID: 5895201786854204352}
-  m_RootOrder: 0
+  m_Father: {fileID: 6488574930144655255}
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 90, y: 0, z: 0}
 --- !u!33 &3273858440105966920
 MeshFilter:
@@ -187,12 +187,12 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5019287195222368639}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 0.13462661, y: 0.002249491, z: 0.24188682}
   m_Children: []
-  m_Father: {fileID: 5895201786854204352}
-  m_RootOrder: 2
+  m_Father: {fileID: 6488574930144655255}
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!33 &6167467261239640984
 MeshFilter:
@@ -275,9 +275,7 @@ Transform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
-  - {fileID: 1023055657672157279}
-  - {fileID: 6046150957900244709}
-  - {fileID: 445513922422952759}
+  - {fileID: 6488574930144655255}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -434,3 +432,36 @@ TrailRenderer:
   m_MinVertexDistance: 0.1
   m_Autodestruct: 0
   m_Emitting: 1
+--- !u!1 &7767223480615455962
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 6488574930144655255}
+  m_Layer: 21
+  m_Name: Shape Saver 9000
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &6488574930144655255
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7767223480615455962}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children:
+  - {fileID: 445513922422952759}
+  - {fileID: 1023055657672157279}
+  - {fileID: 6046150957900244709}
+  m_Father: {fileID: 5895201786854204352}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
