@@ -4,15 +4,19 @@ using UnityEngine;
 
 public class CardLethal : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
+
+    public int damage;
+
+    private void OnCollisionEnter(Collision collision)
     {
-        
+        if (collision.collider.gameObject.GetComponent<Health>())
+        {
+            collision.collider.gameObject.GetComponent<Health>().Hit(damage);
+        }
+        else if (collision.collider.gameObject.GetComponent<Target>())
+        {
+            collision.collider.gameObject.GetComponent<Target>().Hit();
+        }
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
 }
