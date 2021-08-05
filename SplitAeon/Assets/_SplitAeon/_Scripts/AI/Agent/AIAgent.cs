@@ -116,6 +116,7 @@ public class AIAgent : MonoBehaviour
     {
         // This would ideally have an animation as well as some sort of clean up for corpses
         // For now just Change state to dead which will activate a ragdoll
+        aiManager.agentdeathEvent.Invoke();
         ChangeState(StateIndex.dead);
     }
 

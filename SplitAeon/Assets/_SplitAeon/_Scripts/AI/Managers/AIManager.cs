@@ -12,6 +12,7 @@ public class AIManager : MonoBehaviour
     public Camera playerCam;
 
     public UnityEvent damagePlayerEvent;
+    public UnityEvent agentdeathEvent;
 
     public float neighbourRadius = 1.5f;
 
