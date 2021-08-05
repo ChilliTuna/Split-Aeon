@@ -10,8 +10,6 @@ public class GameManager : MonoBehaviour
         -How are the enemies going to hit the player. Invoking a damage event currently, with a collider attached to their arm. It works horribly right now.
     */
 
-    public bool ShouldEnemiesSpawn = false;
-
     public ZoneManager presentZoneManager;
     public ZoneManager pastZoneManager;
 

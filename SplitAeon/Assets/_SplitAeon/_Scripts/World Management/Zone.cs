@@ -2,17 +2,26 @@
 
 public class Zone : MonoBehaviour
 {
-    private Collider zoneCollider;
+    [Tooltip("0 = infinite enemies")]
+    public uint maxEnemyCount;
+
+    [HideInInspector]
+    public uint deadEnemies;
+
+    public bool shouldEnemiesSpawn = false;
 
     [HideInInspector]
     public ZoneManager zoneManager;
 
     public EnemySpawner[] enemySpawners;
 
+    [HideInInspector]
+    public bool isActive = false;
+
     // Start is called before the first frame update
     private void Start()
     {
-        zoneCollider = gameObject.GetComponent<Collider>();
+        //zoneCollider = gameObject.GetComponent<Collider>();
     }
 
     private void OnTriggerEnter(Collider other)
@@ -29,5 +38,10 @@ public class Zone : MonoBehaviour
         {
             zoneManager.ExitZone();
         }
+    }
+
+    private void IncreaseDeathCount()
+    {
+        deadEnemies++;
     }
 }
