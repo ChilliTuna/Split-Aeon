@@ -50,7 +50,13 @@ public class Weapon : MonoBehaviour
 
     public float impactDecay;
 
+    public ParticleSystem shellParticle;
+    public bool emitOnShoot;
+    public int shellNumber;
 
+    [Header("Animations")]
+
+    public Animator animator;
 
     // Runtime Variables
 
@@ -100,6 +106,11 @@ public class Weapon : MonoBehaviour
         else
         {
             waitForTriggerRelease = false;
+
+            if (isFullAuto)
+            {
+                animator.SetBool("ShootHold", false);
+            }
         }
 
         timeUntilNextShot -= 1 * Time.deltaTime;
@@ -110,9 +121,23 @@ public class Weapon : MonoBehaviour
     {
         if (ammoLoaded > 0)
         {
-            manager.player.viewmodelAnimator.SetTrigger("Shoot");
+            animator.SetTrigger("Shoot");
+
+            if (isFullAuto)
+            {
+                animator.SetBool("ShootHold", true);
+            }
+
             CreateMuzzleFlash();
             ammoLoaded -= 1;
+
+            if (shellParticle)
+            {
+                if (emitOnShoot)
+                {
+                    EjectShell();
+                }
+            }
 
             AddRecoil(verticalRecoil, Random.Range(-horizontalRecoil, horizontalRecoil));
 
@@ -120,14 +145,24 @@ public class Weapon : MonoBehaviour
             {
                 RaycastHit hit;
 
-                Vector3 bulletDirection = manager.playerCam.transform.forward;
+                //manager.playerCam.transform.forward
+
+                Vector3 bulletDirection = new Vector3(0, 0, 1);
 
                 bulletDirection.x += Random.Range(-bulletSpread, bulletSpread);
                 bulletDirection.y += Random.Range(-bulletSpread, bulletSpread);
 
+                bulletDirection = manager.playerCam.transform.localToWorldMatrix * bulletDirection;
+
                 if (Physics.Raycast(manager.playerCam.transform.position, bulletDirection, out hit, float.PositiveInfinity, ~manager.playerMask))
                 {
-                    if (hit.collider.gameObject.GetComponent<Target>())
+                    if (hit.collider.gameObject.GetComponent<Health>())
+                    {
+                        CreateImpactChilded(hit);
+
+                        hit.collider.gameObject.GetComponent<Health>().Hit(damage);
+                    }
+                    else if (hit.collider.gameObject.GetComponent<Target>())
                     {
                         CreateImpactChilded(hit);
 
@@ -144,6 +179,11 @@ public class Weapon : MonoBehaviour
         else
         {
             manager.weaponAudioSource.PlayOneShot(emptyClip);
+
+            if (isFullAuto)
+            {
+                animator.SetBool("ShootHold", false);
+            }
         }
     }
 
@@ -160,10 +200,10 @@ public class Weapon : MonoBehaviour
             return;
         }
 
-        //manager.player.viewmodelAnimator.SetTrigger("Reload");  -- this needs to call the reload through animation in the future
+        manager.player.viewmodelAnimator.SetTrigger("Reload");  //-- this needs to call the reload through animation in the future
         manager.weaponAudioSource.PlayOneShot(reloadClip);
 
-        LoadAmmo(); // -- Get rid of me later, should be done through animation events
+        //LoadAmmo(); // -- Get rid of me later, should be done through animation events
 
     }
 
@@ -193,4 +233,26 @@ public class Weapon : MonoBehaviour
         GameObject impact = Instantiate(impactPrefab, hitData.point, Quaternion.LookRotation(hitData.normal));
         Destroy(impact, impactDecay);
     }
+
+    public void EnableBusyState()
+    {
+        manager.player.isBusy = true;
+        Debug.Log("Player is now busy");
+    }
+
+    public void DisableBusyState()
+    {
+        manager.player.isBusy = false;
+        Debug.Log("Player is no longer busy");
+    }
+
+    public void EjectShell()
+    {
+        if (shellParticle)
+        {
+            shellParticle.Emit(shellNumber);
+            
+        }
+    }
+
 }

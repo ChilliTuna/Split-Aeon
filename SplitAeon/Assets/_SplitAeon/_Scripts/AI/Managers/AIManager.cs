@@ -12,6 +12,7 @@ public class AIManager : MonoBehaviour
     public Camera playerCam;
 
     public UnityEvent damagePlayerEvent;
+    public UnityEvent agentdeathEvent;
 
     public float neighbourRadius = 1.5f;
 
@@ -133,7 +134,10 @@ public class AIManager : MonoBehaviour
     {
         foreach(var agent in m_allAgents)
         {
-            agent.ChangeState(AIStates.StateIndex.chasePlayer);
+            if(agent.gameObject.activeInHierarchy)
+            {
+                agent.ChangeState(AIStates.StateIndex.chasePlayer);
+            }
         }
     }
 

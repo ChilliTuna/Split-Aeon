@@ -6,8 +6,8 @@ public class EnemySpawner : MonoBehaviour
 {
     public AIManager aiManager;
 
-    public List<SpawnLocation> fixedSpawnLocations;
-    public List<SpawnLocation> dynamicSpawnLocations;
+    List<SpawnLocation> m_fixedSpawnLocations;
+    List<SpawnLocation> m_dynamicSpawnLocations;
 
     public int miniWaveEnemyCount = 5;
     public float miniWaveTime = 0.01f;
@@ -25,6 +25,9 @@ public class EnemySpawner : MonoBehaviour
     int m_currentMiniWaveRemain = 0;
     float m_miniWaveTimer = 0.0f;
 
+    [Header("Box")]
+    public Vector3 boxSize = new Vector3(5.0f, 5.0f, 5.0f);
+
     List<SpawnLocation> m_possibleLocations = new List<SpawnLocation>();
 
     private void Awake()
@@ -37,7 +40,53 @@ public class EnemySpawner : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        
+        m_fixedSpawnLocations = new List<SpawnLocation>();
+        m_dynamicSpawnLocations = new List<SpawnLocation>();
+
+        SpawnLocation[] allSpawnLocations = FindObjectsOfType<SpawnLocation>();
+        foreach (var spawnPos in allSpawnLocations)
+        {
+            Vector3 position = spawnPos.transform.position;
+            Vector3 halfBox = boxSize / 2;
+            // width check
+            if(position.x < transform.position.x - halfBox.x)
+            {
+                continue;
+            }
+            if (position.x > transform.position.x + halfBox.x)
+            {
+                continue;
+            }
+
+            // height check
+            if (position.y < transform.position.y - halfBox.y)
+            {
+                continue;
+            }
+            if (position.y > transform.position.y + halfBox.y)
+            {
+                continue;
+            }
+
+            // length check
+            if (position.z < transform.position.z - halfBox.z)
+            {
+                continue;
+            }
+            if (position.z > transform.position.x + halfBox.z)
+            {
+                continue;
+            }
+
+            if(spawnPos.spawnType == SpawnLocation.SpawnType.DYNAMIC)
+            {
+                m_dynamicSpawnLocations.Add(spawnPos);
+            }
+            else if(spawnPos.spawnType == SpawnLocation.SpawnType.FIXED)
+            {
+                m_fixedSpawnLocations.Add(spawnPos);
+            }
+        }
     }
 
     // Update is called once per frame
@@ -88,12 +137,12 @@ public class EnemySpawner : MonoBehaviour
     {
         m_possibleLocations.Clear();
 
-        foreach(var fixedSpawn in fixedSpawnLocations)
+        foreach(var fixedSpawn in m_fixedSpawnLocations)
         {
             m_possibleLocations.Add(fixedSpawn);
         }
 
-        foreach (var dynamicSpawn in dynamicSpawnLocations)
+        foreach (var dynamicSpawn in m_dynamicSpawnLocations)
         {
             Vector3 position = dynamicSpawn.transform.position;
             Vector3 toPlayer = playerTransform.position - position;
@@ -136,7 +185,12 @@ public class EnemySpawner : MonoBehaviour
             drawPlayer = aiManager.playerTransform;
         }
 
-        foreach (var dynamicSpawn in dynamicSpawnLocations)
+        if(m_dynamicSpawnLocations == null)
+        {
+            return;
+        }
+
+        foreach (var dynamicSpawn in m_dynamicSpawnLocations)
         {
             Vector3 position = dynamicSpawn.transform.position;
             Vector3 toPlayer = drawPlayer.position - position;
@@ -153,5 +207,14 @@ public class EnemySpawner : MonoBehaviour
                 Gizmos.DrawLine(position, drawPlayer.position);
             }
         }
+    }
+
+    private void OnDrawGizmosSelected()
+    {
+        Color colour = Color.magenta;
+
+        colour.a *= 0.4f;
+        Gizmos.color = colour;
+        Gizmos.DrawCube(transform.position, boxSize);
     }
 }

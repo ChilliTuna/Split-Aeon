@@ -10,8 +10,7 @@ public class AIAgent : MonoBehaviour
 
     public AISettings settings;
     public Animator anim;
-    public HitBox armAttack;
-
+    public AttackType attack;
 
     bool m_isInitialised = false;
     StateMachine<AIAgent> m_stateMachine;
@@ -117,6 +116,7 @@ public class AIAgent : MonoBehaviour
     {
         // This would ideally have an animation as well as some sort of clean up for corpses
         // For now just Change state to dead which will activate a ragdoll
+        aiManager.agentdeathEvent.Invoke();
         ChangeState(StateIndex.dead);
     }
 
@@ -146,6 +146,18 @@ public class AIAgent : MonoBehaviour
         {
             return;
         }
+        Gizmos.color = Color.green;
+        Gizmos.DrawWireSphere(transform.position, settings.aggresionRadius);
+
+        Gizmos.color = Color.red;
+        Gizmos.DrawWireSphere(transform.position, settings.attackChargeRadius);
+
+        Gizmos.color = Color.blue;
+        Gizmos.DrawWireSphere(transform.position, settings.orbWalkRadius);
+    }
+
+    private void OnDrawGizmosSelected()
+    {
         Gizmos.color = Color.green;
         Gizmos.DrawWireSphere(transform.position, settings.aggresionRadius);
 
