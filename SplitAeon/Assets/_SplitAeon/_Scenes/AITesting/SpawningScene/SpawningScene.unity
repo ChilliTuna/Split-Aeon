@@ -595,6 +595,7 @@ GameObject:
   m_Component:
   - component: {fileID: 458117778}
   - component: {fileID: 458117779}
+  - component: {fileID: 458117780}
   m_Layer: 0
   m_Name: AiManager
   m_TagString: Untagged
@@ -649,12 +650,28 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   neighbourRadius: 1.5
-  playerInZone: 1
+  playerInTimePeriod: 1
   cultistPrefab: {fileID: 8888230849861157185, guid: 85a03666bf8df684db2a572a9f7a935f, type: 3}
   maxCultistCount: 50
-  containerName: Cultist Container
+  cultistContainerName: Cultist Container
+  belcherPrefab: {fileID: 8577694772799273008, guid: c9938a40dee23dc4ebce886225c25e54, type: 3}
+  maxBelcherCount: 25
+  belcherContainerName: Belcher Container
   showNeighbourRadius: 0
   showEnemyGizmos: 0
+--- !u!114 &458117780
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 458117777}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 436668e451458744b97438c9818b7573, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  aiManager: {fileID: 458117779}
 --- !u!1 &481329624
 GameObject:
   m_ObjectHideFlags: 0
@@ -1997,6 +2014,7 @@ MonoBehaviour:
   targetEnemyCount: 5
   allowableOverSpawnLimit: 2
   spawnTime: 5
+  enemyType: -1
   boxSize: {x: 27.02, y: 5, z: 22.83}
 --- !u!1 &1902994181
 GameObject:

@@ -7,7 +7,7 @@ using AIStates.Manager;
 public class AIManager : MonoBehaviour
 {
     List<AIAgent> m_allAgents = new List<AIAgent>();
-
+    
     public Transform playerTransform;
     public Camera playerCam;
 
@@ -16,7 +16,7 @@ public class AIManager : MonoBehaviour
 
     public float neighbourRadius = 1.5f;
 
-    public bool playerInZone = true;
+    public bool playerInTimePeriod = true;
 
     public List<AIAgent> allAgents { get { return m_allAgents; } }
 
@@ -28,11 +28,24 @@ public class AIManager : MonoBehaviour
     public string cultistContainerName = "Cultist Container";
 
     // Cultist object pool
-    public List<EnemyPoolObject> cultistPool { get { return m_cultistAgentPool.objectPool; } }
-
     AgentObjectPool m_cultistAgentPool;
 
-    public int activeCultistCount { get { return m_cultistAgentPool.activeCultistCount; } }
+    [Header("Belcher")]
+    public GameObject belcherPrefab;
+    public int maxBelcherCount = 25;
+    public string belcherContainerName = "Belcher Container";
+
+    // Belcher object pool
+    AgentObjectPool m_belcherAgentPool;
+
+
+    public int activeAgentCount { get { return activeCultistCount + activeBelcherCount; } }
+
+    public int activeCultistCount { get { return m_cultistAgentPool.activeCount; } }
+    public AgentObjectPool cultistPool { get { return m_cultistAgentPool; } }
+
+    public int activeBelcherCount { get { return m_belcherAgentPool.activeCount; } }
+    public AgentObjectPool belcherPool { get { return m_belcherAgentPool; } }
 
 
     //Debug
@@ -47,7 +60,10 @@ public class AIManager : MonoBehaviour
         isInitialised = true;
 
         m_cultistAgentPool = new AgentObjectPool();
-        m_cultistAgentPool.InitialiseCultistObjectPool(this, cultistContainerName, maxCultistCount, cultistPrefab);
+        m_cultistAgentPool.InitialiseObjectPool(this, cultistContainerName, maxCultistCount, cultistPrefab);
+
+        m_belcherAgentPool = new AgentObjectPool();
+        m_belcherAgentPool.InitialiseObjectPool(this, belcherContainerName, maxBelcherCount, belcherPrefab);
 
         zoneStateMachine = new StateMachine<AIManager>(this);
         zoneStateMachine.AddState(new InsideZone());
@@ -69,7 +85,7 @@ public class AIManager : MonoBehaviour
 
     private void LateUpdate()
     {
-        if(!playerInZone)
+        if(!playerInTimePeriod)
         {
             return;
         }
@@ -77,9 +93,15 @@ public class AIManager : MonoBehaviour
         FindNeighbours();
     }
 
+    // Sets pool object to active from the target object pool and gets the resulting gameobject
+    public bool SetPoolObjectActive(AgentObjectPool targetPool, out GameObject resultObject)
+    {
+        return targetPool.SetObjectActive(out resultObject);
+    }
+
     public bool SetCultistActive(out GameObject cultistObject)
     {
-        return m_cultistAgentPool.SetCultistActive(out cultistObject);
+        return m_cultistAgentPool.SetObjectActive(out cultistObject);
     }
 
     public void AllAggro()
@@ -124,6 +146,29 @@ public class AIManager : MonoBehaviour
     public void ChangeZoneState(ZoneStateIndex state)
     {
         zoneStateMachine.ChangeState((int)state);
+    }
+
+    public void SetAgentPoolActiveInTimePeriod(bool value)
+    {
+        playerInTimePeriod = value;
+
+        foreach (var poolAgent in cultistPool.objectPool)
+        {
+            // Check if the agent should be active in it's zone
+            if (poolAgent.isActive)
+            {
+                poolAgent.gameObject.SetActive(value);
+            }
+        }
+
+        foreach (var poolAgent in belcherPool.objectPool)
+        {
+            // Check if the agent should be active in it's zone
+            if (poolAgent.isActive)
+            {
+                poolAgent.gameObject.SetActive(value);
+            }
+        }
     }
 
     private void OnDrawGizmos()

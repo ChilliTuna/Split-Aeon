@@ -16,16 +16,7 @@ namespace AIStates.Manager
     {
         void State.Enter(AIManager manager)
         {
-            manager.playerInZone = true;
-
-            foreach (var poolAgent in manager.cultistPool)
-            {
-                // Check if the agent should be active in it's zone
-                if (poolAgent.isActive)
-                {
-                    poolAgent.gameObject.SetActive(true);
-                }
-            }
+            manager.SetAgentPoolActiveInTimePeriod(true);
         }
 
         void State.Update(AIManager manager)
@@ -43,16 +34,7 @@ namespace AIStates.Manager
     {
         void State.Enter(AIManager manager)
         {
-            manager.playerInZone = false;
-
-            foreach (var poolAgent in manager.cultistPool)
-            {
-                // Check if the agent should be active in it's zone
-                if (poolAgent.isActive)
-                {
-                    poolAgent.gameObject.SetActive(false);
-                }
-            }
+            manager.SetAgentPoolActiveInTimePeriod(false);
         }
 
         void State.Update(AIManager manager)

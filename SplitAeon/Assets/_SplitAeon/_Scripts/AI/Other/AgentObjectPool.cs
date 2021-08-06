@@ -12,9 +12,9 @@ public class AgentObjectPool
 
     int m_maxCount = 0;
 
-    public int activeCultistCount { get { return m_activeCount; } }
+    public int activeCount { get { return m_activeCount; } }
 
-    public void InitialiseCultistObjectPool(AIManager manager, string containerName, int maxCount, GameObject cultistPrefab)
+    public void InitialiseObjectPool(AIManager manager, string containerName, int maxCount, GameObject enemyPrefab)
     {
         m_maxCount = maxCount;
 
@@ -31,7 +31,7 @@ public class AgentObjectPool
         // Create Object Pool
         for (int i = 0; i < maxCount; i++)
         {
-            var newCultist = Object.Instantiate(cultistPrefab, cultistContainer.transform);
+            var newCultist = Object.Instantiate(enemyPrefab, cultistContainer.transform);
             EnemyPoolObject poolAgent = new EnemyPoolObject(newCultist, manager);
             m_objectPool.Add(poolAgent);
 
@@ -39,12 +39,12 @@ public class AgentObjectPool
         }
     }
 
-    public bool SetCultistActive(out GameObject cultistObject)
+    public bool SetObjectActive(out GameObject targetPoolObject)
     {
         bool result = false;
 
         int startIndex = m_currentIndex;
-        cultistObject = null;
+        targetPoolObject = null;
 
         do
         {
@@ -58,8 +58,8 @@ public class AgentObjectPool
             if (!target.gameObject.activeInHierarchy)
             {
                 target.SetActive(true);
-                cultistObject = target.gameObject;
-                cultistObject.SetActive(true);
+                targetPoolObject = target.gameObject;
+                targetPoolObject.SetActive(true);
                 m_activeCount++;
                 result = true;
                 break;
