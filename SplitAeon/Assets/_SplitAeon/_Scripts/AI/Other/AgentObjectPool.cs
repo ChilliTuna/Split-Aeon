@@ -32,7 +32,7 @@ public class AgentObjectPool
         for (int i = 0; i < maxCount; i++)
         {
             var newCultist = Object.Instantiate(enemyPrefab, cultistContainer.transform);
-            EnemyPoolObject poolAgent = new EnemyPoolObject(newCultist, manager);
+            EnemyPoolObject poolAgent = new EnemyPoolObject(this, newCultist, manager);
             m_objectPool.Add(poolAgent);
 
             manager.allAgents.Add(poolAgent.agent);
@@ -68,5 +68,12 @@ public class AgentObjectPool
         } while (m_currentIndex != startIndex);
 
         return result;
+    }
+
+    public void DisableObject(EnemyPoolObject target)
+    {
+        target.SetActive(false); // refernce to EnemyPoolObject
+        target.gameObject.SetActive(false); // refernce to Unity's GameObject
+        m_activeCount--;
     }
 }
