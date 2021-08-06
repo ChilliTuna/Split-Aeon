@@ -18,6 +18,8 @@ public class Zone : MonoBehaviour
     [HideInInspector]
     public bool isActive = false;
 
+    public Color gizmoColour = Color.blue;
+
     // Start is called before the first frame update
     private void Start()
     {
@@ -78,12 +80,27 @@ public class Zone : MonoBehaviour
             enemySpawner.enabled = activeness;
         }
     }
-    
+
     public void ToggleSpawners()
     {
         foreach (EnemySpawner enemySpawner in enemySpawners)
         {
             enemySpawner.enabled = !enemySpawner.enabled;
         }
+    }
+
+    private void OnDrawGizmos()
+    {
+        void DrawCube(Transform transform, Color colour)
+        {
+            Gizmos.color = colour;
+            Gizmos.DrawWireCube(transform.position, transform.lossyScale);
+            Gizmos.DrawIcon(transform.position, "Zone Icon", false, Color.yellow);
+
+            colour *= 0.4f;
+            Gizmos.color = colour;
+            Gizmos.DrawCube(transform.position, transform.lossyScale);
+        }
+        DrawCube(transform, gizmoColour);
     }
 }
