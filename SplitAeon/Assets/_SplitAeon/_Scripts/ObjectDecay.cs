@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class ObjectDecay : MonoBehaviour
 {
-
     public float decayTime;
 
     private void Update()

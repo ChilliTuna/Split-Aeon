@@ -18,8 +18,11 @@ public class Player : MonoBehaviour
     public float jumpHeight;
     private Vector3 playerVelocity;
 
-    private bool isRunning;
+    public bool isRunning;
     private bool isCrouching;
+
+    [HideInInspector]
+    public bool isMoving;
 
     public GameObject cameraPosStanding;
     public GameObject cameraPosCrouched;
@@ -34,6 +37,8 @@ public class Player : MonoBehaviour
     public float mouseSensitivity = 100f;
     private float xRotation = 0f;
     public Camera cam;
+
+    public float recoilVertical, recoilHorizontal;
 
     [Header("Animation")]
     public Animator viewmodelAnimator;
@@ -63,6 +68,17 @@ public class Player : MonoBehaviour
 
         float xMovement = Input.GetAxis("Horizontal");
         float zMovement = Input.GetAxis("Vertical");
+
+        if (xMovement == 0 & zMovement == 0)
+        {
+            isMoving = false;
+        }
+        else
+        {
+            isMoving = true;
+        }
+
+
 
         #region Ground Check
         isGrounded = Physics.CheckSphere(groundCheck.position, groundDistance, ~playerMask);
@@ -98,6 +114,45 @@ public class Player : MonoBehaviour
         float mouseXAxis = Input.GetAxis("Mouse X") * mouseSensitivity * Time.deltaTime;
         float mouseYAxis = Input.GetAxis("Mouse Y") * mouseSensitivity * Time.deltaTime;
 
+        #region Recoil Management
+
+        mouseXAxis += recoilHorizontal;
+        mouseYAxis += recoilVertical;
+
+        if (recoilVertical > 0)
+        {
+            recoilVertical -= 0.4f * Time.deltaTime;
+
+            if (recoilVertical < 0)
+            {
+                recoilVertical = 0;
+            }
+        }
+
+        if (recoilHorizontal > 0)
+        {
+            recoilHorizontal -= 0.4f * Time.deltaTime;
+
+            if (recoilHorizontal < 0)
+            {
+                recoilHorizontal = 0;
+            }
+        }
+        else if (recoilHorizontal < 0)
+        {
+            recoilHorizontal += 0.4f * Time.deltaTime;
+
+            if (recoilHorizontal > 0)
+            {
+                recoilHorizontal = 0;
+            }
+
+        }
+
+        #endregion
+
+
+
         xRotation -= mouseYAxis;
         xRotation = Mathf.Clamp(xRotation, -90f, 90f);
 
@@ -108,7 +163,7 @@ public class Player : MonoBehaviour
 
         #region Running & Crouching
 
-        if (Input.GetKey(KeyCode.LeftShift) && !isCrouching)
+        if (Input.GetKey(KeyCode.LeftShift) && !isCrouching && Input.GetAxis("Vertical") > 0)
         {
             isRunning = true;
 
