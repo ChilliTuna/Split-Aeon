@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class EnemySpawner : MonoBehaviour
 {
@@ -157,6 +158,8 @@ public class EnemySpawner : MonoBehaviour
 
             agent.ChangeState(AIStates.StateIndex.chasePlayer);
             agent.navAgent.Warp(location.transform.position);
+
+            aiManager.spawnEvent.Invoke();
         }
         else
         {

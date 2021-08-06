@@ -13,6 +13,7 @@ public class AIManager : MonoBehaviour
 
     public UnityEvent damagePlayerEvent;
     public UnityEvent agentdeathEvent;
+    public UnityEvent spawnEvent;
 
     public float neighbourRadius = 1.5f;
 
