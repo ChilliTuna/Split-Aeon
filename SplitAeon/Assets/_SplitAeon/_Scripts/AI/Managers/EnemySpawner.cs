@@ -77,7 +77,7 @@ public class EnemySpawner : MonoBehaviour
             {
                 continue;
             }
-            if (position.z > transform.position.x + halfBox.z)
+            if (position.z > transform.position.z + halfBox.z)
             {
                 continue;
             }
