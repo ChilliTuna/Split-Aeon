@@ -7,10 +7,12 @@ using UnityEngine.AI;
 public class AIAgent : MonoBehaviour
 {
     [HideInInspector]public AIManager aiManager;
+    [HideInInspector]public EnemyPoolObject attachedPoolObject;
 
     public AISettings settings;
     public Animator anim;
     public AttackType attack;
+    public Collider charCollider;
 
     bool m_isInitialised = false;
     StateMachine<AIAgent> m_stateMachine;
