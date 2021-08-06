@@ -13,24 +13,14 @@ public class Footstepper : MonoBehaviour
     float delay;
     float timer;
 
-    public enum Surface
-    {
-        Wood,
-        Concrete
-    }
-
-    Surface currentSurface;
-
     public AudioSource stepSource;
 
-    [Header("Wood")]
-    public AudioClip[] walkWoodClips;
-    public AudioClip[] runWoodClips;
+    //[HideInInspector]
+    public AudioClip[] walkClips;
+    //[HideInInspector]
+    public AudioClip[] runClips;
 
-    [Header("Concrete")]
-    public AudioClip[] walkConcreteClips;
-    public AudioClip[] runConcreteClips;
-
+    public bool stopSounds;
 
     void Start()
     {
@@ -49,42 +39,35 @@ public class Footstepper : MonoBehaviour
             delay = walkDelay;
         }
 
-        if (player.isMoving)
+        if (!stopSounds)
         {
-            timer -= 1 * Time.deltaTime;
-
-            if(timer <= 0)
+            if (player.isMoving)
             {
-                Step();
-                timer = delay;
-            }
+                timer -= 1 * Time.deltaTime;
 
+                if (timer <= 0)
+                {
+                    Step();
+                    timer = delay;
+                }
+
+            }
         }
+
+
     }
 
     public void Step()
     {
-        if(currentSurface == Surface.Wood)
+        
+        if (!player.isRunning)
         {
-            if (player.isRunning)
-            {
-                stepSource.PlayOneShot(runWoodClips[Random.Range(0, runWoodClips.Length)]);
-            }
-            else
-            {
-                stepSource.PlayOneShot(walkWoodClips[Random.Range(0, walkWoodClips.Length)]);
-            }
+            stepSource.PlayOneShot(walkClips[Random.Range(0, walkClips.Length)]);
         }
-        else if (currentSurface == Surface.Concrete)
+        else
         {
-            if (player.isRunning)
-            {
-                stepSource.PlayOneShot(runConcreteClips[Random.Range(0, runConcreteClips.Length)]);
-            }
-            else
-            {
-                stepSource.PlayOneShot(walkConcreteClips[Random.Range(0, walkConcreteClips.Length)]);
-            }
+            stepSource.PlayOneShot(runClips[Random.Range(0, runClips.Length)]);
         }
+        
     }
 }
