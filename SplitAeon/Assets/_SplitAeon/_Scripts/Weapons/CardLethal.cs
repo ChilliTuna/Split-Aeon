@@ -4,15 +4,37 @@ using UnityEngine;
 
 public class CardLethal : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
+
+    public int damage;
+
+    private void OnCollisionEnter(Collision collision)
     {
-        
+        if (collision.collider.gameObject.GetComponent<Health>())
+        {
+            StickToSurface(collision);
+
+            collision.collider.gameObject.GetComponent<Health>().Hit(damage);
+        }
+        else if (collision.collider.gameObject.GetComponent<Target>())
+        {
+            StickToSurface(collision);
+
+            collision.collider.gameObject.GetComponent<Target>().Hit();
+        }
+        else
+        {
+            StickToSurface(collision);
+        }
     }
 
-    // Update is called once per frame
-    void Update()
+    void StickToSurface(Collision collision)
     {
-        
+        gameObject.GetComponent<BoxCollider>().enabled = false;
+        gameObject.GetComponent<Rigidbody>().isKinematic = true;
+
+        transform.parent = collision.transform;
+
+        transform.position = collision.GetContact(0).point;
     }
+
 }

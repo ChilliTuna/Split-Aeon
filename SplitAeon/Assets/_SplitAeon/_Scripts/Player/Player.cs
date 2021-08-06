@@ -21,20 +21,31 @@ public class Player : MonoBehaviour
     public bool isRunning;
     private bool isCrouching;
 
+    [HideInInspector]
+    public bool isMoving;
+
     public GameObject cameraPosStanding;
     public GameObject cameraPosCrouched;
 
     [Header("Ground Check")]
     public Transform groundCheck;
     public float groundDistance = 0.3f;
-    public LayerMask playerMask;
+    public LayerMask ignoreMask;
     bool isGrounded;
 
     [Header("Camera Movement")]
     public float mouseSensitivity = 100f;
     private float xRotation = 0f;
     public Camera cam;
+    public Camera viewmodelCam;
 
+    public int cameraFOV;
+    public int sprintFOVIncrease;
+
+    private int cameraSprintFOV;
+    private float currentFOV;
+
+    [HideInInspector]
     public float recoilVertical, recoilHorizontal;
 
     [Header("Animation")]
@@ -43,7 +54,8 @@ public class Player : MonoBehaviour
     [HideInInspector]
     public bool isBusy;
 
-    float lerp;
+    public Footstepper stepper;
+
 
     #endregion
 
@@ -57,6 +69,10 @@ public class Player : MonoBehaviour
         cam.transform.localPosition = cameraPosStanding.transform.localPosition;
         cam.transform.rotation = Quaternion.identity;
 
+        cameraSprintFOV = cameraFOV + sprintFOVIncrease;
+
+        currentFOV = cam.fieldOfView;
+
         //source.clip = startWarp;
     }
 
@@ -68,8 +84,19 @@ public class Player : MonoBehaviour
         float xMovement = Input.GetAxis("Horizontal");
         float zMovement = Input.GetAxis("Vertical");
 
+        if (xMovement == 0 & zMovement == 0)
+        {
+            isMoving = false;
+        }
+        else
+        {
+            isMoving = true;
+        }
+
+
+
         #region Ground Check
-        isGrounded = Physics.CheckSphere(groundCheck.position, groundDistance, ~playerMask);
+        isGrounded = Physics.CheckSphere(groundCheck.position, groundDistance, ~ignoreMask);
 
         if (isGrounded && playerVelocity.y < 0)
         {
@@ -137,9 +164,6 @@ public class Player : MonoBehaviour
 
         }
 
-        //lerp += Time.deltaTime * 0.2f;
-        //recoilHorizontal = Mathf.Lerp(recoilHorizontal, 0, lerp);
-
         #endregion
 
 
@@ -205,16 +229,37 @@ public class Player : MonoBehaviour
             }
             else
             {
-
                 tempBlend = Mathf.Lerp(tempBlend, 0f, Time.deltaTime * 4f);
             }
+
         }
         else
         {
             viewmodelAnimator.SetBool("isMoving", false);
         }
 
+        if (isRunning)
+        {
+            currentFOV = Mathf.Lerp(currentFOV, cameraSprintFOV, Time.deltaTime * 4f);
+        }
+        else
+        {
+            currentFOV = Mathf.Lerp(currentFOV, cameraFOV, Time.deltaTime * 4f);
+        }
+
         viewmodelAnimator.SetFloat("MovementBlend", tempBlend);
+
+        cam.fieldOfView = currentFOV;
+        viewmodelCam.fieldOfView = cam.fieldOfView;
+
+        if (isGrounded)
+        {
+            stepper.stopSounds = false;
+        }
+        else
+        {
+            stepper.stopSounds = true;
+        }
 
 
         #endregion

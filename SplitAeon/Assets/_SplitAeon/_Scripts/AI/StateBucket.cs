@@ -224,12 +224,15 @@ namespace AIStates
             m_originalLocation = agent.transform.position;
             m_attackDirection = (agent.playerTransform.position - agent.transform.position).normalized;
 
+            // Set up animation
             agent.StopNavigating();
 
             agent.anim.SetTrigger("attack");
             agent.anim.SetBool("isAttacking", true);
             agent.anim.SetBool("lockRotation", true);
-            agent.armAttack.hitIsActive = true;
+
+            // Set up attack type
+            agent.attack.AttackEnter(m_playerTransform, m_attackDirection);
         }
 
         public override void Update(AIAgent agent)
@@ -246,8 +249,10 @@ namespace AIStates
                 agent.transform.forward = Vector3.Slerp(agent.transform.forward, m_playerTransform.position - agent.transform.position, agent.settings.afterAttackLerpSpeed);
             }
 
-            agent.armAttack.hitIsActive = agent.anim.GetBool("hitBoxActive");
+            // attack type update
+            agent.attack.AttackUpdate();
 
+            // check if the agent is still attacking
             if(!agent.anim.GetBool("isAttacking"))
             {
                 agent.ChangeState(StateIndex.chasePlayer);
@@ -258,32 +263,44 @@ namespace AIStates
         public override void Exit(AIAgent agent)
         {
             // clean up state Values
+            // clean up animation
             agent.anim.SetBool("isAttacking", false);
             agent.anim.SetBool("lockRotation", false);
-            agent.armAttack.hitIsActive = false;
 
-            agent.anim.SetBool("hitBoxActive", false);
+            // Clean up attack type
+            agent.attack.AttackExit();
         }
     }
 
     public class Dead : AgentState
     {
+        float m_timer = 0.0f;
+
         public override void Enter(AIAgent agent)
         {
             // set up state values
             agent.StopNavigating();
             agent.ragdoll.RagdollOn = true;
+            agent.charCollider.enabled = false;
+
+            m_timer = 0.0f;
         }
 
         public override void Update(AIAgent agent)
         {
+            if(m_timer > agent.settings.bodyDecayTime)
+            {
+                agent.attachedPoolObject.Disable();
+            }
 
+            m_timer += Time.deltaTime;
         }
 
         public override void Exit(AIAgent agent)
         {
             // clean up state Values
             agent.ragdoll.RagdollOn = false;
+            agent.charCollider.enabled = true;
         }
     }
 }
