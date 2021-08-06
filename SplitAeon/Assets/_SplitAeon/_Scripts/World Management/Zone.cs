@@ -6,7 +6,7 @@ public class Zone : MonoBehaviour
     public uint maxEnemyCount;
 
     [HideInInspector]
-    public uint deadEnemies;
+    public uint spawnedEnemies;
 
     public bool shouldEnemiesSpawn = false;
 
@@ -40,10 +40,10 @@ public class Zone : MonoBehaviour
         }
     }
 
-    public void IncreaseDeathCount()
+    public void IncreaseSpawnedCount()
     {
-        deadEnemies++;
-        if (deadEnemies >= maxEnemyCount)
+        spawnedEnemies++;
+        if (spawnedEnemies >= maxEnemyCount && maxEnemyCount != 0)
         {
             SetActiveness(false);
         }
@@ -54,7 +54,7 @@ public class Zone : MonoBehaviour
         isActive = state;
         if (state == true)
         {
-            if (deadEnemies < maxEnemyCount)
+            if (spawnedEnemies < maxEnemyCount || maxEnemyCount == 0)
             {
                 shouldEnemiesSpawn = true;
                 ToggleSpawners(true);
