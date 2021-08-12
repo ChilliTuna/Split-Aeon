@@ -14,23 +14,25 @@ public class ImpactManager : MonoBehaviour
 
     void Start()
     {
-
-        GameObject hitObject = Physics.OverlapSphere(gameObject.transform.position, 0.2f, mask)[0].gameObject;
-
-        foreach (ImpactSurface s in surfaces)
+        if (Physics.CheckSphere(gameObject.transform.position, 0.2f, mask))
         {
-            if (hitObject.transform.tag == s.name)
+            GameObject hitObject = Physics.OverlapSphere(gameObject.transform.position, 0.2f, mask)[0].gameObject;
+
+            foreach (ImpactSurface s in surfaces)
             {
-                Debug.LogWarning("Impact created on type " + s.name);
+                if (hitObject.transform.tag == s.name)
+                {
+                    //Debug.LogWarning("Impact created on type " + s.name);
 
-                s.impactEffect.SetActive(true);
+                    s.impactEffect.SetActive(true);
 
-                return;
+                    return;
+                }
+
             }
 
+            fallbackImpact.SetActive(true);
         }
-
-        fallbackImpact.SetActive(true);
     }
 
 }
