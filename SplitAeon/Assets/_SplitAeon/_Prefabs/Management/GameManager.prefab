@@ -58,6 +58,8 @@ GameObject:
   - component: {fileID: 7154132034257091901}
   - component: {fileID: 7154132034257091903}
   - component: {fileID: 7154132034257091902}
+  - component: {fileID: 7393722739517978096}
+  - component: {fileID: 1811081032925287176}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: Untagged
@@ -107,7 +109,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a93c6ac5fe717374ba119372b7667fe2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  volume: {fileID: 0}
+  volume: {fileID: 7393722739517978096}
   controller: {fileID: 0}
   player: {fileID: 0}
   clips:
@@ -115,9 +117,65 @@ MonoBehaviour:
   - {fileID: 8300000, guid: ac8759647911997488ba6deb04d82489, type: 3}
   - {fileID: 8300000, guid: 44a933cb4f3f95e43883ad92694e20e6, type: 3}
   source: {fileID: 0}
+  offsetAmount: 100
   onTimeWarp:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 0}
+        m_TargetAssemblyTypeName: AIManager, Assembly-CSharp
+        m_MethodName: TogglePlayerInsideState
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 1811081032925287176}
+        m_TargetAssemblyTypeName: SilhouetteGenerator, Assembly-CSharp
+        m_MethodName: CreateSilhouettes
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+--- !u!114 &7393722739517978096
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7154132034257091900}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 172515602e62fb746b5d573b38a5fe58, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  isGlobal: 1
+  priority: 2
+  blendDistance: 0
+  weight: 1
+  sharedProfile: {fileID: 11400000, guid: 96862928f8b68f84c896b21d4e90a94d, type: 2}
+--- !u!114 &1811081032925287176
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7154132034257091900}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 51e2a80c8e375344b9ea7615ef707d7d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  aiManager: {fileID: 0}
+  defaultSilhouette: {fileID: 3481020392534670093, guid: 589658cdf3201a944950dc250ad30b57, type: 3}
 --- !u!1 &7154132034666967275
 GameObject:
   m_ObjectHideFlags: 0

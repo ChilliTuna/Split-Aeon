@@ -22,6 +22,8 @@ public class Timewarp : MonoBehaviour
     public AudioClip[] clips;
     public AudioSource source;
 
+    public float offsetAmount = 100;
+
     [Space]
     public UnityEvent onTimeWarp;
 
@@ -67,18 +69,20 @@ public class Timewarp : MonoBehaviour
 
     public void SwapWorlds()
     {
+        player.GetComponent<Player>().viewmodelAnimator.SetTrigger("Warp");
+
         onTimeWarp.Invoke();
 
         if (isInPresent)
         {
             controller.enabled = false;
-            player.transform.position = new Vector3(player.transform.position.x, player.transform.position.y - 50, player.transform.position.z);
+            player.transform.position = new Vector3(player.transform.position.x, player.transform.position.y - offsetAmount, player.transform.position.z);
             controller.enabled = true;
         }
         else
         {
             controller.enabled = false;
-            player.transform.position = new Vector3(player.transform.position.x, player.transform.position.y + 50, player.transform.position.z);
+            player.transform.position = new Vector3(player.transform.position.x, player.transform.position.y + offsetAmount, player.transform.position.z);
             controller.enabled = true;
         }
 
