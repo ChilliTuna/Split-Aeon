@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class RangedComponent : AttackType
 {
-    public GameObject projectilePrefab;
+    public Projectile projectilePrefab;
     public float shootTime = 0.5f;
     public Transform projectileOrigin;
 
@@ -46,9 +46,7 @@ public class RangedComponent : AttackType
 
     public void ShootProjectile(Vector3 origin)
     {
-        GameObject newProjectile = Instantiate(projectilePrefab);
-        newProjectile.transform.position = origin;
-        newProjectile.transform.LookAt(m_currentTarget.position);
-        newProjectile.GetComponent<Projectile>().owner = GetComponent<AIAgent>();
+        Projectile newProjectile = Instantiate(projectilePrefab, origin, Quaternion.identity);
+        newProjectile.Shoot(agent, origin, m_currentTarget.position);
     }
 }
