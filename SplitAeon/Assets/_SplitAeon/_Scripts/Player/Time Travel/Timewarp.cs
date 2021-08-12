@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.Rendering.HighDefinition;
 using UnityEngine.Rendering;
 using UnityEngine.UI;
+using UnityEngine.Events;
 
 public class Timewarp : MonoBehaviour
 {
@@ -20,7 +21,9 @@ public class Timewarp : MonoBehaviour
 
     public AudioClip[] clips;
     public AudioSource source;
-    
+
+    [Space]
+    public UnityEvent onTimeWarp;
 
     private void Start()
     {
@@ -33,7 +36,7 @@ public class Timewarp : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.E))
         {
-            SwapWorlds();
+            TryWarp();
         }
 
 
@@ -64,6 +67,7 @@ public class Timewarp : MonoBehaviour
 
     public void SwapWorlds()
     {
+        onTimeWarp.Invoke();
 
         if (isInPresent)
         {
