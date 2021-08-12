@@ -15,7 +15,6 @@ public class PlayerInteraction : MonoBehaviour
     void Start()
     {
         cam = GetComponentInChildren<Camera>();
-        interactionText = GameObject.Find("InteractionTextField").GetComponent<Text>();
     }
 
     void Update()
