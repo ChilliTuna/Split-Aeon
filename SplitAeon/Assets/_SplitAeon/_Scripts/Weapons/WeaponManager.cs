@@ -49,11 +49,16 @@ public class WeaponManager : MonoBehaviour
     public KeyCode reloadKey;
     public KeyCode cardLethalKey;
 
+    private int myIndex;
+
     #endregion
 
     void Start()
     {
-        SelectWeapon(0);
+        weapons[0].gameObject.SetActive(true);
+        weaponIndex = 0;
+        player.viewmodelAnimator = weapons[0].animator;
+        //SwitchWeapon(0);
         cardLethalPool = maxCardLethals;
     }
 
@@ -85,17 +90,17 @@ public class WeaponManager : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.Alpha1))
         {
-            SelectWeapon(0);
+            SwitchWeapon(0);
         }
 
         if (Input.GetKeyDown(KeyCode.Alpha2))
         {
-            SelectWeapon(1);
+            SwitchWeapon(1);
         }
 
         if (Input.GetKeyDown(KeyCode.Alpha3))
         {
-            SelectWeapon(2);
+            SwitchWeapon(2);
         }
 
         // REMOVE ME, DEBUG USE ONLY
@@ -107,9 +112,18 @@ public class WeaponManager : MonoBehaviour
 
     }
 
-    void SelectWeapon(int index)
+    void SwitchWeapon(int index)
     {
-        weaponIndex = index;
+        player.viewmodelAnimator.SetTrigger("Switch");
+        player.isBusy = true;
+        myIndex = index;
+        Invoke("SetCurrentWeapon", 0.7f);
+
+    }
+
+    void SetCurrentWeapon()
+    {
+        weaponIndex = myIndex;
         int i = 0;
 
         foreach (Weapon wep in weapons)
@@ -130,7 +144,6 @@ public class WeaponManager : MonoBehaviour
             i++;
 
         }
-
     }
 
     public void ThrowCardLethal()
