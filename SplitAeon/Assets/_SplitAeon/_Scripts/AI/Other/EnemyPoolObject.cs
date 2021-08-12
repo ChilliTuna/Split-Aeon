@@ -8,6 +8,8 @@ public class EnemyPoolObject
 
     GameObject m_gameObject;
     AIAgent m_agent;
+
+    // This bool designates if the agent should be active in the game scene somewhere
     bool m_isActive = false;
 
     public GameObject gameObject { get { return m_gameObject; } }
