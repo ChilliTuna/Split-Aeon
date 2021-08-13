@@ -274,22 +274,33 @@ namespace AIStates
 
     public class Dead : AgentState
     {
+        float m_timer = 0.0f;
+
         public override void Enter(AIAgent agent)
         {
             // set up state values
             agent.StopNavigating();
             agent.ragdoll.RagdollOn = true;
+            agent.charCollider.enabled = false;
+
+            m_timer = 0.0f;
         }
 
         public override void Update(AIAgent agent)
         {
+            if(m_timer > agent.settings.bodyDecayTime)
+            {
+                agent.attachedPoolObject.Disable();
+            }
 
+            m_timer += Time.deltaTime;
         }
 
         public override void Exit(AIAgent agent)
         {
             // clean up state Values
             agent.ragdoll.RagdollOn = false;
+            agent.charCollider.enabled = true;
         }
     }
 }

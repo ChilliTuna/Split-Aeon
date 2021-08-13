@@ -23,4 +23,6 @@ public class AISettings : ScriptableObject
     public float rotationLerpSpeed = 0.1f;
     public float afterAttackLerpSpeed = 0.01f;
 
+    [Header("Death")]
+    public float bodyDecayTime = 5.0f;
 }

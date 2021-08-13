@@ -2,6 +2,7 @@
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.Events;
 
 public class ObjectiveList : MonoBehaviour
 {
@@ -26,6 +27,8 @@ public class ObjectiveList : MonoBehaviour
 
     private bool isVisible = false;
 
+    public UnityEvent onWin;
+
     private void Start()
     {
         objectiveText = gameObject.transform.Find("Objective").Find("Objective text").gameObject.GetComponent<TextMeshProUGUI>();
@@ -47,6 +50,7 @@ public class ObjectiveList : MonoBehaviour
         if (gameWin)
         {
             //do fancy stuff
+            onWin.Invoke();
         }
     }
 

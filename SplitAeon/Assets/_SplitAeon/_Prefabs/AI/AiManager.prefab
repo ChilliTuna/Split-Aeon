@@ -48,10 +48,16 @@ MonoBehaviour:
   damagePlayerEvent:
     m_PersistentCalls:
       m_Calls: []
+  agentdeathEvent:
+    m_PersistentCalls:
+      m_Calls: []
   neighbourRadius: 1.5
-  playerInZone: 1
+  playerInTimePeriod: 1
   cultistPrefab: {fileID: 8888230849861157185, guid: 85a03666bf8df684db2a572a9f7a935f, type: 3}
   maxCultistCount: 50
-  containerName: Cultist Container
+  cultistContainerName: Cultist Container
+  belcherPrefab: {fileID: 8577694772799273008, guid: c9938a40dee23dc4ebce886225c25e54, type: 3}
+  maxBelcherCount: 25
+  belcherContainerName: Belcher Container
   showNeighbourRadius: 0
   showEnemyGizmos: 0
