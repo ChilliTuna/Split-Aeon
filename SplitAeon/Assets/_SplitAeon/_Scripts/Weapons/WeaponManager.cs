@@ -56,6 +56,7 @@ public class WeaponManager : MonoBehaviour
     void Start()
     {
         weapons[0].gameObject.SetActive(true);
+        weapons[0].crosshair.SetActive(true);
         weaponIndex = 0;
         player.viewmodelAnimator = weapons[0].animator;
         //SwitchWeapon(0);
