@@ -7,58 +7,129 @@ public class Player : MonoBehaviour
 {
 
     #region Variables
-    public CharacterController controller;
 
-    [Header("Movement Variables")]
+    [HideInInspector] public CharacterController controller;
+
+    #region Movement
+
+    [Header("Movement")]
     private float movementSpeed;
     public float walkSpeed;
     public float sprintSpeed;
     public float crouchSpeed;
+
+    #endregion
+
+    #region Jumping
+
+    [Header("Jumping")]
+
     public float gravity;
     public float jumpHeight;
     private Vector3 playerVelocity;
 
-    public bool isRunning;
-    private bool isCrouching;
+    #endregion
+
+    #region States
 
     [HideInInspector]
+    public bool isRunning;
+    [HideInInspector]
+    public bool isCrouching;
+    [HideInInspector]
     public bool isMoving;
-
-    public GameObject cameraPosStanding;
-    public GameObject cameraPosCrouched;
-
-    [Header("Ground Check")]
-    public Transform groundCheck;
-    public float groundDistance = 0.3f;
-    public LayerMask playerMask;
-    bool isGrounded;
-
-    [Header("Camera Movement")]
-    public float mouseSensitivity = 100f;
-    private float xRotation = 0f;
-    public Camera cam;
-
-    public float recoilVertical, recoilHorizontal;
-
-    [Header("Animation")]
-    public Animator viewmodelAnimator;
-
     [HideInInspector]
     public bool isBusy;
 
     #endregion
 
-    float tempBlend;
+    #region Ground Check
+
+    [Header("Ground Check")]
+    public Transform groundCheck;
+    public float groundDistance = 0.3f;
+    public LayerMask ignoreMask;
+    bool isGrounded;
+
+    #endregion
+
+    #region Camera
+
+    [Header("Camera")]
+    public float mouseSensitivity = 100f;
+    private float xRotation = 0f;
+    public Camera cam;
+    public Camera viewmodelCam;
+
+    [Space(5)]
+
+    public float standingCameraHeight;
+    public float crouchingCameraHeight;
+
+    private Vector3 cameraPosStanding;
+    private Vector3 cameraPosCrouched;
+
+    private Vector3 cameraHeight;
+
+    [Space(5)]
+
+    public int cameraFOV;
+    public int sprintFOVIncrease;
+
+    private int cameraSprintFOV;
+    private float currentFOV;
+
+    [HideInInspector]
+    public float recoilVertical, recoilHorizontal;
+
+    #endregion
+
+    #region Animation
+
+    [Header("Animation")]
+    [HideInInspector]
+    public Animator viewmodelAnimator;
+
+    #endregion
+
+    #region Footsteps
+
+    [Header("Footsteps")]
+    public Footstepper stepper;
+
+    #endregion
+
+    #region Blends
+
+    float weaponMoveBlend;
+    float crouchBlend;
+
+    #endregion
+
+    #endregion
 
     private void Start()
     {
+
+        #region Initialization
+
+        cameraPosStanding = new Vector3(0, standingCameraHeight, 0);
+        cameraPosCrouched = new Vector3(0, crouchingCameraHeight, 0);
+
+        cameraHeight = cameraPosStanding;
+
         Cursor.lockState = CursorLockMode.Locked;
         movementSpeed = walkSpeed;
 
-        cam.transform.localPosition = cameraPosStanding.transform.localPosition;
+        cam.transform.localPosition = cameraPosStanding;
         cam.transform.rotation = Quaternion.identity;
 
-        //source.clip = startWarp;
+        cameraSprintFOV = cameraFOV + sprintFOVIncrease;
+
+        currentFOV = cam.fieldOfView;
+
+        #endregion
+
     }
 
     void Update()
@@ -81,7 +152,7 @@ public class Player : MonoBehaviour
 
 
         #region Ground Check
-        isGrounded = Physics.CheckSphere(groundCheck.position, groundDistance, ~playerMask);
+        isGrounded = Physics.CheckSphere(groundCheck.position, groundDistance, ~ignoreMask);
 
         if (isGrounded && playerVelocity.y < 0)
         {
@@ -177,17 +248,17 @@ public class Player : MonoBehaviour
         if (Input.GetKey(KeyCode.LeftControl) && !isRunning)
         {
             isCrouching = true;
-
             movementSpeed = crouchSpeed;
-
-            cam.transform.localPosition = cameraPosCrouched.transform.localPosition;
         }
         else
         {
             isCrouching = false;
-
-            cam.transform.localPosition = cameraPosStanding.transform.localPosition;
         }
+
+        cameraHeight.y = crouchBlend;
+
+        cam.transform.localPosition = cameraHeight;
+
 
         if (!isRunning && !isCrouching)
         {
@@ -198,9 +269,18 @@ public class Player : MonoBehaviour
 
         #region Animation
 
-        if (Input.GetKeyDown(KeyCode.E))
+        if (isCrouching)
         {
-            viewmodelAnimator.SetTrigger("Warp");
+            crouchBlend = Mathf.Lerp(crouchBlend, crouchingCameraHeight, Time.deltaTime * 4f);
+        }
+        else
+        {
+            crouchBlend = Mathf.Lerp(crouchBlend, standingCameraHeight, Time.deltaTime * 4f);
+        }
+
+        if (Input.GetKeyDown(KeyCode.I))
+        {
+            GetComponent<Health>().Hit();
         }
 
         if (xMovement != 0 || zMovement != 0)
@@ -210,20 +290,41 @@ public class Player : MonoBehaviour
 
             if (isRunning)
             {
-                tempBlend = Mathf.Lerp(tempBlend, 1, Time.deltaTime * 4f);
+                weaponMoveBlend = Mathf.Lerp(weaponMoveBlend, 1, Time.deltaTime * 4f);
             }
             else
             {
-
-                tempBlend = Mathf.Lerp(tempBlend, 0f, Time.deltaTime * 4f);
+                weaponMoveBlend = Mathf.Lerp(weaponMoveBlend, 0f, Time.deltaTime * 4f);
             }
+
         }
         else
         {
             viewmodelAnimator.SetBool("isMoving", false);
         }
 
-        viewmodelAnimator.SetFloat("MovementBlend", tempBlend);
+        if (isRunning)
+        {
+            currentFOV = Mathf.Lerp(currentFOV, cameraSprintFOV, Time.deltaTime * 4f);
+        }
+        else
+        {
+            currentFOV = Mathf.Lerp(currentFOV, cameraFOV, Time.deltaTime * 4f);
+        }
+
+        viewmodelAnimator.SetFloat("MovementBlend", weaponMoveBlend);
+
+        cam.fieldOfView = currentFOV;
+        viewmodelCam.fieldOfView = cam.fieldOfView;
+
+        if (isGrounded)
+        {
+            stepper.stopSounds = false;
+        }
+        else
+        {
+            stepper.stopSounds = true;
+        }
 
 
         #endregion
