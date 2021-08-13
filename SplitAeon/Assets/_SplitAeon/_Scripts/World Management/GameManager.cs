@@ -14,6 +14,8 @@ public class GameManager : MonoBehaviour
     public ZoneManager presentZoneManager;
     public ZoneManager pastZoneManager;
 
+    public bool isInPresent;
+
     // Start is called before the first frame update
     private void Start()
     {

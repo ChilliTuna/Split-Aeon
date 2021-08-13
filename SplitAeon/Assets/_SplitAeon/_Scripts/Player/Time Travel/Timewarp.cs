@@ -27,11 +27,17 @@ public class Timewarp : MonoBehaviour
     [Space]
     public UnityEvent onTimeWarp;
 
+    private WarpChecker warpChecker;
+
     private void Start()
     {
         volume.profile.TryGet(out cromAb);
         volume.profile.TryGet(out bloom);
         volume.profile.TryGet(out exposure);
+
+        warpChecker = transform.Find("WarpChecker").GetComponent<WarpChecker>();
+
+        warpChecker.transform.parent = player.transform;
     }
 
     private void Update()
@@ -40,7 +46,6 @@ public class Timewarp : MonoBehaviour
         {
             TryWarp();
         }
-
 
         if (cromAb.intensity.value >= 0)
         {
@@ -88,7 +93,7 @@ public class Timewarp : MonoBehaviour
 
         TriggerTeleportEffect();
 
-        isInPresent = !isInPresent;
+        ChangeWorldInternal(!isInPresent);
     }
 
     void TriggerTeleportEffect()
@@ -99,5 +104,11 @@ public class Timewarp : MonoBehaviour
         cromAb.intensity.value = 1;
         bloom.intensity.value = 1;
         exposure.compensation.value = 5;
+    }
+
+    void ChangeWorldInternal(bool newIsInPresent)
+    {
+        isInPresent = newIsInPresent;
+        GetComponent<GameManager>().isInPresent = newIsInPresent;
     }
 }
