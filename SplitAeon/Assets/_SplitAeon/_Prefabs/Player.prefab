@@ -111,8 +111,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   stepper: {fileID: 2562344351647659398}
-  fallbackStepSounds:
-  - {fileID: 8300000, guid: c201acd572c239f45bfe1d49ea5f1984, type: 3}
+  mask:
+    serializedVersion: 2
+    m_Bits: 205390134
+  surfaceCheckInterval: 0.1
   surfaces:
   - name: Wood
     walkSounds:
@@ -160,10 +162,8 @@ MonoBehaviour:
     - {fileID: 8300000, guid: 9314512b749e83b4eb3991444929bdfd, type: 3}
     - {fileID: 8300000, guid: 9567d650028e1194f8c03f4abec2dfb4, type: 3}
     - {fileID: 8300000, guid: 0511d87b9cc364744a5bb1c69caed95e, type: 3}
-  mask:
-    serializedVersion: 2
-    m_Bits: 205390134
-  surfaceCheckInterval: 0.1
+  fallbackStepSounds:
+  - {fileID: 8300000, guid: c201acd572c239f45bfe1d49ea5f1984, type: 3}
 --- !u!114 &2562344351647659398
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5922,7 +5922,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   interactionDistance: 3
-  interactionText: {fileID: 0}
+  interactionText: {fileID: 7218842176280531630}
   key: 102
 --- !u!143 &5274002625647166296
 CharacterController:
@@ -6058,6 +6058,9 @@ MonoBehaviour:
   - {fileID: 8300000, guid: ac8759647911997488ba6deb04d82489, type: 3}
   - {fileID: 8300000, guid: 44a933cb4f3f95e43883ad92694e20e6, type: 3}
   source: {fileID: 6328457817488252944}
+  onTimeWarp:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!114 &7341680661332708290
 MonoBehaviour:
   m_ObjectHideFlags: 0

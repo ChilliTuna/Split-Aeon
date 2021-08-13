@@ -6,7 +6,7 @@ using UnityEngine.AI;
 
 public class AIAgent : MonoBehaviour
 {
-    [HideInInspector]public AIManager aiManager;
+    public AIManager aiManager;
     [HideInInspector]public EnemyPoolObject attachedPoolObject;
 
     public AISettings settings;
@@ -71,6 +71,7 @@ public class AIAgent : MonoBehaviour
         {
             return;
         }
+
         m_isInitialised = true;
 
         m_navAgent = GetComponent<NavMeshAgent>();

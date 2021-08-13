@@ -463,6 +463,14 @@ PrefabInstance:
       propertyPath: damagePlayerEvent.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_FloatArgument
       value: 10
       objectReference: {fileID: 0}
+    - target: {fileID: 4193806753586987529, guid: b7a37ec56ea156e4ea4b0658d017bdb6, type: 3}
+      propertyPath: maxCultistCount
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 4193806753586987529, guid: b7a37ec56ea156e4ea4b0658d017bdb6, type: 3}
+      propertyPath: maxBelcherCount
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 4193806753586987531, guid: b7a37ec56ea156e4ea4b0658d017bdb6, type: 3}
       propertyPath: m_Name
       value: AiManager
@@ -620,6 +628,10 @@ PrefabInstance:
       propertyPath: m_ConnectedAnchor.z
       value: -0.01278122
       objectReference: {fileID: 0}
+    - target: {fileID: 8617707209697044203, guid: 85a03666bf8df684db2a572a9f7a935f, type: 3}
+      propertyPath: aiManager
+      value: 
+      objectReference: {fileID: 1577444805}
     - target: {fileID: 8888230849861157185, guid: 85a03666bf8df684db2a572a9f7a935f, type: 3}
       propertyPath: m_Name
       value: Enemy_Cultist_M (2)
@@ -909,6 +921,10 @@ PrefabInstance:
       propertyPath: patrolNodes.Array.data[1]
       value: 
       objectReference: {fileID: 1892291531}
+    - target: {fileID: 8617707209697044203, guid: 85a03666bf8df684db2a572a9f7a935f, type: 3}
+      propertyPath: aiManager
+      value: 
+      objectReference: {fileID: 1577444805}
     - target: {fileID: 8888230849861157185, guid: 85a03666bf8df684db2a572a9f7a935f, type: 3}
       propertyPath: m_Name
       value: Enemy_Cultist_M
@@ -1073,6 +1089,17 @@ Transform:
   m_Father: {fileID: 763441088}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1577444805 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 4193806753586987529, guid: b7a37ec56ea156e4ea4b0658d017bdb6, type: 3}
+  m_PrefabInstance: {fileID: 954919542}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e13979468138ba94294ec5a24375c4f1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &1738028252 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 7341680661332708290, guid: 635c4af11267aa24fb0470cb87dcd342, type: 3}
@@ -1237,6 +1264,10 @@ PrefabInstance:
       propertyPath: m_ConnectedAnchor.z
       value: -0.01278122
       objectReference: {fileID: 0}
+    - target: {fileID: 8617707209697044203, guid: 85a03666bf8df684db2a572a9f7a935f, type: 3}
+      propertyPath: aiManager
+      value: 
+      objectReference: {fileID: 1577444805}
     - target: {fileID: 8888230849861157185, guid: 85a03666bf8df684db2a572a9f7a935f, type: 3}
       propertyPath: m_Name
       value: Enemy_Cultist_M (1)
@@ -1558,6 +1589,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Enemy_Belcher
       objectReference: {fileID: 0}
+    - target: {fileID: 8920362174382616853, guid: c9938a40dee23dc4ebce886225c25e54, type: 3}
+      propertyPath: aiManager
+      value: 
+      objectReference: {fileID: 1577444805}
     - target: {fileID: 8953656747690336906, guid: c9938a40dee23dc4ebce886225c25e54, type: 3}
       propertyPath: m_LocalPosition.x
       value: -3.21
