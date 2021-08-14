@@ -1,25 +1,27 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class WeaponSway : MonoBehaviour
 {
 
     [Header("Weapon Sway")]
+    [Range(0, 0.5f)]
     public float swayAmount;
+    [Range(0, 0.5f)]
     public float maxSway;
-    public float swaySmoothAmount;
+    public float swayRecoveryRate;
 
     [Header("Weapon Tilt")]
+    [Range(0, 30f)]
     public float tiltAmount;
+    [Range(0, 30f)]
     public float maxTilt;
-    public float tiltSmoothAmount;
+    public float tiltRecoveryAmount;
 
     [Space(5)]
 
-    public bool rotationX = true;
-    public bool rotationY = true;
-    public bool rotationZ = true;
+    public bool rotateOnXAxis = true;
+    public bool rotateOnYAxis = true;
+    public bool rotateOnZAxis = true;
 
     [Header("Internals")]
     private float mouseX;
@@ -50,7 +52,7 @@ public class WeaponSway : MonoBehaviour
 
         Vector3 finalPosition = new Vector3(swayX, swayY, 0);
 
-        transform.localPosition = Vector3.Lerp(transform.localPosition, finalPosition + initialPosition, Time.deltaTime * swaySmoothAmount);
+        transform.localPosition = Vector3.Lerp(transform.localPosition, finalPosition + initialPosition, Time.deltaTime * swayRecoveryRate);
     }
 
     void ApplyTilt()
@@ -58,9 +60,9 @@ public class WeaponSway : MonoBehaviour
         float tiltX = Mathf.Clamp(mouseY * tiltAmount, -maxTilt, maxTilt);
         float tiltY = Mathf.Clamp(mouseX * tiltAmount, -maxTilt, maxTilt);
 
-        Quaternion finalRotation = Quaternion.Euler(new Vector3(rotationX ? -tiltX : 0f, rotationY ? tiltY : 0f, rotationZ ? tiltY : 0f));
+        Quaternion finalRotation = Quaternion.Euler(new Vector3(rotateOnXAxis ? -tiltX : 0f, rotateOnYAxis ? tiltY : 0f, rotateOnZAxis ? tiltY : 0f));
 
-        transform.localRotation = Quaternion.Slerp(transform.localRotation, finalRotation * initialRotation, Time.deltaTime * tiltSmoothAmount);
+        transform.localRotation = Quaternion.Slerp(transform.localRotation, finalRotation * initialRotation, Time.deltaTime * tiltRecoveryAmount);
     }
 
 }
