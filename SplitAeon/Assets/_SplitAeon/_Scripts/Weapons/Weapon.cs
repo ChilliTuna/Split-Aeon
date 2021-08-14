@@ -7,6 +7,7 @@ public class Weapon : MonoBehaviour
     public WeaponManager manager;
 
     [Header("Base Weapon Data")]
+    public string weaponName;
     public float damage;
     public float range;
 
