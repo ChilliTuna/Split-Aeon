@@ -14,7 +14,7 @@ public class Timewarp : MonoBehaviour
     Bloom bloom;
     Exposure exposure;
 
-    bool isInPresent = true;
+    bool isInPast = true;
 
     public CharacterController controller;
     public GameObject player;
@@ -36,8 +36,9 @@ public class Timewarp : MonoBehaviour
         volume.profile.TryGet(out exposure);
 
         warpChecker = transform.Find("WarpChecker").GetComponent<WarpChecker>();
-
         warpChecker.transform.parent = player.transform;
+        warpChecker.offsetVal = offsetAmount;
+        warpChecker.isInPast = isInPast;
     }
 
     private void Update()
@@ -78,7 +79,7 @@ public class Timewarp : MonoBehaviour
 
         onTimeWarp.Invoke();
 
-        if (isInPresent)
+        if (isInPast)
         {
             controller.enabled = false;
             player.transform.position = new Vector3(player.transform.position.x, player.transform.position.y - offsetAmount, player.transform.position.z);
@@ -93,12 +94,11 @@ public class Timewarp : MonoBehaviour
 
         TriggerTeleportEffect();
 
-        ChangeWorldInternal(!isInPresent);
+        ChangeWorldInternal(!isInPast);
     }
 
     void TriggerTeleportEffect()
     {
-
         source.PlayOneShot(clips[Mathf.FloorToInt(Random.Range(0, clips.Length))]);
 
         cromAb.intensity.value = 1;
@@ -108,7 +108,7 @@ public class Timewarp : MonoBehaviour
 
     void ChangeWorldInternal(bool newIsInPresent)
     {
-        isInPresent = newIsInPresent;
+        isInPast = newIsInPresent;
         GetComponent<GameManager>().isInPresent = newIsInPresent;
     }
 }
