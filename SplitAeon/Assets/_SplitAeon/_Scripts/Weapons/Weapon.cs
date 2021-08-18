@@ -7,6 +7,7 @@ public class Weapon : MonoBehaviour
     public WeaponManager manager;
 
     [Header("Base Weapon Data")]
+    public string weaponName;
     public float damage;
     public float range;
 
@@ -200,10 +201,8 @@ public class Weapon : MonoBehaviour
             return;
         }
 
-        manager.player.viewmodelAnimator.SetTrigger("Reload");  //-- this needs to call the reload through animation in the future
+        manager.player.viewmodelAnimator.SetTrigger("Reload");
         manager.weaponAudioSource.PlayOneShot(reloadClip);
-
-        //LoadAmmo(); // -- Get rid of me later, should be done through animation events
 
     }
 
@@ -237,13 +236,11 @@ public class Weapon : MonoBehaviour
     public void EnableBusyState()
     {
         manager.player.isBusy = true;
-        Debug.Log("Player is now busy");
     }
 
     public void DisableBusyState()
     {
         manager.player.isBusy = false;
-        Debug.Log("Player is no longer busy");
     }
 
     public void EjectShell()

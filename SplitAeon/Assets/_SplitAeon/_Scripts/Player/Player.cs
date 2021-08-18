@@ -82,6 +82,9 @@ public class Player : MonoBehaviour
     [HideInInspector]
     public float recoilVertical, recoilHorizontal;
 
+    [HideInInspector]
+    public bool lockMouse = false;
+
     #endregion
 
     #region Animation
@@ -182,8 +185,21 @@ public class Player : MonoBehaviour
 
         #region Camera Movement
 
-        float mouseXAxis = Input.GetAxis("Mouse X") * mouseSensitivity * Time.deltaTime;
-        float mouseYAxis = Input.GetAxis("Mouse Y") * mouseSensitivity * Time.deltaTime;
+        float mouseXAxis;
+        float mouseYAxis;
+
+        if (!lockMouse)
+        {
+            mouseXAxis = Input.GetAxis("Mouse X") * mouseSensitivity * Time.deltaTime;
+            mouseYAxis = Input.GetAxis("Mouse Y") * mouseSensitivity * Time.deltaTime;
+        }
+        else
+        {
+            mouseXAxis = 0;
+            mouseYAxis = 0;
+        }
+
+
 
         #region Recoil Management
 
