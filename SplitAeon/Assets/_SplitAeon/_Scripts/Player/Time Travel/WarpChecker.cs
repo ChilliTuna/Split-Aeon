@@ -37,7 +37,14 @@ public class WarpChecker : MonoBehaviour
 
     public bool DoWarpCheck()
     {
-
+        if (isInPast)
+        {
+            transform.position = new Vector3(0, -offsetVal, 0);
+        }
+        else
+        {
+            transform.position = new Vector3(0, offsetVal, 0);
+        }
         return IsAbleToWarp();
     }
 }

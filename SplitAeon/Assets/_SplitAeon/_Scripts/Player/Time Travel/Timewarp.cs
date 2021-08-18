@@ -1,20 +1,17 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-using UnityEngine.Rendering.HighDefinition;
-using UnityEngine.Rendering;
-using UnityEngine.UI;
+﻿using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.Rendering;
+using UnityEngine.Rendering.HighDefinition;
 
 public class Timewarp : MonoBehaviour
 {
     public Volume volume;
 
-    ChromaticAberration cromAb;
-    Bloom bloom;
-    Exposure exposure;
+    private ChromaticAberration cromAb;
+    private Bloom bloom;
+    private Exposure exposure;
 
-    bool isInPast = true;
+    private bool isInPast = true;
 
     public CharacterController controller;
     public GameObject player;
@@ -67,11 +64,11 @@ public class Timewarp : MonoBehaviour
     public void TryWarp()
     {
         // for now, just teleport, do check for objects here
-
-        SwapWorlds();
-
+        if (warpChecker.DoWarpCheck())
+        {
+            SwapWorlds();
+        }
     }
-
 
     public void SwapWorlds()
     {
@@ -97,7 +94,7 @@ public class Timewarp : MonoBehaviour
         ChangeWorldInternal(!isInPast);
     }
 
-    void TriggerTeleportEffect()
+    private void TriggerTeleportEffect()
     {
         source.PlayOneShot(clips[Mathf.FloorToInt(Random.Range(0, clips.Length))]);
 
@@ -106,7 +103,7 @@ public class Timewarp : MonoBehaviour
         exposure.compensation.value = 5;
     }
 
-    void ChangeWorldInternal(bool newIsInPresent)
+    private void ChangeWorldInternal(bool newIsInPresent)
     {
         isInPast = newIsInPresent;
         GetComponent<GameManager>().isInPresent = newIsInPresent;
