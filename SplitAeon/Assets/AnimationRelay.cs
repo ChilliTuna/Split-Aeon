@@ -9,21 +9,21 @@ public class AnimationRelay : MonoBehaviour
 
     public void LoadAmmo()
     {
-        weapon.LoadAmmo();
+        weapon.GetComponent<Gun>().LoadAmmo();
     }
 
     public void EnableBusyState()
     {
-        weapon.EnableBusyState();
+        weapon.manager.EnableBusyState();
     }
 
     public void DisableBusyState()
     {
-        weapon.DisableBusyState();
+        weapon.manager.DisableBusyState();
     }
 
     public void EjectShell()
     {
-        weapon.EjectShell();
+        weapon.GetComponent<Gun>().EjectShell();
     }
 }
