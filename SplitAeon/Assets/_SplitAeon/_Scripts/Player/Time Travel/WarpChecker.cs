@@ -1,16 +1,17 @@
-﻿using UnityEngine;
+﻿using System.Collections.Generic;
+using UnityEngine;
 
 public class WarpChecker : MonoBehaviour
 {
-    private short collisionCount;
+    public short collisionCount;
+
+    public List<GameObject> collidingObjects;
 
     public LayerMask ignoredLayers;
 
-    [HideInInspector]
-    public float offsetVal;
+    public bool hasSecondary = false;
 
-    [HideInInspector]
-    public bool isInPast;
+    public WarpChecker secondaryChecker;
 
     private void OnTriggerEnter(Collider other)
     {
@@ -19,6 +20,7 @@ public class WarpChecker : MonoBehaviour
             return;
         }
         collisionCount++;
+        collidingObjects.Add(other.gameObject);
     }
 
     private void OnTriggerExit(Collider other)
@@ -28,23 +30,35 @@ public class WarpChecker : MonoBehaviour
             return;
         }
         collisionCount--;
-    }
-
-    public bool IsAbleToWarp()
-    {
-        return (collisionCount <= 0);
+        collidingObjects.Remove(other.gameObject);
     }
 
     public bool DoWarpCheck()
     {
+        if (hasSecondary)
+        {
+            if (secondaryChecker.collisionCount <= 0)
+            {
+                return (secondaryChecker.collisionCount <= 1);
+            }
+        }
+        return (collisionCount <= 0);
+    }
+
+    public void GoToCorrectPosition(bool isInPast, float offset)
+    {
         if (isInPast)
         {
-            transform.position = new Vector3(0, -offsetVal, 0);
+            transform.localPosition = new Vector3(0, offset + 0.75f, 0);
         }
         else
         {
-            transform.position = new Vector3(0, offsetVal, 0);
+            transform.localPosition = new Vector3(0, -offset + 0.75f, 0);
         }
-        return IsAbleToWarp();
+        GetComponent<CapsuleCollider>().enabled = true;
+        if (hasSecondary)
+        {
+            secondaryChecker.GetComponent<CapsuleCollider>().enabled = true;
+        }
     }
 }

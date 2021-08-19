@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System.Collections;
+using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.Rendering;
 using UnityEngine.Rendering.HighDefinition;
@@ -21,10 +22,15 @@ public class Timewarp : MonoBehaviour
 
     public float offsetAmount = 100;
 
+    public bool shouldDoWarpChecking = true;
+
+    private WarpChecker toPastWarpChecker;
+    private WarpChecker toFutureWarpChecker;
+
+    public GameObject warpingBlockedText;
+
     [Space]
     public UnityEvent onTimeWarp;
-
-    private WarpChecker warpChecker;
 
     private void Start()
     {
@@ -32,10 +38,13 @@ public class Timewarp : MonoBehaviour
         volume.profile.TryGet(out bloom);
         volume.profile.TryGet(out exposure);
 
-        warpChecker = transform.Find("WarpChecker").GetComponent<WarpChecker>();
-        warpChecker.transform.parent = player.transform;
-        warpChecker.offsetVal = offsetAmount;
-        warpChecker.isInPast = isInPast;
+        toPastWarpChecker = transform.Find("PastWarpChecker").GetComponent<WarpChecker>();
+        toPastWarpChecker.transform.parent = player.transform;
+        toPastWarpChecker.GoToCorrectPosition(true, offsetAmount);
+
+        toFutureWarpChecker = transform.Find("FutureWarpChecker").GetComponent<WarpChecker>();
+        toFutureWarpChecker.transform.parent = player.transform;
+        toFutureWarpChecker.GoToCorrectPosition(false, offsetAmount);
     }
 
     private void Update()
@@ -64,10 +73,26 @@ public class Timewarp : MonoBehaviour
     public void TryWarp()
     {
         // for now, just teleport, do check for objects here
-        if (warpChecker.DoWarpCheck())
+        if (shouldDoWarpChecking)
         {
-            SwapWorlds();
+            if (isInPast)
+            {
+                if (!toFutureWarpChecker.DoWarpCheck())
+                {
+                    StartCoroutine(ToggleGameObjectForTime(warpingBlockedText, 2));
+                    return;
+                }
+            }
+            else
+            {
+                if (!toPastWarpChecker.DoWarpCheck())
+                {
+                    StartCoroutine(ToggleGameObjectForTime(warpingBlockedText, 2));
+                    return;
+                }
+            }
         }
+        SwapWorlds();
     }
 
     public void SwapWorlds()
@@ -107,5 +132,12 @@ public class Timewarp : MonoBehaviour
     {
         isInPast = newIsInPresent;
         GetComponent<GameManager>().isInPresent = newIsInPresent;
+    }
+
+    public IEnumerator ToggleGameObjectForTime(GameObject gameObject, float period)
+    {
+        gameObject.SetActive(!gameObject.activeInHierarchy);
+        yield return new WaitForSeconds(period);
+        gameObject.SetActive(!gameObject.activeInHierarchy);
     }
 }

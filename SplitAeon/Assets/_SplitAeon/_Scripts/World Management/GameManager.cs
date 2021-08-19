@@ -38,3 +38,8 @@ public class GameManager : MonoBehaviour
         Debug.Log("you are die");
     }
 }
+
+public static class Globals
+{
+    public static bool isGamePaused = false;
+}
