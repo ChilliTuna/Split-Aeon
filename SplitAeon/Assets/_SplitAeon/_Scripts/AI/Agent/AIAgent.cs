@@ -53,7 +53,7 @@ public class AIAgent : MonoBehaviour
     {
         m_stateMachine.Update();
 
-        anim.SetFloat("moveSpeed", currentSpeed);
+        anim.SetFloat("moveSpeed", currentSpeed / navAgent.speed);
 
         // Debugging
         debugCurrentState = (StateIndex)m_stateMachine.currentIndex;
