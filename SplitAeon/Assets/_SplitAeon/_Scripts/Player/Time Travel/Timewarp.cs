@@ -29,6 +29,8 @@ public class Timewarp : MonoBehaviour
 
     public GameObject warpingBlockedText;
 
+    public GameObject warpWarningImage;
+
     [Space]
     public UnityEvent onTimeWarp;
 
@@ -68,6 +70,15 @@ public class Timewarp : MonoBehaviour
         {
             bloom.intensity.value -= 2 * Time.deltaTime;
         }
+
+        if (isInPast)
+        {
+            ToggleWarpWarning(!toFutureWarpChecker.DoWarpCheck());
+        }
+        else
+        {
+            ToggleWarpWarning(!toPastWarpChecker.DoWarpCheck());
+        }
     }
 
     public void TryWarp()
@@ -106,12 +117,14 @@ public class Timewarp : MonoBehaviour
             controller.enabled = false;
             player.transform.position = new Vector3(player.transform.position.x, player.transform.position.y - offsetAmount, player.transform.position.z);
             controller.enabled = true;
+            //warpWarningImage.SetActive(toPastWarpChecker.DoWarpCheck());
         }
         else
         {
             controller.enabled = false;
             player.transform.position = new Vector3(player.transform.position.x, player.transform.position.y + offsetAmount, player.transform.position.z);
             controller.enabled = true;
+            //warpWarningImage.SetActive(toFutureWarpChecker.DoWarpCheck());
         }
 
         TriggerTeleportEffect();
@@ -139,5 +152,10 @@ public class Timewarp : MonoBehaviour
         gameObject.SetActive(!gameObject.activeInHierarchy);
         yield return new WaitForSeconds(period);
         gameObject.SetActive(!gameObject.activeInHierarchy);
+    }
+
+    public void ToggleWarpWarning(bool newActive)
+    {
+        warpWarningImage.SetActive(newActive);
     }
 }
