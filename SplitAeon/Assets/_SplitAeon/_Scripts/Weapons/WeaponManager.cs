@@ -41,30 +41,53 @@ public class WeaponManager : MonoBehaviour
 
     private int myIndex;
 
+    [HideInInspector]
+    public bool mouseDown;
+
     #endregion
 
     void Start()
     {
-        weapons[0].gameObject.SetActive(true);
-        weapons[0].crosshair.SetActive(true);
+        weapons[0].GetComponent<Gun>().gameObject.SetActive(true);
+        weapons[0].GetComponent<Gun>().crosshair.SetActive(true);
         weaponIndex = 0;
-        player.viewmodelAnimator = weapons[0].animator;
+        player.viewmodelAnimator = weapons[0].GetComponent<Gun>().animator;
+
         //SwitchWeapon(0);
     }
 
     void Update()
     {
-        weapons[weaponIndex].mouseDown = Input.GetKey(KeyCode.Mouse0);
 
-        ammoReadout.text = weapons[weaponIndex].ammoLoaded.ToString() + "/" + weapons[weaponIndex].ammoPool.ToString();
-        weaponName.text = weapons[weaponIndex].weaponName.ToString();
+        mouseDown = Input.GetKey(KeyCode.Mouse0);
 
+        if (mouseDown && !player.isBusy && !player.isRunning)
+        {
+            weapons[weaponIndex].PrimaryUse();
+        }
+        else
+        {
+            if (weapons[weaponIndex].GetComponent<Gun>())
+            {
+                weapons[weaponIndex].GetComponent<Gun>().waitForTriggerRelease = false;
+
+                if (weapons[weaponIndex].GetComponent<Gun>().isFullAuto)
+                {
+                    weapons[weaponIndex].GetComponent<Gun>().animator.SetBool("ShootHold", false);
+                }
+            }
+            else if (weapons[weaponIndex].GetComponent<Melee>())
+            {
+                weapons[weaponIndex].GetComponent<Melee>().waitForTriggerRelease = false;
+            }
+
+        }
 
         if (Input.GetKeyDown(reloadKey))
         {
             if (!player.isBusy)
             {
-                weapons[weaponIndex].TryReload();
+                weapons[weaponIndex].SecondaryUse();
             }
         }
 
@@ -83,14 +106,10 @@ public class WeaponManager : MonoBehaviour
             SwitchWeapon(2);
         }
 
-
-        // REMOVE ME, DEBUG USE ONLY
-        if (Input.GetKeyDown(KeyCode.LeftBracket))
+        if (Input.GetKeyDown(KeyCode.Alpha4))
         {
-            weapons[weaponIndex].ammoPool = weapons[weaponIndex].maxAmmo;
-            weapons[weaponIndex].ammoLoaded = weapons[weaponIndex].clipSize;
+            SwitchWeapon(3);
         }
-
     }
 
     public void SwitchWeapon(int index)
@@ -138,12 +157,13 @@ public class WeaponManager : MonoBehaviour
             if (i == weaponIndex)
             {
                 wep.gameObject.SetActive(true);
-                wep.crosshair.SetActive(true);
-                player.viewmodelAnimator = wep.animator;
+                wep.isEquipped = true;              
                 player.isBusy = false;
+                wep.crosshair.SetActive(true);
             }
             else
             {
+                wep.isEquipped = false;
                 wep.gameObject.SetActive(false);
                 wep.crosshair.SetActive(false);
             }
@@ -151,6 +171,16 @@ public class WeaponManager : MonoBehaviour
             i++;
 
         }
+    }
+
+    public void EnableBusyState()
+    {
+        player.isBusy = true;
+    }
+
+    public void DisableBusyState()
+    {
+        player.isBusy = false;
     }
 
 

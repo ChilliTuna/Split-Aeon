@@ -21,16 +21,16 @@ public class AmmoPickup : MonoBehaviour
     private void OnTriggerEnter(Collider other)
     {
 
-        if (playerWeapons.weapons[weaponIndex].ammoPool == playerWeapons.weapons[weaponIndex].maxAmmo)
+        if (playerWeapons.weapons[weaponIndex].GetComponent<Gun>().ammoPool == playerWeapons.weapons[weaponIndex].GetComponent<Gun>().maxAmmo)
         {
             return;
         }
 
-        playerWeapons.weapons[weaponIndex].ammoPool += ammoPickupAmount;
+        playerWeapons.weapons[weaponIndex].GetComponent<Gun>().ammoPool += ammoPickupAmount;
 
-        if (playerWeapons.weapons[weaponIndex].ammoPool > playerWeapons.weapons[weaponIndex].maxAmmo)
+        if (playerWeapons.weapons[weaponIndex].GetComponent<Gun>().ammoPool > playerWeapons.weapons[weaponIndex].GetComponent<Gun>().maxAmmo)
         {
-            playerWeapons.weapons[weaponIndex].ammoPool = playerWeapons.weapons[weaponIndex].maxAmmo;
+            playerWeapons.weapons[weaponIndex].GetComponent<Gun>().ammoPool = playerWeapons.weapons[weaponIndex].GetComponent<Gun>().maxAmmo;
         }
 
         if (isOneTimePickup)
