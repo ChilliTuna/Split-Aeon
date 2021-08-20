@@ -2,8 +2,6 @@
 
 public class ZoneManager : MonoBehaviour
 {
-    public AIManager aiManager;
-
     public Zone[] zones;
 
     //[HideInInspector]
