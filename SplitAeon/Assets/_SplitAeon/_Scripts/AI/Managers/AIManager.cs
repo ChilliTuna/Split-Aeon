@@ -20,6 +20,18 @@ public class AIManager : MonoBehaviour
     public bool playerInTimePeriod = true;
 
     public List<AIAgent> allAgents { get { return m_allAgents; } }
+    public List<AIAgent> activeAgents 
+    {
+        get 
+        {
+            List<AIAgent> result = new List<AIAgent>(m_cultistAgentPool.activeAgents);
+            foreach(var belcher in m_belcherAgentPool.activeAgents)
+            {
+                result.Add(belcher);
+            }
+            return result;
+        } 
+    }
 
     StateMachine<AIManager> zoneStateMachine;
 
@@ -141,6 +153,24 @@ public class AIManager : MonoBehaviour
                     second.neighbours.Add(-neighbour);
                 }
             }
+        }
+    }
+
+    public void TogglePlayerInsideState()
+    {
+        ZoneStateIndex index = (ZoneStateIndex)zoneStateMachine.currentIndex;
+        switch(index)
+        {
+            case ZoneStateIndex.inside:
+                {
+                    ChangeZoneState(ZoneStateIndex.outside);
+                    break;
+                }
+            case ZoneStateIndex.outside:
+                {
+                    ChangeZoneState(ZoneStateIndex.inside);
+                    break;
+                }
         }
     }
 

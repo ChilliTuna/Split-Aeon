@@ -13,6 +13,21 @@ public class AgentObjectPool
     int m_maxCount = 0;
 
     public int activeCount { get { return m_activeCount; } }
+    public List<AIAgent> activeAgents
+    {
+        get
+        {
+            List<AIAgent> result = new List<AIAgent>();
+            foreach(var poolAgent in objectPool)
+            {
+                if(poolAgent.isActive)
+                {
+                    result.Add(poolAgent.agent);
+                }
+            }
+            return result;
+        }
+    }
 
     public void InitialiseObjectPool(AIManager manager, string containerName, int maxCount, GameObject enemyPrefab)
     {

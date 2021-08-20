@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using System.Collections.Generic;
 
 public class GameManager : MonoBehaviour
 {
@@ -12,6 +13,8 @@ public class GameManager : MonoBehaviour
 
     public ZoneManager presentZoneManager;
     public ZoneManager pastZoneManager;
+
+    public bool isInPresent;
 
     // Start is called before the first frame update
     private void Start()
@@ -34,4 +37,9 @@ public class GameManager : MonoBehaviour
     {
         Debug.Log("you are die");
     }
+}
+
+public static class Globals
+{
+    public static bool isGamePaused = false;
 }
