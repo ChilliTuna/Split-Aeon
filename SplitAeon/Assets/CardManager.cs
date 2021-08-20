@@ -38,18 +38,30 @@ public class CardManager : MonoBehaviour
     [Header("Regular Card")]
     public GameObject regularCardPrefab;
     public Sprite regularCardSprite;
+    public float regularCardThrowForce;
+    public float regularCardThrowLift;
+    public float regularCardSpin;
 
     [Header("Warping Card")]
     public GameObject warpingCardPrefab;
     public Sprite warpingCardSprite;
+    public float warpingCardThrowForce;
+    public float warpingCardThrowLift;
+    public float warpingCardSpin;
 
     [Header("Piercing Card")]
     public GameObject piercingCardPrefab;
     public Sprite piercingCardSprite;
+    public float piercingCardThrowForce;
+    public float piercingCardThrowLift;
+    public float piercingCardSpin;
 
     [Header("Splash Card")]
     public GameObject splashCardPrefab;
     public Sprite splashCardSprite;
+    public float splashCardThrowForce;
+    public float splashCardThrowLift;
+    public float splashCardSpin;
 
     [Header("Audio")]
     public AudioSource weaponAudioSource;
@@ -58,6 +70,8 @@ public class CardManager : MonoBehaviour
 
     [HideInInspector]
     public int cardLethalPool;
+
+    private float throwForce, throwLift, cardSpin;
 
 
     void Start()
@@ -82,21 +96,33 @@ public class CardManager : MonoBehaviour
             case CardTypes.Regular:
                 selectedCard = regularCardPrefab;
                 cardImage.sprite = regularCardSprite;
+                throwForce = regularCardThrowForce;
+                throwLift = regularCardThrowLift;
+                cardSpin = regularCardSpin;
                 break;
 
             case CardTypes.Warping:
                 selectedCard = warpingCardPrefab;
                 cardImage.sprite = warpingCardSprite;
+                throwForce = warpingCardThrowForce;
+                throwLift = warpingCardThrowLift;
+                cardSpin = warpingCardSpin;
                 break;
 
             case CardTypes.Piercing:
                 selectedCard = piercingCardPrefab;
                 cardImage.sprite = piercingCardSprite;
+                throwForce = piercingCardThrowForce;
+                throwLift = piercingCardThrowLift;
+                cardSpin = piercingCardSpin;
                 break;
 
             case CardTypes.Splash:
                 selectedCard = splashCardPrefab;
                 cardImage.sprite = splashCardSprite;
+                throwForce = splashCardThrowForce;
+                throwLift = splashCardThrowLift;
+                cardSpin = splashCardSpin;
                 break;
         }
 
@@ -137,8 +163,8 @@ public class CardManager : MonoBehaviour
             GameObject thrownLethal;
             thrownLethal = Instantiate(selectedCard, lethalSpawnLocation.transform.position, Quaternion.identity);
 
-            thrownLethal.GetComponent<Rigidbody>().velocity = lethalSpawnLocation.TransformDirection(0, 3, 20);
-            thrownLethal.GetComponent<Rigidbody>().AddRelativeTorque(0, 90, 0);
+            thrownLethal.GetComponent<Rigidbody>().velocity = lethalSpawnLocation.TransformDirection(0, throwLift, throwForce);
+            thrownLethal.GetComponent<Rigidbody>().AddRelativeTorque(0, cardSpin, 0);
 
             cardLethalPool -= 1;
 
