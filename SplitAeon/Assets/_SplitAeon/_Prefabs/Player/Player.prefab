@@ -7733,12 +7733,24 @@ MonoBehaviour:
   cardPoolReadout: {fileID: 1407660427937966789}
   regularCardPrefab: {fileID: 5775641345952198457, guid: c5996d205ea418d4d9b25e2d7084f8d8, type: 3}
   regularCardSprite: {fileID: 21300000, guid: 67dee9da79d959446b2b0d1fa8526bb2, type: 3}
-  warpingCardPrefab: {fileID: 5775641345952198457, guid: c5996d205ea418d4d9b25e2d7084f8d8, type: 3}
+  regularCardThrowForce: 20
+  regularCardThrowLift: 3
+  regularCardSpin: 0
+  warpingCardPrefab: {fileID: 5775641345952198457, guid: 626b5a7866266e54a80cd66c41d583c8, type: 3}
   warpingCardSprite: {fileID: 21300000, guid: e9e9a76facfc37540abc928f909e18d0, type: 3}
-  piercingCardPrefab: {fileID: 5775641345952198457, guid: c5996d205ea418d4d9b25e2d7084f8d8, type: 3}
+  warpingCardThrowForce: 20
+  warpingCardThrowLift: 3
+  warpingCardSpin: 0
+  piercingCardPrefab: {fileID: 5775641345952198457, guid: e43967db6eed1a748a038a444fac743d, type: 3}
   piercingCardSprite: {fileID: 21300000, guid: c633755e38d26c54ea051889c84b3a2d, type: 3}
-  splashCardPrefab: {fileID: 5775641345952198457, guid: c5996d205ea418d4d9b25e2d7084f8d8, type: 3}
+  piercingCardThrowForce: 30
+  piercingCardThrowLift: 1.5
+  piercingCardSpin: 0
+  splashCardPrefab: {fileID: 5775641345952198457, guid: 39ad59ff5324ff245823f416db6db055, type: 3}
   splashCardSprite: {fileID: 21300000, guid: e5579c4dcd774974f9c7a94f65db6ad9, type: 3}
+  splashCardThrowForce: 10
+  splashCardThrowLift: 5
+  splashCardSpin: 0
   weaponAudioSource: {fileID: 2290754771247874753}
   lethalThrowClips:
   - {fileID: 8300000, guid: 64ea05b40fe30514797d121da8021586, type: 3}
@@ -18939,7 +18951,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3964517859362998379, guid: 50f02b1fa163ad44ab10846fd9b2447f, type: 3}
       propertyPath: itemName
-      value: Card 3
+      value: Card (Piercing)
       objectReference: {fileID: 0}
     - target: {fileID: 6492509339985824953, guid: 50f02b1fa163ad44ab10846fd9b2447f, type: 3}
       propertyPath: m_LocalPosition.x
@@ -19465,7 +19477,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3964517859362998379, guid: 50f02b1fa163ad44ab10846fd9b2447f, type: 3}
       propertyPath: itemName
-      value: Card 1
+      value: Card (Regular)
       objectReference: {fileID: 0}
     - target: {fileID: 6492509339985824953, guid: 50f02b1fa163ad44ab10846fd9b2447f, type: 3}
       propertyPath: m_LocalPosition.x
@@ -19627,7 +19639,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3964517859362998379, guid: 50f02b1fa163ad44ab10846fd9b2447f, type: 3}
       propertyPath: itemName
-      value: Card 2
+      value: Card (Warping)
       objectReference: {fileID: 0}
     - target: {fileID: 6492509339985824953, guid: 50f02b1fa163ad44ab10846fd9b2447f, type: 3}
       propertyPath: m_LocalPosition.x
@@ -19731,7 +19743,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8603842786340957824, guid: 50f02b1fa163ad44ab10846fd9b2447f, type: 3}
       propertyPath: m_Interactable
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8603842786340957824, guid: 50f02b1fa163ad44ab10846fd9b2447f, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
@@ -21135,7 +21147,7 @@ PrefabInstance:
       objectReference: {fileID: 3769561871244892884}
     - target: {fileID: 3964517859362998379, guid: 50f02b1fa163ad44ab10846fd9b2447f, type: 3}
       propertyPath: itemName
-      value: Card 4
+      value: Card (Splash)
       objectReference: {fileID: 0}
     - target: {fileID: 6492509339985824953, guid: 50f02b1fa163ad44ab10846fd9b2447f, type: 3}
       propertyPath: m_LocalPosition.x
