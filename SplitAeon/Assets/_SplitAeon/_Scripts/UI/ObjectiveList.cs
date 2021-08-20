@@ -27,6 +27,8 @@ public class ObjectiveList : MonoBehaviour
 
     private bool isVisible = false;
 
+    public UnityEvent onObjectiveComplete;
+
     public UnityEvent onWin;
 
     private void Start()
@@ -45,6 +47,7 @@ public class ObjectiveList : MonoBehaviour
     {
         if (currentObjective < objectives.Length)
         {
+            onObjectiveComplete.Invoke();
             StartCoroutine("TransitionObjective");
         }
         if (gameWin)
