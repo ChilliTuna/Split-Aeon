@@ -144,7 +144,7 @@ public class Timewarp : MonoBehaviour
     private void ChangeWorldInternal(bool newIsInPresent)
     {
         isInPast = newIsInPresent;
-        GetComponent<GameManager>().isInPresent = newIsInPresent;
+        Globals.isInPast = newIsInPresent;
     }
 
     public IEnumerator ToggleGameObjectForTime(GameObject gameObject, float period)
