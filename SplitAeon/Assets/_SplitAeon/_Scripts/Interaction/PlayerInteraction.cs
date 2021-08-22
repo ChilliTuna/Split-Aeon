@@ -6,6 +6,8 @@ public class PlayerInteraction : MonoBehaviour
     public float interactionDistance;
     public Text interactionText;
 
+    public KeyCode key;
+
     int interactionLayerMask = 1 << 19;
     
     Camera cam;
@@ -13,7 +15,6 @@ public class PlayerInteraction : MonoBehaviour
     void Start()
     {
         cam = GetComponentInChildren<Camera>();
-        interactionText = GameObject.Find("InteractionTextField").GetComponent<Text>();
     }
 
     void Update()
@@ -43,8 +44,6 @@ public class PlayerInteraction : MonoBehaviour
 
     void HandleInteraction(Interactable interactable)
     {
-        KeyCode key = KeyCode.F;
-
         if (Input.GetKeyDown(key))
         {
             interactable.Interact();
