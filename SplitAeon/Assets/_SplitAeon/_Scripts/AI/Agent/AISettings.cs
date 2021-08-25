@@ -5,6 +5,9 @@ using UnityEngine;
 [CreateAssetMenu(menuName = "AI/Scriptables/AISettings")]
 public class AISettings : ScriptableObject
 {
+    [Header("Type")]
+    public EnemyType enemyType;
+
     [Header("Idle")]
     public float maxIdleTime = 2.0f;
     public float minIdleTime = 1.0f;

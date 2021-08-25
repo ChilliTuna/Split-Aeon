@@ -20,6 +20,18 @@ public class AIManager : MonoBehaviour
     public bool playerInTimePeriod = true;
 
     public List<AIAgent> allAgents { get { return m_allAgents; } }
+    public List<AIAgent> activeAgents 
+    {
+        get 
+        {
+            List<AIAgent> result = new List<AIAgent>(m_cultistAgentPool.activeAgents);
+            foreach(var belcher in m_belcherAgentPool.activeAgents)
+            {
+                result.Add(belcher);
+            }
+            return result;
+        } 
+    }
 
     StateMachine<AIManager> zoneStateMachine;
 
@@ -61,10 +73,10 @@ public class AIManager : MonoBehaviour
         isInitialised = true;
 
         m_cultistAgentPool = new AgentObjectPool();
-        m_cultistAgentPool.InitialiseObjectPool(this, cultistContainerName, maxCultistCount, cultistPrefab);
+        m_cultistAgentPool.InitialiseObjectPool(this, cultistContainerName, maxCultistCount, cultistPrefab, EnemyType.cultist);
 
         m_belcherAgentPool = new AgentObjectPool();
-        m_belcherAgentPool.InitialiseObjectPool(this, belcherContainerName, maxBelcherCount, belcherPrefab);
+        m_belcherAgentPool.InitialiseObjectPool(this, belcherContainerName, maxBelcherCount, belcherPrefab, EnemyType.belcher);
 
         zoneStateMachine = new StateMachine<AIManager>(this);
         zoneStateMachine.AddState(new InsideZone());
@@ -144,6 +156,24 @@ public class AIManager : MonoBehaviour
         }
     }
 
+    public void TogglePlayerInsideState()
+    {
+        ZoneStateIndex index = (ZoneStateIndex)zoneStateMachine.currentIndex;
+        switch(index)
+        {
+            case ZoneStateIndex.inside:
+                {
+                    ChangeZoneState(ZoneStateIndex.outside);
+                    break;
+                }
+            case ZoneStateIndex.outside:
+                {
+                    ChangeZoneState(ZoneStateIndex.inside);
+                    break;
+                }
+        }
+    }
+
     public void ChangeZoneState(ZoneStateIndex state)
     {
         zoneStateMachine.ChangeState((int)state);
@@ -169,6 +199,23 @@ public class AIManager : MonoBehaviour
             {
                 poolAgent.gameObject.SetActive(value);
             }
+        }
+    }
+
+    public void AddExistingAgent(AIAgent agent, EnemyType enemyType)
+    {
+        switch(enemyType)
+        {
+            case EnemyType.cultist:
+                {
+                    m_cultistAgentPool.AddExistingAgent(agent);
+                    break;
+                }
+            case EnemyType.belcher:
+                {
+                    m_belcherAgentPool.AddExistingAgent(agent);
+                    break;
+                }
         }
     }
 
