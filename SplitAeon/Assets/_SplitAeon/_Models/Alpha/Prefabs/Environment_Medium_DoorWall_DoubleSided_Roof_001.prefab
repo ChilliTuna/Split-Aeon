@@ -92,6 +92,9 @@ GameObject:
   - component: {fileID: 3606847922796995563}
   - component: {fileID: 405819322945285198}
   - component: {fileID: 2469439137098520708}
+  - component: {fileID: 7745797634887398400}
+  - component: {fileID: 4733523182390760083}
+  - component: {fileID: 161449235193322836}
   m_Layer: 0
   m_Name: Environment_Medium_DoorWall_DoubleSided_Roof_001
   m_TagString: Untagged
@@ -169,6 +172,45 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!65 &7745797634887398400
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4126926459885058385}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 4, y: 1.6070421, z: -0.12}
+  m_Center: {x: 0, y: 3.1964788, z: 0}
+--- !u!65 &4733523182390760083
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4126926459885058385}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 1.2049713, y: 4, z: -0.12}
+  m_Center: {x: 1.3975143, y: 2, z: 0}
+--- !u!65 &161449235193322836
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4126926459885058385}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 1.1982937, y: 4, z: -0.12}
+  m_Center: {x: -1.4008532, y: 2, z: 0}
 --- !u!1001 &599070222479140788
 PrefabInstance:
   m_ObjectHideFlags: 0
