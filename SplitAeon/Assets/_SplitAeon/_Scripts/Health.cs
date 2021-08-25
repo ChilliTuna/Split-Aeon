@@ -9,13 +9,12 @@ public class Health : MonoBehaviour
     [HideInInspector]
     public float health;
 
-
     [Header("On Hit")]
     public UnityEvent onHitEvents;
 
-
     [Header("On Death")]
     public bool destroyOnDeath;
+
     public UnityEvent onDeathEvents;
 
     /// <summary>

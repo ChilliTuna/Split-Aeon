@@ -1,6 +1,8 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using System;
+using System.Collections;
 
 public class WeaponManager : MonoBehaviour
 {
@@ -21,20 +23,9 @@ public class WeaponManager : MonoBehaviour
     [Space(10)]
 
     [Header("Weapon GUI")]
-    public Text ammoPoolReadout;
-    public Text loadedAmmoReadout;
-    public Text cardPoolReadout;
-
-    [Space(10)]
-
-    [Header("Card Lethal")]
-    public int maxCardLethals;
-    public float cardLethalDamage;
-    public Transform lethalSpawnLocation;
-    public GameObject cardLethalPrefab;
-
-    [HideInInspector]
-    public int cardLethalPool;
+    public CanvasGroup cg;
+    public TextMeshProUGUI weaponName;
+    public TextMeshProUGUI ammoReadout;
 
     [Space(10)]
 
@@ -47,44 +38,56 @@ public class WeaponManager : MonoBehaviour
 
     [Header("Controls")]
     public KeyCode reloadKey;
-    public KeyCode cardLethalKey;
 
     private int myIndex;
+
+    [HideInInspector]
+    public bool mouseDown;
 
     #endregion
 
     void Start()
     {
-        weapons[0].gameObject.SetActive(true);
+        weapons[0].GetComponent<Gun>().gameObject.SetActive(true);
+        weapons[0].GetComponent<Gun>().crosshair.SetActive(true);
         weaponIndex = 0;
-        player.viewmodelAnimator = weapons[0].animator;
+        player.viewmodelAnimator = weapons[0].GetComponent<Gun>().animator;
+
         //SwitchWeapon(0);
-        cardLethalPool = maxCardLethals;
     }
 
     void Update()
     {
-        weapons[weaponIndex].mouseDown = Input.GetKey(KeyCode.Mouse0);
 
+        mouseDown = Input.GetKey(KeyCode.Mouse0);
 
-        ammoPoolReadout.text = weapons[weaponIndex].ammoPool.ToString();
-        loadedAmmoReadout.text = weapons[weaponIndex].ammoLoaded.ToString();
-        cardPoolReadout.text = cardLethalPool.ToString();
-
-        if (Input.GetKeyDown(cardLethalKey))
+        if (mouseDown && !player.isBusy && !player.isRunning)
         {
-            if (!player.isBusy)
+            weapons[weaponIndex].PrimaryUse();
+        }
+        else
+        {
+            if (weapons[weaponIndex].GetComponent<Gun>())
             {
-                Debug.Log("Throwing card");
-                ThrowCardLethal();
+                weapons[weaponIndex].GetComponent<Gun>().waitForTriggerRelease = false;
+
+                if (weapons[weaponIndex].GetComponent<Gun>().isFullAuto)
+                {
+                    weapons[weaponIndex].GetComponent<Gun>().animator.SetBool("ShootHold", false);
+                }
             }
+            else if (weapons[weaponIndex].GetComponent<Melee>())
+            {
+                weapons[weaponIndex].GetComponent<Melee>().waitForTriggerRelease = false;
+            }
+
         }
 
         if (Input.GetKeyDown(reloadKey))
         {
             if (!player.isBusy)
             {
-                weapons[weaponIndex].TryReload();
+                weapons[weaponIndex].SecondaryUse();
             }
         }
 
@@ -103,22 +106,43 @@ public class WeaponManager : MonoBehaviour
             SwitchWeapon(2);
         }
 
-        // REMOVE ME, DEBUG USE ONLY
-        if (Input.GetKeyDown(KeyCode.LeftBracket))
+        if (Input.GetKeyDown(KeyCode.Alpha4))
         {
-            weapons[weaponIndex].ammoPool = weapons[weaponIndex].maxAmmo;
-            weapons[weaponIndex].ammoLoaded = weapons[weaponIndex].clipSize;
+            SwitchWeapon(3);
         }
-
     }
 
-    void SwitchWeapon(int index)
+    public void SwitchWeapon(int index)
     {
+        if (myIndex == index)
+        {
+            return;
+        }
+
         player.viewmodelAnimator.SetTrigger("Switch");
         player.isBusy = true;
         myIndex = index;
+        StartCoroutine(FadeOutWeaponGUI(cg));
         Invoke("SetCurrentWeapon", 0.7f);
 
+    }
+
+    private IEnumerator FadeInWeaponGUI(CanvasGroup group)
+    {
+        while (group.alpha < 1)
+        {
+            group.alpha += 1 / 0.25f * Time.deltaTime;
+            yield return 0;
+        }
+    }
+
+    private IEnumerator FadeOutWeaponGUI(CanvasGroup group)
+    {
+        while (group.alpha > 0)
+        {
+            group.alpha -= 1 / 0.25f * Time.deltaTime;
+            yield return 0;
+        }
     }
 
     void SetCurrentWeapon()
@@ -126,17 +150,20 @@ public class WeaponManager : MonoBehaviour
         weaponIndex = myIndex;
         int i = 0;
 
+        StartCoroutine(FadeInWeaponGUI(cg));
+
         foreach (Weapon wep in weapons)
         {
             if (i == weaponIndex)
             {
                 wep.gameObject.SetActive(true);
-                wep.crosshair.SetActive(true);
-                player.viewmodelAnimator = wep.animator;
+                wep.isEquipped = true;              
                 player.isBusy = false;
+                wep.crosshair.SetActive(true);
             }
             else
             {
+                wep.isEquipped = false;
                 wep.gameObject.SetActive(false);
                 wep.crosshair.SetActive(false);
             }
@@ -146,22 +173,15 @@ public class WeaponManager : MonoBehaviour
         }
     }
 
-    public void ThrowCardLethal()
+    public void EnableBusyState()
     {
-        if (cardLethalPool > 0)
-        {
-            Debug.LogWarning("Throwing Card");
-
-            weaponAudioSource.PlayOneShot(lethalThrowClips[Mathf.FloorToInt(Random.Range(0, lethalThrowClips.Length))]);
-
-            GameObject thrownLethal;
-            thrownLethal = Instantiate(cardLethalPrefab, lethalSpawnLocation.transform.position, Quaternion.identity);
-
-            thrownLethal.GetComponent<Rigidbody>().velocity = lethalSpawnLocation.TransformDirection(0, 3, 20);
-            thrownLethal.GetComponent<Rigidbody>().AddRelativeTorque(0, 90, 0);
-
-            cardLethalPool -= 1;
-
-        }
+        player.isBusy = true;
     }
+
+    public void DisableBusyState()
+    {
+        player.isBusy = false;
+    }
+
+
 }
