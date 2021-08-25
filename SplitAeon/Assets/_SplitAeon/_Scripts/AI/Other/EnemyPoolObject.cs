@@ -21,14 +21,29 @@ public class EnemyPoolObject
         m_objectPool = objectPool;
 
         m_gameObject = agentGameObject;
-        
         m_agent = m_gameObject.GetComponent<AIAgent>();
+        m_agent.attachedPoolObject = this;
+        
         m_agent.aiManager = aiManager;
         m_agent.Init();
 
         m_isActive = isActive;
 
-        agentGameObject.GetComponent<AIAgent>().attachedPoolObject = this;
+
+        m_gameObject.SetActive(m_isActive);
+    }
+
+    public EnemyPoolObject(AgentObjectPool objectPool, GameObject agentGameObject, bool isActive = false)
+    {
+        m_objectPool = objectPool;
+
+        m_gameObject = agentGameObject;
+        m_agent = m_gameObject.GetComponent<AIAgent>();
+        m_agent.attachedPoolObject = this;
+
+
+        m_isActive = isActive;
+
 
         m_gameObject.SetActive(m_isActive);
     }

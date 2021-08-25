@@ -73,10 +73,10 @@ public class AIManager : MonoBehaviour
         isInitialised = true;
 
         m_cultistAgentPool = new AgentObjectPool();
-        m_cultistAgentPool.InitialiseObjectPool(this, cultistContainerName, maxCultistCount, cultistPrefab);
+        m_cultistAgentPool.InitialiseObjectPool(this, cultistContainerName, maxCultistCount, cultistPrefab, EnemyType.cultist);
 
         m_belcherAgentPool = new AgentObjectPool();
-        m_belcherAgentPool.InitialiseObjectPool(this, belcherContainerName, maxBelcherCount, belcherPrefab);
+        m_belcherAgentPool.InitialiseObjectPool(this, belcherContainerName, maxBelcherCount, belcherPrefab, EnemyType.belcher);
 
         zoneStateMachine = new StateMachine<AIManager>(this);
         zoneStateMachine.AddState(new InsideZone());
@@ -199,6 +199,23 @@ public class AIManager : MonoBehaviour
             {
                 poolAgent.gameObject.SetActive(value);
             }
+        }
+    }
+
+    public void AddExistingAgent(AIAgent agent, EnemyType enemyType)
+    {
+        switch(enemyType)
+        {
+            case EnemyType.cultist:
+                {
+                    m_cultistAgentPool.AddExistingAgent(agent);
+                    break;
+                }
+            case EnemyType.belcher:
+                {
+                    m_belcherAgentPool.AddExistingAgent(agent);
+                    break;
+                }
         }
     }
 

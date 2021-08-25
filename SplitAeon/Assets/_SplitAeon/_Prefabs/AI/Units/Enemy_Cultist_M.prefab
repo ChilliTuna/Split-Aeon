@@ -3029,11 +3029,11 @@ GameObject:
   - component: {fileID: 8075664902474488827}
   - component: {fileID: 2806493146277020033}
   - component: {fileID: 8617707209697044202}
+  - component: {fileID: 7860700506989315476}
   - component: {fileID: 8617707209697044203}
   - component: {fileID: 8617707209697044214}
-  - component: {fileID: 7860700506989315476}
-  - component: {fileID: 979904294751401325}
   - component: {fileID: -5212587816441370148}
+  - component: {fileID: 979904294751401325}
   m_Layer: 26
   m_Name: Enemy_Cultist_M
   m_TagString: Enemy
@@ -3098,6 +3098,20 @@ NavMeshAgent:
   m_BaseOffset: 0
   m_WalkableMask: 4294967295
   m_ObstacleAvoidanceType: 4
+--- !u!136 &7860700506989315476
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8888230849861157185}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  m_Radius: 0.5
+  m_Height: 2
+  m_Direction: 1
+  m_Center: {x: 0, y: 1, z: 0}
 --- !u!114 &8617707209697044203
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3144,33 +3158,6 @@ MonoBehaviour:
   - {fileID: 8617707208611731100}
   - {fileID: 8617707209086179359}
   - {fileID: 8617707209255957889}
---- !u!136 &7860700506989315476
-CapsuleCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8888230849861157185}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  m_Radius: 0.5
-  m_Height: 2
-  m_Direction: 1
-  m_Center: {x: 0, y: 1, z: 0}
---- !u!114 &979904294751401325
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8888230849861157185}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b421b947f96670647ab17ff25b290eb4, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  armAttack: {fileID: 244612419321057485}
 --- !u!114 &-5212587816441370148
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3204,3 +3191,16 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+--- !u!114 &979904294751401325
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8888230849861157185}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b421b947f96670647ab17ff25b290eb4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  armAttack: {fileID: 244612419321057485}
