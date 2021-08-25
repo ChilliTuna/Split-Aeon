@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class AgentObjectPool 
 {
-    // Cultist object pool
+    // object pool
     List<EnemyPoolObject> m_objectPool = new List<EnemyPoolObject>();
     public List<EnemyPoolObject> objectPool { get { return m_objectPool; } }
     int m_currentIndex = 0;
@@ -12,31 +12,63 @@ public class AgentObjectPool
 
     int m_maxCount = 0;
 
-    public int activeCount { get { return m_activeCount; } }
+    GameObject objectContainer;
+    int m_existingCount = 0;
 
-    public void InitialiseObjectPool(AIManager manager, string containerName, int maxCount, GameObject enemyPrefab)
+    public int activeCount { get { return m_activeCount; } }
+    public List<AIAgent> activeAgents
+    {
+        get
+        {
+            List<AIAgent> result = new List<AIAgent>();
+            foreach(var poolAgent in objectPool)
+            {
+                if(poolAgent.isActive)
+                {
+                    result.Add(poolAgent.agent);
+                }
+            }
+            return result;
+        }
+    }
+
+    public void InitialiseObjectPool(AIManager manager, string containerName, int maxCount, GameObject enemyPrefab, EnemyType enemyType)
     {
         m_maxCount = maxCount;
 
-        GameObject cultistContainer = new GameObject(containerName);
+        objectContainer = new GameObject(containerName);
 
-        // Find existing cultists
-        var agentArray = Object.FindObjectsOfType<AIAgent>();
-        foreach (var agent in agentArray)
+        var existingArray = Object.FindObjectsOfType<AIAgent>();
+        foreach(AIAgent existingAgent in existingArray)
         {
-            manager.allAgents.Add(agent);
-            agent.aiManager = manager;
+            if(existingAgent.aiManager == manager)
+            {
+                // Existing agents should be included in this object pool
+                if(existingAgent.settings.enemyType == enemyType)
+                {
+                    AddExistingAgent(existingAgent);
+                }
+            }
         }
 
         // Create Object Pool
-        for (int i = 0; i < maxCount; i++)
+        for (int i = m_existingCount; i < maxCount; i++)
         {
-            var newCultist = Object.Instantiate(enemyPrefab, cultistContainer.transform);
+            var newCultist = Object.Instantiate(enemyPrefab, objectContainer.transform);
             EnemyPoolObject poolAgent = new EnemyPoolObject(this, newCultist, manager);
             m_objectPool.Add(poolAgent);
 
             manager.allAgents.Add(poolAgent.agent);
         }
+    }
+
+    public void AddExistingAgent(AIAgent agent)
+    {
+        m_existingCount++;
+        agent.transform.parent = objectContainer.transform;
+        EnemyPoolObject poolAgent = new EnemyPoolObject(this, agent.gameObject, true);
+        m_objectPool.Add(poolAgent);
+        m_activeCount++;
     }
 
     public bool SetObjectActive(out GameObject targetPoolObject)
