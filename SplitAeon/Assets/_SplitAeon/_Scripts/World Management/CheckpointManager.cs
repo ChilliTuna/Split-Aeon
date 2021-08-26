@@ -15,53 +15,89 @@ public class CheckpointManager : MonoBehaviour
 
     private GameObject player;
 
-    public List<int[]> ammoCounts;
+    public List<AmmoData> ammoCounts = new List<AmmoData>();
+
+    public int cardCounts;
 
     public float health;
 
-    public Vector3 respawnPos;
-    public Quaternion respawnRot;
+    public Vector3 respawnPosition;
+    public Quaternion respawnRotation;
 
     private void Start()
     {
         player = GetComponent<Timewarp>().player;
     }
 
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.K))
+        {
+            Respawn();
+        }
+        else if (Input.GetKeyDown(KeyCode.J))
+        {
+            SetCheckpoint();
+        }
+    }
+
     public void SetCheckpoint()
     {
         health = player.GetComponent<Health>().health;
         SaveAmmoCounts();
-        respawnPos = player.transform.position;
-        respawnRot = player.transform.rotation;
+        respawnPosition = player.transform.position;
+        respawnRotation = player.transform.rotation;
         //Save defeated zones
     }
 
-    public void LoadCheckpoint()
+    public void Respawn()
     {
         player.GetComponent<Health>().health = health;
         LoadAmmoCounts();
-        player.transform.position = respawnPos;
-        player.transform.rotation = respawnRot;
+        player.GetComponent<CharacterController>().enabled = false;
+        player.transform.position = respawnPosition;
+        player.GetComponent<CharacterController>().enabled = true;
+        player.transform.rotation = respawnRotation;
         //Reset non-saved zones
     }
 
     private void SaveAmmoCounts()
     {
+        cardCounts = player.GetComponentInChildren<CardManager>().cardLethalPool;
         ammoCounts.Clear();
         Gun[] guns = player.transform.GetComponentsInChildren<Gun>();
         foreach (Gun gun in guns)
         {
-            ammoCounts.Add(new int[] { gun.ammoLoaded, gun.ammoPool });
+            AmmoData adata = new AmmoData();
+            adata.weaponName = gun.weaponName;
+            adata.ammoLoaded = gun.ammoLoaded;
+            adata.ammoPool = gun.ammoPool;
+            ammoCounts.Add(adata);
         }
+        
     }
 
     private void LoadAmmoCounts()
     {
+        player.GetComponentInChildren<CardManager>().cardLethalPool = cardCounts;
         Gun[] guns = player.transform.GetComponentsInChildren<Gun>();
-        for (int i = 0; i < ammoCounts.Count; i++)
+        foreach (Gun gun in guns)
         {
-            guns[i].ammoLoaded = ammoCounts[i][0];
-            guns[i].ammoPool = ammoCounts[i][1];
+            foreach(AmmoData ammoData in ammoCounts)
+            {
+                if (ammoData.weaponName == gun.weaponName)
+                {
+                    gun.ammoLoaded = ammoData.ammoLoaded;
+                    gun.ammoPool = ammoData.ammoPool;
+                }
+            }
         }
     }
+}
+
+public struct AmmoData
+{
+    public string weaponName;
+    public int ammoLoaded;
+    public int ammoPool;
 }
