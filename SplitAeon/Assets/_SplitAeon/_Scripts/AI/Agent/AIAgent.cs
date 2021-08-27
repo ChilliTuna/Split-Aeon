@@ -123,6 +123,11 @@ public class AIAgent : MonoBehaviour
         ChangeState(StateIndex.dead);
     }
 
+    public void DisablePoolObject()
+    {
+        attachedPoolObject.Disable();
+    }
+
     public void Seek()
     {
         if(neighbours.Count == 0)
