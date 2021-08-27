@@ -1,16 +1,18 @@
 ﻿using UnityEngine;
+using System.Collections.Generic;
 
 public class ZoneManager : MonoBehaviour
 {
-    public AIManager aiManager;
-
     public Zone[] zones;
 
-    //[HideInInspector]
+    [HideInInspector]
     public Zone activeZone;
 
     [HideInInspector]
     public GameManager gameManger;
+
+    [HideInInspector]
+    public List<Zone> completedZones;
 
     private void Start()
     {
