@@ -25,7 +25,7 @@ public class ObjectiveList : MonoBehaviour
 
     private TextMeshProUGUI objectiveText;
 
-    private bool isVisible = false;
+    private bool isVisible = true;
 
     public UnityEvent onObjectiveComplete;
 
