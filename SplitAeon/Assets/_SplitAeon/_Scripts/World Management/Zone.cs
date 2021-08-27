@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.Events;
 
 public class Zone : MonoBehaviour
 {
@@ -8,6 +9,10 @@ public class Zone : MonoBehaviour
     [HideInInspector]
     public uint spawnedEnemies;
 
+    [HideInInspector]
+    public uint aliveEnemyCount;
+
+    [HideInInspector]
     public bool shouldEnemiesSpawn = false;
 
     [HideInInspector]
@@ -18,13 +23,12 @@ public class Zone : MonoBehaviour
     [HideInInspector]
     public bool isActive = false;
 
+    [HideInInspector]
+    public bool isComplete = false;
+
     public Color gizmoColour = Color.blue;
 
-    // Start is called before the first frame update
-    private void Start()
-    {
-        //zoneCollider = gameObject.GetComponent<Collider>();
-    }
+    public UnityEvent onBeatZone;
 
     private void OnTriggerEnter(Collider other)
     {
@@ -42,12 +46,23 @@ public class Zone : MonoBehaviour
         }
     }
 
-    public void IncreaseSpawnedCount()
+    public void IncreaseAliveCount()
     {
         spawnedEnemies++;
+        aliveEnemyCount++;
         if (spawnedEnemies >= maxEnemyCount && maxEnemyCount != 0)
         {
             SetActiveness(false);
+        }
+    }
+
+    public void DecreaseAliveCount()
+    {
+        aliveEnemyCount--;
+
+        if (aliveEnemyCount == 0)
+        {
+            SetAsComplete();
         }
     }
 
@@ -102,5 +117,19 @@ public class Zone : MonoBehaviour
             Gizmos.DrawCube(transform.position, transform.lossyScale);
         }
         DrawCube(transform, gizmoColour);
+    }
+
+    public void SetAsComplete()
+    {
+        isComplete = true;
+        zoneManager.completedZones.Add(this);
+        onBeatZone.Invoke();
+    }
+
+    public void ResetZone()
+    {
+        spawnedEnemies = 0;
+        aliveEnemyCount = 0;
+        isComplete = false;
     }
 }

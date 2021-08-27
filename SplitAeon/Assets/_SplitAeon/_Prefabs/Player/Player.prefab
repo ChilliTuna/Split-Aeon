@@ -5585,7 +5585,7 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 8146234971736576636}
-  m_RootOrder: 1
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -5817,7 +5817,7 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 8146234971736576636}
-  m_RootOrder: 2
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -6276,7 +6276,7 @@ RectTransform:
   - {fileID: 7738471091038717739}
   - {fileID: 2950518103224359952}
   m_Father: {fileID: 7218842175756944679}
-  m_RootOrder: 5
+  m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 1}
   m_AnchorMax: {x: 0.5, y: 1}
@@ -6950,7 +6950,7 @@ MonoBehaviour:
       enableBigTilePrepass: 0
       isFptlEnabled: 0
   clearColorMode: 0
-  backgroundColorHDR: {r: 0.025, g: 0.07, b: 0.19, a: 0}
+  backgroundColorHDR: {r: 0, g: 0, b: 0, a: 0}
   clearDepth: 1
   volumeLayerMask:
     serializedVersion: 2
@@ -7092,7 +7092,7 @@ MonoBehaviour:
   groundDistance: 0.3
   ignoreMask:
     serializedVersion: 2
-    m_Bits: 204472576
+    m_Bits: 204473600
   mouseSensitivity: 100
   cam: {fileID: 5274002624283360221}
   viewmodelCam: {fileID: 6251382079970060634}
@@ -7881,11 +7881,10 @@ RectTransform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
-  - {fileID: 8656822520572992199}
   - {fileID: 3134309611692885514}
   - {fileID: 5454018636482096627}
   m_Father: {fileID: 7218842175756944679}
-  m_RootOrder: 1
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 0}
   m_AnchorMax: {x: 1, y: 0}
@@ -12902,12 +12901,12 @@ RectTransform:
   - {fileID: 9104755282317248154}
   - {fileID: 5349743950104949669}
   - {fileID: 5292163159660902810}
-  m_Father: {fileID: 8146234971736576636}
-  m_RootOrder: 0
+  m_Father: {fileID: 7218842175756944679}
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -432.8947, y: 225.00002}
+  m_AnchoredPosition: {x: 0.4010315, y: 0.000030517578}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &7170859066230567332
@@ -12943,7 +12942,7 @@ RectTransform:
   - {fileID: 8977027084010152535}
   - {fileID: 3830933738009684783}
   m_Father: {fileID: 7218842175756944679}
-  m_RootOrder: 3
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -13090,6 +13089,7 @@ RectTransform:
   m_LocalScale: {x: 0, y: 0, z: 0}
   m_Children:
   - {fileID: 550427083782580566}
+  - {fileID: 8656822520572992199}
   - {fileID: 8146234971736576636}
   - {fileID: 5926442795200334512}
   - {fileID: 4253623488241036347}
@@ -13194,7 +13194,7 @@ RectTransform:
   m_LocalScale: {x: 0.18005042, y: 0.18005042, z: 0.18005042}
   m_Children: []
   m_Father: {fileID: 7218842175756944679}
-  m_RootOrder: 4
+  m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -18741,7 +18741,7 @@ RectTransform:
   - {fileID: 8648426758743242707}
   - {fileID: 5120442142300571392}
   m_Father: {fileID: 7218842175756944679}
-  m_RootOrder: 2
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
@@ -20209,9 +20209,9 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c84dfe370a62a474dbbc26fe40022651, type: 3}
---- !u!4 &1143417207166877702 stripped
+--- !u!4 &7724544295595945834 stripped
 Transform:
-  m_CorrespondingSourceObject: {fileID: -2060508406477158265, guid: c84dfe370a62a474dbbc26fe40022651, type: 3}
+  m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: c84dfe370a62a474dbbc26fe40022651, type: 3}
   m_PrefabInstance: {fileID: 7834470465719060609}
   m_PrefabAsset: {fileID: 0}
 --- !u!1 &6951526686784779728 stripped
@@ -20219,9 +20219,9 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: c84dfe370a62a474dbbc26fe40022651, type: 3}
   m_PrefabInstance: {fileID: 7834470465719060609}
   m_PrefabAsset: {fileID: 0}
---- !u!4 &7724544295595945834 stripped
+--- !u!4 &1143417207166877702 stripped
 Transform:
-  m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: c84dfe370a62a474dbbc26fe40022651, type: 3}
+  m_CorrespondingSourceObject: {fileID: -2060508406477158265, guid: c84dfe370a62a474dbbc26fe40022651, type: 3}
   m_PrefabInstance: {fileID: 7834470465719060609}
   m_PrefabAsset: {fileID: 0}
 --- !u!4 &7213880321937557375 stripped
@@ -20654,9 +20654,9 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c84dfe370a62a474dbbc26fe40022651, type: 3}
---- !u!1 &6951526686843191073 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: c84dfe370a62a474dbbc26fe40022651, type: 3}
+--- !u!4 &7724544295572596123 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: c84dfe370a62a474dbbc26fe40022651, type: 3}
   m_PrefabInstance: {fileID: 7834470465776288368}
   m_PrefabAsset: {fileID: 0}
 --- !u!4 &1570539080448256837 stripped
@@ -20664,9 +20664,9 @@ Transform:
   m_CorrespondingSourceObject: {fileID: -472300056916121291, guid: c84dfe370a62a474dbbc26fe40022651, type: 3}
   m_PrefabInstance: {fileID: 7834470465776288368}
   m_PrefabAsset: {fileID: 0}
---- !u!4 &7724544295572596123 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: c84dfe370a62a474dbbc26fe40022651, type: 3}
+--- !u!1 &6951526686843191073 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: c84dfe370a62a474dbbc26fe40022651, type: 3}
   m_PrefabInstance: {fileID: 7834470465776288368}
   m_PrefabAsset: {fileID: 0}
 --- !u!1001 &7834470465836441028
