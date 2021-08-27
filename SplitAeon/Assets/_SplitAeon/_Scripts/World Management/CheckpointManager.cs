@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class CheckpointManager : MonoBehaviour
 {
@@ -15,14 +16,19 @@ public class CheckpointManager : MonoBehaviour
 
     private GameObject player;
 
-    public List<AmmoData> ammoCounts = new List<AmmoData>();
+    private List<AmmoData> ammoCounts = new List<AmmoData>();
 
-    public int cardCounts;
+    private int cardCounts;
 
-    public float health;
+    private float health;
 
-    public Vector3 respawnPosition;
-    public Quaternion respawnRotation;
+    private Vector3 respawnPosition;
+    private Quaternion respawnRotation;
+
+    private List<Zone> completedZones = new List<Zone>();
+
+    public UnityEvent onCheckpoint;
+    public UnityEvent onRespawn;
 
     private void Start()
     {
@@ -47,6 +53,8 @@ public class CheckpointManager : MonoBehaviour
         SaveAmmoCounts();
         respawnPosition = player.transform.position;
         respawnRotation = player.transform.rotation;
+        SaveZones();
+        onCheckpoint.Invoke();
         //Save defeated zones
     }
 
@@ -58,6 +66,8 @@ public class CheckpointManager : MonoBehaviour
         player.transform.position = respawnPosition;
         player.GetComponent<CharacterController>().enabled = true;
         player.transform.rotation = respawnRotation;
+        LoadZones();
+        onRespawn.Invoke();
         //Reset non-saved zones
     }
 
@@ -74,7 +84,6 @@ public class CheckpointManager : MonoBehaviour
             adata.ammoPool = gun.ammoPool;
             ammoCounts.Add(adata);
         }
-        
     }
 
     private void LoadAmmoCounts()
@@ -83,13 +92,58 @@ public class CheckpointManager : MonoBehaviour
         Gun[] guns = player.transform.GetComponentsInChildren<Gun>();
         foreach (Gun gun in guns)
         {
-            foreach(AmmoData ammoData in ammoCounts)
+            foreach (AmmoData ammoData in ammoCounts)
             {
                 if (ammoData.weaponName == gun.weaponName)
                 {
                     gun.ammoLoaded = ammoData.ammoLoaded;
                     gun.ammoPool = ammoData.ammoPool;
+                    break;
                 }
+            }
+        }
+    }
+
+    private void SaveZones()
+    {
+        completedZones.Clear();
+        GameManager gm = gameObject.GetComponent<GameManager>();
+        foreach (Zone zone in gm.pastZoneManager.zones)
+        {
+            if (zone.isComplete)
+            {
+                completedZones.Add(zone);
+            }
+        }
+        foreach (Zone zone in gm.presentZoneManager.zones)
+        {
+            if (zone.isComplete)
+            {
+                completedZones.Add(zone);
+            }
+        }
+    }
+
+    private void LoadZones()
+    {
+        GameManager gm = gameObject.GetComponent<GameManager>();
+        List<AIAgent> allAgents = gm.gameObject.GetComponent<SilhouetteGenerator>().aiManager.GetAllActiveAgents();
+        foreach (AIAgent agent in allAgents)
+        {
+            agent.DisablePoolObject();
+        }
+        foreach (Zone zone in gm.pastZoneManager.zones)
+        {
+            if (!completedZones.Contains(zone))
+            {
+                zone.ResetZone();
+            }
+        }
+        foreach (Zone zone in gm.presentZoneManager.zones)
+        {
+            if (!completedZones.Contains(zone))
+            {
+                zone.ResetZone();
             }
         }
     }
