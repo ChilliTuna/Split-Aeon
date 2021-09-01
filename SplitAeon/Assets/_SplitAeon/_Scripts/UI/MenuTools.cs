@@ -47,8 +47,3 @@ public class MenuTools : MonoBehaviour
         SceneManager.LoadScene(sceneIndex);
     }
 }
-
-public static class Globals
-{
-    public static bool isGamePaused = false;
-}
