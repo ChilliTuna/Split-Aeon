@@ -98,7 +98,7 @@ public class SpawnManager : MonoBehaviour
         offset.z = Mathf.Clamp(offset.z, -1.0f, 1.0f);
     }
 
-    private void OnDrawGizmos()
+    private void OnDrawGizmosSelected()
     {
         Gizmos.color = Color.cyan;
 
