@@ -25,7 +25,9 @@ public class ObjectiveList : MonoBehaviour
 
     private TextMeshProUGUI objectiveText;
 
-    private bool isVisible = false;
+    private bool isVisible = true;
+
+    public UnityEvent onObjectiveComplete;
 
     public UnityEvent onWin;
 
@@ -45,6 +47,7 @@ public class ObjectiveList : MonoBehaviour
     {
         if (currentObjective < objectives.Length)
         {
+            onObjectiveComplete.Invoke();
             StartCoroutine("TransitionObjective");
         }
         if (gameWin)

@@ -219,6 +219,16 @@ public class AIManager : MonoBehaviour
         }
     }
 
+    public List<AIAgent> GetAllActiveAgents()
+    {
+        List<AIAgent> activeAgents = new List<AIAgent>(m_cultistAgentPool.activeAgents);
+        foreach(var belcher in m_belcherAgentPool.activeAgents)
+        {
+            activeAgents.Add(belcher);
+        }
+        return activeAgents;
+    }
+
     private void OnDrawGizmos()
     {
         List<AIAgent> drawList;

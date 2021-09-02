@@ -290,7 +290,7 @@ namespace AIStates
         {
             if(m_timer > agent.settings.bodyDecayTime)
             {
-                agent.attachedPoolObject.Disable();
+                agent.DisablePoolObject();
             }
 
             m_timer += Time.deltaTime;

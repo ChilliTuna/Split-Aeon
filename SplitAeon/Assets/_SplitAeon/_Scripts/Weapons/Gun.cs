@@ -165,11 +165,12 @@ public class Gun : Weapon
 
                 if (Physics.Raycast(manager.playerCam.transform.position, bulletDirection, out hit, float.PositiveInfinity, ~manager.playerMask))
                 {
-                    if (hit.collider.gameObject.GetComponentInParent<Health>())
+                    var health = hit.collider.gameObject.GetComponentInParent<Health>();
+                    if (health)
                     {
                         CreateImpactChilded(hit);
 
-                        hit.collider.gameObject.GetComponentInParent<Health>().Hit(damage);
+                        health.Hit(damage);
                     }
                     else if (hit.collider.gameObject.GetComponent<Target>())
                     {

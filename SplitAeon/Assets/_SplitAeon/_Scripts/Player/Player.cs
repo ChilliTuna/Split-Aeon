@@ -294,10 +294,10 @@ public class Player : MonoBehaviour
             crouchBlend = Mathf.Lerp(crouchBlend, standingCameraHeight, Time.deltaTime * 4f);
         }
 
-        if (Input.GetKeyDown(KeyCode.I))
-        {
-            GetComponent<Health>().Hit();
-        }
+        //if (Input.GetKeyDown(KeyCode.I))
+        //{
+        //    GetComponent<Health>().Hit(10);
+        //}
 
         if (xMovement != 0 || zMovement != 0)
         {
