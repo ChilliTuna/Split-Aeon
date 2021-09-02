@@ -7,15 +7,15 @@ public class HealthBar : MonoBehaviour
 {
     public Health health;
 
-    public Slider slider;
+    public Image bar;
 
     void Start()
     {
-        slider.maxValue = health.maxHealth;
+        bar.fillAmount = 1;
     }
 
     void Update()
     {
-        slider.value = health.health;
+        bar.fillAmount = health.health / health.maxHealth;
     }
 }
