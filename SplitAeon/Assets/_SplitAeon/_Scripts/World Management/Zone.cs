@@ -28,7 +28,7 @@ public class Zone : MonoBehaviour
 
     public Color gizmoColour = Color.blue;
 
-    public UnityEvent onBeatZone;
+    public UnityEvent onCompleteZone;
 
     private void OnTriggerEnter(Collider other)
     {
@@ -123,7 +123,7 @@ public class Zone : MonoBehaviour
     {
         isComplete = true;
         zoneManager.completedZones.Add(this);
-        onBeatZone.Invoke();
+        onCompleteZone.Invoke();
     }
 
     public void ResetZone()

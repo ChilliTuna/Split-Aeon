@@ -14,7 +14,7 @@ public class Timewarp : MonoBehaviour
 
     private bool isInPast = true;
 
-    public CharacterController controller;
+    private CharacterController controller;
     public GameObject player;
 
     public AudioClip[] clips;
@@ -28,7 +28,6 @@ public class Timewarp : MonoBehaviour
     private WarpChecker toFutureWarpChecker;
 
     public GameObject warpingBlockedText;
-
     public GameObject warpWarningImage;
 
     [Space]
@@ -39,6 +38,8 @@ public class Timewarp : MonoBehaviour
         volume.profile.TryGet(out cromAb);
         volume.profile.TryGet(out bloom);
         volume.profile.TryGet(out exposure);
+
+        controller = player.GetComponent<CharacterController>();
 
         toPastWarpChecker = transform.Find("PastWarpChecker").GetComponent<WarpChecker>();
         toPastWarpChecker.transform.parent = player.transform;
@@ -117,14 +118,12 @@ public class Timewarp : MonoBehaviour
             controller.enabled = false;
             player.transform.position = new Vector3(player.transform.position.x, player.transform.position.y - offsetAmount, player.transform.position.z);
             controller.enabled = true;
-            //warpWarningImage.SetActive(toPastWarpChecker.DoWarpCheck());
         }
         else
         {
             controller.enabled = false;
             player.transform.position = new Vector3(player.transform.position.x, player.transform.position.y + offsetAmount, player.transform.position.z);
             controller.enabled = true;
-            //warpWarningImage.SetActive(toFutureWarpChecker.DoWarpCheck());
         }
 
         TriggerTeleportEffect();
