@@ -8959,7 +8959,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5274002624283360222}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 1.733, z: 0}
+  m_LocalPosition: {x: 0, y: 1.8, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 7426497236782785129}
@@ -8983,7 +8983,7 @@ Camera:
   m_FOVAxisMode: 0
   m_SensorSize: {x: 36, y: 24}
   m_LensShift: {x: 0, y: 0}
-  m_FocalLength: 50
+  m_FocalLength: 17.137775
   m_NormalizedViewPortRect:
     serializedVersion: 2
     x: 0
@@ -8992,7 +8992,7 @@ Camera:
     height: 1
   near clip plane: 0.1
   far clip plane: 1000
-  field of view: 60
+  field of view: 70
   orthographic: 0
   orthographic size: 5
   m_Depth: 0
@@ -9209,11 +9209,9 @@ MonoBehaviour:
   controller: {fileID: 5274002625647166296}
   walkSpeed: 5
   sprintSpeed: 9
-  crouchSpeed: 3
   gravity: -19.82
   jumpHeight: 1.5
   isRunning: 0
-  isCrouching: 0
   isMoving: 0
   isBusy: 0
   groundCheck: {fileID: 5274002625431498657}
@@ -9223,9 +9221,6 @@ MonoBehaviour:
     m_Bits: 204473600
   mouseSensitivity: 100
   cam: {fileID: 5274002624283360221}
-  viewmodelCam: {fileID: 6251382079970060634}
-  standingCameraHeight: 1.8
-  crouchingCameraHeight: 1.3
   cameraFOV: 65
   sprintFOVIncrease: 5
   recoilVertical: 0
@@ -10048,7 +10043,7 @@ Camera:
   m_FOVAxisMode: 0
   m_SensorSize: {x: 36, y: 24}
   m_LensShift: {x: 0, y: 0}
-  m_FocalLength: 50
+  m_FocalLength: 18.130024
   m_NormalizedViewPortRect:
     serializedVersion: 2
     x: 0
@@ -10057,7 +10052,7 @@ Camera:
     height: 1
   near clip plane: 0.1
   far clip plane: 1000
-  field of view: 60
+  field of view: 67
   orthographic: 0
   orthographic size: 5
   m_Depth: 1
@@ -10575,10 +10570,6 @@ MonoBehaviour:
   weaponName: {fileID: 4094813168159870887}
   ammoReadout: {fileID: 1228046672486321558}
   weaponAudioSource: {fileID: 2290754771247874753}
-  lethalThrowClips:
-  - {fileID: 8300000, guid: 64ea05b40fe30514797d121da8021586, type: 3}
-  - {fileID: 8300000, guid: 1d10e5f3a8705094a9085d6ad3478ae9, type: 3}
-  - {fileID: 8300000, guid: b043df38d33bac84a8e83e65f956983a, type: 3}
   reloadKey: 114
   mouseDown: 0
 --- !u!114 &1861276853107091174
@@ -10603,26 +10594,30 @@ MonoBehaviour:
   lethalSpawnLocation: {fileID: 8978881804877206470}
   cardImage: {fileID: 6480941633196571601}
   cardPoolReadout: {fileID: 1407660427937966789}
-  regularCardPrefab: {fileID: 5775641345952198457, guid: c5996d205ea418d4d9b25e2d7084f8d8, type: 3}
-  regularCardSprite: {fileID: 21300000, guid: 67dee9da79d959446b2b0d1fa8526bb2, type: 3}
-  regularCardThrowForce: 20
-  regularCardThrowLift: 3
-  regularCardSpin: 0
-  warpingCardPrefab: {fileID: 5775641345952198457, guid: 626b5a7866266e54a80cd66c41d583c8, type: 3}
-  warpingCardSprite: {fileID: 21300000, guid: e9e9a76facfc37540abc928f909e18d0, type: 3}
-  warpingCardThrowForce: 20
-  warpingCardThrowLift: 3
-  warpingCardSpin: 0
-  piercingCardPrefab: {fileID: 5775641345952198457, guid: e43967db6eed1a748a038a444fac743d, type: 3}
-  piercingCardSprite: {fileID: 21300000, guid: c633755e38d26c54ea051889c84b3a2d, type: 3}
-  piercingCardThrowForce: 30
-  piercingCardThrowLift: 1.5
-  piercingCardSpin: 0
-  splashCardPrefab: {fileID: 5775641345952198457, guid: 39ad59ff5324ff245823f416db6db055, type: 3}
-  splashCardSprite: {fileID: 21300000, guid: e5579c4dcd774974f9c7a94f65db6ad9, type: 3}
-  splashCardThrowForce: 10
-  splashCardThrowLift: 5
-  splashCardSpin: 0
+  regularCard:
+    cardPrefab: {fileID: 5775641345952198457, guid: c5996d205ea418d4d9b25e2d7084f8d8, type: 3}
+    cardSprite: {fileID: 21300000, guid: 67dee9da79d959446b2b0d1fa8526bb2, type: 3}
+    cardThrowForce: 20
+    cardThrowLift: 3
+    cardSpin: 90
+  warpingCard:
+    cardPrefab: {fileID: 5775641345952198457, guid: 626b5a7866266e54a80cd66c41d583c8, type: 3}
+    cardSprite: {fileID: 21300000, guid: e9e9a76facfc37540abc928f909e18d0, type: 3}
+    cardThrowForce: 20
+    cardThrowLift: 3
+    cardSpin: 90
+  piercingCard:
+    cardPrefab: {fileID: 5775641345952198457, guid: e43967db6eed1a748a038a444fac743d, type: 3}
+    cardSprite: {fileID: 21300000, guid: c633755e38d26c54ea051889c84b3a2d, type: 3}
+    cardThrowForce: 30
+    cardThrowLift: 1.5
+    cardSpin: 180
+  splashCard:
+    cardPrefab: {fileID: 5775641345952198457, guid: 39ad59ff5324ff245823f416db6db055, type: 3}
+    cardSprite: {fileID: 21300000, guid: e5579c4dcd774974f9c7a94f65db6ad9, type: 3}
+    cardThrowForce: 10
+    cardThrowLift: 5
+    cardSpin: 45
   weaponAudioSource: {fileID: 2290754771247874753}
   lethalThrowClips:
   - {fileID: 8300000, guid: 64ea05b40fe30514797d121da8021586, type: 3}
