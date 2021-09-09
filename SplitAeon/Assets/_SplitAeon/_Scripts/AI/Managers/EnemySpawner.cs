@@ -6,6 +6,7 @@ using UnityEngine.Events;
 public class EnemySpawner : MonoBehaviour
 {
     public AIManager aiManager;
+    [HideInInspector] public SpawnManager spawnManager;
 
     List<SpawnLocation> m_fixedSpawnLocations;
     List<SpawnLocation> m_dynamicSpawnLocations;
@@ -23,8 +24,8 @@ public class EnemySpawner : MonoBehaviour
     public EnemyType enemyType;
     public Vector3 boxSize = new Vector3(5.0f, 5.0f, 5.0f);
     
-    Transform playerTransform;
-    Camera playerCam;
+    Transform m_playerTransform;
+    Camera m_playerCam;
 
     float m_spawnTimer = 0.0f;
 
@@ -37,8 +38,8 @@ public class EnemySpawner : MonoBehaviour
 
     private void Awake()
     {
-        playerTransform = aiManager.playerTransform;
-        playerCam = aiManager.playerCam;
+        m_playerTransform = aiManager.playerTransform;
+        m_playerCam = aiManager.playerCam;
     }
 
     // Start is called before the first frame update
@@ -152,14 +153,21 @@ public class EnemySpawner : MonoBehaviour
         {
             // spawn will succeed
             SpawnLocation location = GetSpawnLocation();
-            location.StartSpawning();
+            if(location != null)
+            {
+                location.StartSpawning();
 
-            AIAgent agent = enemyObject.GetComponent<AIAgent>();
+                AIAgent agent = enemyObject.GetComponent<AIAgent>();
 
-            agent.ChangeState(AIStates.StateIndex.chasePlayer);
-            agent.navAgent.Warp(location.transform.position);
+                agent.ChangeState(AIStates.StateIndex.chasePlayer);
+                agent.navAgent.Warp(location.transform.position);
 
-            aiManager.spawnEvent.Invoke();
+                aiManager.spawnEvent.Invoke();
+            }
+            else
+            {
+                // no available spawns some how. Likely there are no spawns around the player
+            }
         }
         else
         {
@@ -171,26 +179,54 @@ public class EnemySpawner : MonoBehaviour
     {
         m_possibleLocations.Clear();
 
-        foreach(var fixedSpawn in m_fixedSpawnLocations)
-        {
-            m_possibleLocations.Add(fixedSpawn);
-        }
+        HashSet<SpawnLocation> playerAdjacentLocations = spawnManager.GetPlayerAdjacentCellSpawnLocations();
 
-        foreach (var dynamicSpawn in m_dynamicSpawnLocations)
+        //foreach(var fixedSpawn in m_fixedSpawnLocations)
+        //{
+        //    m_possibleLocations.Add(fixedSpawn);
+        //}
+        //
+        //foreach (var dynamicSpawn in m_dynamicSpawnLocations)
+        //{
+        //    Vector3 position = dynamicSpawn.transform.position;
+        //    Vector3 toPlayer = m_playerTransform.position - position;
+        //    if (Physics.Raycast(position, toPlayer, toPlayer.magnitude))
+        //    {
+        //        // Object is in the way of the player
+        //        m_possibleLocations.Add(dynamicSpawn);
+        //    }
+        //}
+
+        foreach (var location in playerAdjacentLocations)
         {
-            Vector3 position = dynamicSpawn.transform.position;
-            Vector3 toPlayer = playerTransform.position - position;
-            if (Physics.Raycast(position, toPlayer, toPlayer.magnitude))
+            switch(location.spawnType)
             {
-                // Object is in the way of the player
-                m_possibleLocations.Add(dynamicSpawn);
+                case SpawnLocation.SpawnType.FIXED:
+                    {
+                        m_possibleLocations.Add(location);
+                        break;
+                    }
+                case SpawnLocation.SpawnType.DYNAMIC:
+                    {
+                        Vector3 position = location.transform.position;
+                        Vector3 toPlayer = m_playerTransform.position - position;
+                        if (Physics.Raycast(position, toPlayer, toPlayer.magnitude))
+                        {
+                            // Object is in the way of the player
+                            m_possibleLocations.Add(location);
+                        }
+                        break;
+                    }
             }
         }
 
         // Just simply random for now
-        int rand = Random.Range(0, m_possibleLocations.Count);
-
-        return m_possibleLocations[rand];
+        if(m_possibleLocations.Count > 0)
+        {
+            int rand = Random.Range(0, m_possibleLocations.Count);
+            return m_possibleLocations[rand];
+        }
+        return null;
     }
 
     public void InitiateMiniWave(int currentActiveAgentCount)
@@ -213,8 +249,8 @@ public class EnemySpawner : MonoBehaviour
 
     private void OnDrawGizmos()
     {
-        Transform drawPlayer = playerTransform;
-        if(playerTransform == null)
+        Transform drawPlayer = m_playerTransform;
+        if(m_playerTransform == null)
         {
             drawPlayer = aiManager.playerTransform;
         }
