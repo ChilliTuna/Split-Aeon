@@ -44,6 +44,7 @@ GameObject:
   - component: {fileID: 3425302754498483404}
   - component: {fileID: 8830579410453612079}
   - component: {fileID: 5773504266140061625}
+  - component: {fileID: 1881973866712660813}
   m_Layer: 0
   m_Name: Wall_Plate_Corner
   m_TagString: Untagged
@@ -114,6 +115,20 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!64 &1881973866712660813
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4880886310230394188}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 4
+  m_Convex: 1
+  m_CookingOptions: 30
+  m_Mesh: {fileID: 7708816973508267477, guid: ed8309a733aa1ea44aa70f24f4ad047d, type: 3}
 --- !u!1001 &1234240619048337884
 PrefabInstance:
   m_ObjectHideFlags: 0
