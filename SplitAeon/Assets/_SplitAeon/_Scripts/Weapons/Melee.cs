@@ -59,6 +59,7 @@ public class Melee : Weapon
     {
         Debug.Log("Melee Swing");
         animator.SetTrigger("Swing");
+        animator.SetBool("SwingSide", !animator.GetBool("SwingSide"));
 
         manager.weaponAudioSource.PlayOneShot(swingClips[Mathf.FloorToInt(Random.Range(0, swingClips.Length))]);
 

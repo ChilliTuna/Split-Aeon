@@ -16,7 +16,6 @@ public class Player : MonoBehaviour
     private float movementSpeed;
     public float walkSpeed;
     public float sprintSpeed;
-    public float crouchSpeed;
 
     #endregion
 
@@ -34,8 +33,6 @@ public class Player : MonoBehaviour
 
     [HideInInspector]
     public bool isRunning;
-    [HideInInspector]
-    public bool isCrouching;
     [HideInInspector]
     public bool isMoving;
     [HideInInspector]
@@ -59,17 +56,6 @@ public class Player : MonoBehaviour
     public float mouseSensitivity = 100f;
     private float xRotation = 0f;
     public Camera cam;
-    public Camera viewmodelCam;
-
-    [Space(5)]
-
-    public float standingCameraHeight;
-    public float crouchingCameraHeight;
-
-    private Vector3 cameraPosStanding;
-    private Vector3 cameraPosCrouched;
-
-    private Vector3 cameraHeight;
 
     [Space(5)]
 
@@ -105,7 +91,6 @@ public class Player : MonoBehaviour
     #region Blends
 
     float weaponMoveBlend;
-    float crouchBlend;
 
     #endregion
 
@@ -113,18 +98,11 @@ public class Player : MonoBehaviour
 
     private void Start()
     {
-
         #region Initialization
-
-        cameraPosStanding = new Vector3(0, standingCameraHeight, 0);
-        cameraPosCrouched = new Vector3(0, crouchingCameraHeight, 0);
-
-        cameraHeight = cameraPosStanding;
 
         Cursor.lockState = CursorLockMode.Locked;
         movementSpeed = walkSpeed;
 
-        cam.transform.localPosition = cameraPosStanding;
         cam.transform.rotation = Quaternion.identity;
 
         cameraSprintFOV = cameraFOV + sprintFOVIncrease;
@@ -132,7 +110,6 @@ public class Player : MonoBehaviour
         currentFOV = cam.fieldOfView;
 
         #endregion
-
     }
 
     void Update()
@@ -151,8 +128,6 @@ public class Player : MonoBehaviour
         {
             isMoving = true;
         }
-
-
 
         #region Ground Check
         isGrounded = Physics.CheckSphere(groundCheck.position, groundDistance, ~ignoreMask);
@@ -199,8 +174,6 @@ public class Player : MonoBehaviour
             mouseYAxis = 0;
         }
 
-
-
         #region Recoil Management
 
         mouseXAxis += recoilHorizontal;
@@ -238,8 +211,6 @@ public class Player : MonoBehaviour
 
         #endregion
 
-
-
         xRotation -= mouseYAxis;
         xRotation = Mathf.Clamp(xRotation, -90f, 90f);
 
@@ -248,9 +219,9 @@ public class Player : MonoBehaviour
 
         #endregion
 
-        #region Running & Crouching
+        #region Running
 
-        if (Input.GetKey(KeyCode.LeftShift) && !isCrouching && Input.GetAxis("Vertical") > 0)
+        if (Input.GetKey(KeyCode.LeftShift) && Input.GetAxis("Vertical") > 0)
         {
             isRunning = true;
 
@@ -261,22 +232,7 @@ public class Player : MonoBehaviour
             isRunning = false;
         }
 
-        if (Input.GetKey(KeyCode.LeftControl) && !isRunning)
-        {
-            isCrouching = true;
-            movementSpeed = crouchSpeed;
-        }
-        else
-        {
-            isCrouching = false;
-        }
-
-        cameraHeight.y = crouchBlend;
-
-        cam.transform.localPosition = cameraHeight;
-
-
-        if (!isRunning && !isCrouching)
+        if (!isRunning)
         {
             movementSpeed = walkSpeed;
         }
@@ -285,20 +241,6 @@ public class Player : MonoBehaviour
 
         #region Animation
 
-        if (isCrouching)
-        {
-            crouchBlend = Mathf.Lerp(crouchBlend, crouchingCameraHeight, Time.deltaTime * 4f);
-        }
-        else
-        {
-            crouchBlend = Mathf.Lerp(crouchBlend, standingCameraHeight, Time.deltaTime * 4f);
-        }
-
-        //if (Input.GetKeyDown(KeyCode.I))
-        //{
-        //    GetComponent<Health>().Hit(10);
-        //}
-
         if (xMovement != 0 || zMovement != 0)
         {
 
@@ -306,11 +248,11 @@ public class Player : MonoBehaviour
 
             if (isRunning)
             {
-                weaponMoveBlend = Mathf.Lerp(weaponMoveBlend, 1, Time.deltaTime * 4f);
+                weaponMoveBlend = Mathf.Lerp(weaponMoveBlend, 1, Time.deltaTime * 10f);
             }
             else
             {
-                weaponMoveBlend = Mathf.Lerp(weaponMoveBlend, 0f, Time.deltaTime * 4f);
+                weaponMoveBlend = Mathf.Lerp(weaponMoveBlend, 0f, Time.deltaTime * 10f);
             }
 
         }
@@ -331,7 +273,6 @@ public class Player : MonoBehaviour
         viewmodelAnimator.SetFloat("MovementBlend", weaponMoveBlend);
 
         cam.fieldOfView = currentFOV;
-        viewmodelCam.fieldOfView = cam.fieldOfView;
 
         if (isGrounded)
         {

@@ -26,4 +26,14 @@ public class AnimationRelay : MonoBehaviour
     {
         weapon.GetComponent<Gun>().EjectShell();
     }
+
+    public void SetFirstShot()
+    {
+        GetComponent<Animator>().SetBool("FirstShot", true);
+    }
+
+    public void ResetFirstShot()
+    {
+        GetComponent<Animator>().SetBool("FirstShot", false);
+    }
 }

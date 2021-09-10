@@ -32,8 +32,6 @@ public class WeaponManager : MonoBehaviour
     [Header("Audio")]
     public AudioSource weaponAudioSource;
 
-    public AudioClip[] lethalThrowClips;
-
     [Space(10)]
 
     [Header("Controls")]
