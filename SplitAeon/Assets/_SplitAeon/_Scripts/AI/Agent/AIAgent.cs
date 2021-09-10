@@ -86,6 +86,8 @@ public class AIAgent : MonoBehaviour
         m_stateMachine.Init();
 
         m_distToPlayerSquared = (playerTransform.position - transform.position).sqrMagnitude;
+
+        StabiliseSettings();
     }
 
     public void ChangeState(int stateIndex)
@@ -146,6 +148,12 @@ public class AIAgent : MonoBehaviour
         seekDir = Vector3.ClampMagnitude(seekDir, m_navAgent.speed);
 
         m_navAgent.Move(seekDir * Time.deltaTime);
+    }
+
+    // This function is called to ensure that the nav agents movespeed is the same as the agent's settings
+    public void StabiliseSettings()
+    {
+        m_navAgent.speed = settings.moveSpeed;
     }
 
     private void OnDrawGizmos()
