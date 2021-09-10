@@ -23,6 +23,7 @@ public class CardManager : MonoBehaviour
     public Player player;
     public Camera playerCam;
     public LayerMask playerMask;
+    public PlayerMagicAnimations magicAnims;
 
     [Header("Universal Data")]
     public int maxCardLethals;
@@ -76,7 +77,13 @@ public class CardManager : MonoBehaviour
         {
             if (!player.isBusy)
             {
-                ThrowCardLethal();
+                player.viewmodelAnimator.SetTrigger("Switch");
+
+                Invoke("TriggerCardThrowAnimation", 0.3f);
+
+                //magicAnims.TriggerCardThrow();
+
+                //ThrowCardLethal();
             }
         }
 
@@ -151,5 +158,10 @@ public class CardManager : MonoBehaviour
             cardLethalPool -= 1;
 
         }
+    }
+
+    void TriggerCardThrowAnimation()
+    {
+        magicAnims.TriggerCardThrow();
     }
 }
