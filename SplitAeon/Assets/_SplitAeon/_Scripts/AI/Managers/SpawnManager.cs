@@ -16,7 +16,7 @@ public class SpawnManager : MonoBehaviour
     {
         m_spawnPartitions = new SpawnPartitions(cellSize, offset);
 
-        var spawnerArray = FindObjectsOfType<EnemySpawner>();
+        var spawnerArray = FindObjectsOfType<EnemySpawner>(true);
 
         foreach(EnemySpawner spawner in spawnerArray)
         {

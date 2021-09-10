@@ -24192,6 +24192,7 @@ GameObject:
   - component: {fileID: 7341680661332708290}
   - component: {fileID: 1705601519973983041}
   - component: {fileID: 5434443014787581247}
+  - component: {fileID: 3556527356658986089}
   m_Layer: 20
   m_Name: Player
   m_TagString: Player
@@ -24529,6 +24530,22 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!114 &3556527356658986089
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5274002625647166297}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a5879025e18618f409954cef3312c5ca, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  cellSize: {x: 10, y: 10, z: 10}
+  offset: {x: 0.5, y: 0.5, z: 0.5}
+  cellRange: 1
+  playerTransform: {fileID: 5274002625647166302}
 --- !u!1 &5286093446578612196
 GameObject:
   m_ObjectHideFlags: 0
@@ -42008,6 +42025,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c84dfe370a62a474dbbc26fe40022651, type: 3}
+--- !u!4 &2673708502096599102 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 5306167070081189370, guid: c84dfe370a62a474dbbc26fe40022651, type: 3}
+  m_PrefabInstance: {fileID: 7834470465836441028}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &7724544295512128047 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: c84dfe370a62a474dbbc26fe40022651, type: 3}
@@ -42016,11 +42038,6 @@ Transform:
 --- !u!1 &6951526686768062613 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: c84dfe370a62a474dbbc26fe40022651, type: 3}
-  m_PrefabInstance: {fileID: 7834470465836441028}
-  m_PrefabAsset: {fileID: 0}
---- !u!4 &2673708502096599102 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 5306167070081189370, guid: c84dfe370a62a474dbbc26fe40022651, type: 3}
   m_PrefabInstance: {fileID: 7834470465836441028}
   m_PrefabAsset: {fileID: 0}
 --- !u!4 &2277934698739329385 stripped
