@@ -5,10 +5,13 @@ using UnityEngine;
 public class SpawnPartitions
 {
     Vector3 m_cellSize = Vector3.one;
+    Vector3 m_offset = Vector3.zero;
 
     SpawnLocation[] m_spawnLocations;
 
     SortedDictionary<IVec3, HashSet<SpawnLocation>> m_cellSpawns = new SortedDictionary<IVec3, HashSet<SpawnLocation>>(new IVec3Comparer());
+
+    public Vector3 cellSize {  get { return m_cellSize; } }
 
     public SpawnPartitions()
     {
@@ -22,9 +25,13 @@ public class SpawnPartitions
         Init();
     }
 
-    public SpawnPartitions(Vector3 cellSize)
+    public SpawnPartitions(Vector3 cellSize, Vector3 offset)
     {
         m_cellSize = cellSize;
+        m_offset = offset;
+        m_offset.x *= cellSize.x;
+        m_offset.y *= cellSize.y;
+        m_offset.z *= cellSize.z;
 
         Init();
     }
@@ -64,10 +71,24 @@ public class SpawnPartitions
 
     public IVec3 GetCell(Vector3 targetPosition)
     {
-        Vector3 normalised = targetPosition;
+        Vector3 normalised = targetPosition - m_offset;
         normalised.x /= m_cellSize.x;
         normalised.y /= m_cellSize.y;
         normalised.z /= m_cellSize.z;
+
+        // Fix negative mod error
+        if(normalised.x < 0.0f)
+        {
+            normalised.x -= 1.0f;
+        }
+        if (normalised.y < 0.0f)
+        {
+            normalised.y -= 1.0f;
+        }
+        if (normalised.z < 0.0f)
+        {
+            normalised.z -= 1.0f;
+        }
 
         IVec3 result = IVec3.zero;
         result.x = (int)normalised.x;
