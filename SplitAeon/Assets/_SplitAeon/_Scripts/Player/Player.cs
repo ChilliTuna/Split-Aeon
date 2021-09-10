@@ -248,11 +248,11 @@ public class Player : MonoBehaviour
 
             if (isRunning)
             {
-                weaponMoveBlend = Mathf.Lerp(weaponMoveBlend, 1, Time.deltaTime * 4f);
+                weaponMoveBlend = Mathf.Lerp(weaponMoveBlend, 1, Time.deltaTime * 10f);
             }
             else
             {
-                weaponMoveBlend = Mathf.Lerp(weaponMoveBlend, 0f, Time.deltaTime * 4f);
+                weaponMoveBlend = Mathf.Lerp(weaponMoveBlend, 0f, Time.deltaTime * 10f);
             }
 
         }
