@@ -36,4 +36,9 @@ public class ObjectiveKillTracker : MonoBehaviour
         killCount = 0;
     }
 
+    public void ToggleBool(bool b)
+    {
+        isTrackingEnabled = b;
+    }
+
 }
