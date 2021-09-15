@@ -9,15 +9,16 @@ public class Projectile : MonoBehaviour
     float m_timer = 0.0f;
 
     Rigidbody m_body;
-    float m_playerDistance = 0.0f;
 
     [HideInInspector] public AIAgent owner;
+
+    float m_initialForce = 0.0f;
 
     // Start is called before the first frame update
     void Start()
     {
         m_body = GetComponent<Rigidbody>();
-        m_body.velocity = transform.forward * settings.force * m_playerDistance;
+        m_body.velocity = transform.forward * m_initialForce;
         m_timer = 0.0f;
     }
 
@@ -33,20 +34,12 @@ public class Projectile : MonoBehaviour
         }
     }
 
-    public void Shoot(AIAgent owner, Vector3 origin, Vector3 destination)
+    public void Shoot(AIAgent owner, Vector3 origin, Vector3 launchVector, float force)
     {
         this.owner = owner;
         transform.position = origin;
-
-        Vector3 launchVector = destination - origin;
-
-        m_playerDistance = launchVector.magnitude;
-
-        launchVector.y = 0.0f;
-        float scaled = settings.upAngle;
-        scaled /= 90;
-        launchVector = Vector3.RotateTowards(launchVector, Vector3.up, scaled, 0);
         transform.LookAt(origin + launchVector);
+        m_initialForce = force;
     }
 
     private void OnCollisionEnter(Collision collision)

@@ -11,19 +11,30 @@ public class BreakableBottle : MonoBehaviour
 
     AudioSource source;
     MeshCollider coll;
+    BoxCollider boxColl;
 
 
     private void Start()
     {
         source = GetComponent<AudioSource>();
         coll = GetComponentInChildren<MeshCollider>();
+        boxColl = GetComponentInChildren<BoxCollider>();
     }
 
     public void Break()
     {
         source.PlayOneShot(clips[Mathf.FloorToInt(Random.Range(0, clips.Length))]);
 
-        coll.enabled = false;
+        if (coll)
+        {
+            coll.enabled = false;
+        }
+
+        if (boxColl)
+        {
+            boxColl.enabled = false;
+        }
+
         rend.enabled = false;
         particle.Play();
 

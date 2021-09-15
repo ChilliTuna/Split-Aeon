@@ -4,6 +4,16 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 
+[System.Serializable]
+public class Card
+{
+    public GameObject cardPrefab;
+    public Sprite cardSprite;
+    public float cardThrowForce;
+    public float cardThrowLift;
+    public float cardSpin;
+}
+
 public class CardManager : MonoBehaviour
 {
     [Header("Controls")]
@@ -13,6 +23,7 @@ public class CardManager : MonoBehaviour
     public Player player;
     public Camera playerCam;
     public LayerMask playerMask;
+    public PlayerMagicAnimations magicAnims;
 
     [Header("Universal Data")]
     public int maxCardLethals;
@@ -35,33 +46,12 @@ public class CardManager : MonoBehaviour
     [Header("Weapon GUI")]
     public TextMeshProUGUI cardPoolReadout;
 
-    [Header("Regular Card")]
-    public GameObject regularCardPrefab;
-    public Sprite regularCardSprite;
-    public float regularCardThrowForce;
-    public float regularCardThrowLift;
-    public float regularCardSpin;
+    [Header("Card Types")]
 
-    [Header("Warping Card")]
-    public GameObject warpingCardPrefab;
-    public Sprite warpingCardSprite;
-    public float warpingCardThrowForce;
-    public float warpingCardThrowLift;
-    public float warpingCardSpin;
-
-    [Header("Piercing Card")]
-    public GameObject piercingCardPrefab;
-    public Sprite piercingCardSprite;
-    public float piercingCardThrowForce;
-    public float piercingCardThrowLift;
-    public float piercingCardSpin;
-
-    [Header("Splash Card")]
-    public GameObject splashCardPrefab;
-    public Sprite splashCardSprite;
-    public float splashCardThrowForce;
-    public float splashCardThrowLift;
-    public float splashCardSpin;
+    public Card regularCard;
+    public Card warpingCard;
+    public Card piercingCard;
+    public Card splashCard;
 
     [Header("Audio")]
     public AudioSource weaponAudioSource;
@@ -87,42 +77,32 @@ public class CardManager : MonoBehaviour
         {
             if (!player.isBusy)
             {
-                ThrowCardLethal();
+                player.viewmodelAnimator.SetTrigger("Switch");
+
+                Invoke("TriggerCardThrowAnimation", 0.3f);
+
+                //magicAnims.TriggerCardThrow();
+
+                //ThrowCardLethal();
             }
         }
 
         switch (cardTypes)
         {
             case CardTypes.Regular:
-                selectedCard = regularCardPrefab;
-                cardImage.sprite = regularCardSprite;
-                throwForce = regularCardThrowForce;
-                throwLift = regularCardThrowLift;
-                cardSpin = regularCardSpin;
+                SetCurrentCard(regularCard);
                 break;
 
             case CardTypes.Warping:
-                selectedCard = warpingCardPrefab;
-                cardImage.sprite = warpingCardSprite;
-                throwForce = warpingCardThrowForce;
-                throwLift = warpingCardThrowLift;
-                cardSpin = warpingCardSpin;
+                SetCurrentCard(warpingCard);
                 break;
 
             case CardTypes.Piercing:
-                selectedCard = piercingCardPrefab;
-                cardImage.sprite = piercingCardSprite;
-                throwForce = piercingCardThrowForce;
-                throwLift = piercingCardThrowLift;
-                cardSpin = piercingCardSpin;
+                SetCurrentCard(piercingCard);
                 break;
 
             case CardTypes.Splash:
-                selectedCard = splashCardPrefab;
-                cardImage.sprite = splashCardSprite;
-                throwForce = splashCardThrowForce;
-                throwLift = splashCardThrowLift;
-                cardSpin = splashCardSpin;
+                SetCurrentCard(splashCard);
                 break;
         }
 
@@ -152,6 +132,15 @@ public class CardManager : MonoBehaviour
         }
     }
 
+    public void SetCurrentCard(Card card)
+    {
+        selectedCard = card.cardPrefab;
+        cardImage.sprite = card.cardSprite;
+        throwForce = card.cardThrowForce;
+        throwLift = card.cardThrowLift;
+        cardSpin = card.cardSpin;
+    }
+
     public void ThrowCardLethal()
     {
         if (cardLethalPool > 0)
@@ -169,5 +158,10 @@ public class CardManager : MonoBehaviour
             cardLethalPool -= 1;
 
         }
+    }
+
+    void TriggerCardThrowAnimation()
+    {
+        magicAnims.TriggerCardThrow();
     }
 }

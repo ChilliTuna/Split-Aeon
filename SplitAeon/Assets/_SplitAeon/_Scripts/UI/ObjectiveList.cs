@@ -1,7 +1,6 @@
 ﻿using System.Collections;
 using TMPro;
 using UnityEngine;
-using UnityEngine.UI;
 using UnityEngine.Events;
 
 public class ObjectiveList : MonoBehaviour
@@ -37,7 +36,7 @@ public class ObjectiveList : MonoBehaviour
         objectiveText.text = "";
     }
 
-    public void NextObjective()
+    private void NextObjective()
     {
         currentObjective++;
         objectiveText.text = objectives[currentObjective];
@@ -65,11 +64,11 @@ public class ObjectiveList : MonoBehaviour
             isVisible = state;
             if (isVisible)
             {
-                StartCoroutine(FadeIn(cg, fadeDuration));
+                StartCoroutine(MenuTools.FadeIn(cg, fadeDuration));
             }
             else
             {
-                StartCoroutine(FadeOut(cg, fadeDuration));
+                StartCoroutine(MenuTools.FadeOut(cg, fadeDuration));
             }
         }
     }
@@ -109,7 +108,7 @@ public class ObjectiveList : MonoBehaviour
                     goto case (1);
 
                 case (1):
-                    StartCoroutine(FadeOut(objectiveBlock, 0.5f));
+                    StartCoroutine(MenuTools.FadeOut(objectiveBlock, 0.5f));
                     if (objectiveBlock.GetComponent<CanvasGroup>().alpha == 0)
                     {
                         i++;
@@ -136,7 +135,7 @@ public class ObjectiveList : MonoBehaviour
                 case (3):
                     if (!gameWin)
                     {
-                        StartCoroutine(FadeIn(objectiveBlock, 0.5f));
+                        StartCoroutine(MenuTools.FadeIn(objectiveBlock, 0.5f));
                         if (objectiveBlock.GetComponent<CanvasGroup>().alpha == 1)
                         {
                             if (currentObjective >= objectives.Length - 1)
@@ -162,69 +161,6 @@ public class ObjectiveList : MonoBehaviour
         if (!wasVisible)
         {
             ToggleObjectives(false);
-        }
-    }
-
-    private bool IsApproximatelyEqual(float targetVal, float actualVal, float acceptableVariance = 0.1f)
-    {
-        return (targetVal - acceptableVariance <= actualVal && actualVal + acceptableVariance >= actualVal);
-    }
-
-    private IEnumerator FadeOut(TextMeshProUGUI text, float period = 1)
-    {
-        while (text.alpha > 0)
-        {
-            text.alpha -= 1 / period * Time.deltaTime;
-            yield return 0;
-        }
-    }
-
-    private IEnumerator FadeOut(Image image, float period = 1)
-    {
-        while (image.color.a > 0)
-        {
-            Color tempCol = image.color;
-            tempCol.a -= 1 / period * Time.deltaTime;
-            image.color = tempCol;
-            yield return 0;
-        }
-    }
-
-    private IEnumerator FadeOut(CanvasGroup canvasGroup, float period = 1)
-    {
-        while (canvasGroup.alpha > 0)
-        {
-            canvasGroup.alpha -= 1 / period * Time.deltaTime;
-            yield return 0;
-        }
-    }
-
-    private IEnumerator FadeIn(TextMeshProUGUI text, float period = 1)
-    {
-        while (text.alpha < 1)
-        {
-            text.alpha += 1 / period * Time.deltaTime;
-            yield return 0;
-        }
-    }
-
-    private IEnumerator FadeIn(Image image, float period = 1)
-    {
-        while (image.color.a < 1)
-        {
-            Color tempCol = image.color;
-            tempCol.a += 1 / period * Time.deltaTime;
-            image.color = tempCol;
-            yield return 0;
-        }
-    }
-
-    private IEnumerator FadeIn(CanvasGroup canvasGroup, float period = 1)
-    {
-        while (canvasGroup.alpha < 1)
-        {
-            canvasGroup.alpha += 1 / period * Time.deltaTime;
-            yield return 0;
         }
     }
 }

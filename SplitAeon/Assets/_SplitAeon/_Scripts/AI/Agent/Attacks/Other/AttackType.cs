@@ -7,7 +7,7 @@ public abstract class AttackType : MonoBehaviour
     AIAgent m_agent;
     protected AIAgent agent { get { return m_agent; } }
 
-    void Awake()
+    protected virtual void Awake()
     {
         m_agent = GetComponent<AIAgent>();
     }
