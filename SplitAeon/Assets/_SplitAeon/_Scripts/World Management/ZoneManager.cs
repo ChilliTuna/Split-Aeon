@@ -31,9 +31,9 @@ public class ZoneManager : MonoBehaviour
         ChangeSpawnerActiveness(activeZone, true);
     }
 
-    public void ExitZone()
+    public void ExitZone(Zone zone)
     {
-        ChangeSpawnerActiveness(activeZone, false);
+        ChangeSpawnerActiveness(zone, false);
         activeZone = null;
     }
 
@@ -64,4 +64,13 @@ public class ZoneManager : MonoBehaviour
         zone.SetActiveness(activeness);
     }
 
+    public void IncreaseAliveCountForActiveZone()
+    {
+        activeZone.IncreaseAliveCount();
+    }
+    
+    public void DecreaseAliveCountForActiveZone()
+    {
+        activeZone.DecreaseAliveCount();
+    }
 }
