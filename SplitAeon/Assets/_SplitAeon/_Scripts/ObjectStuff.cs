@@ -17,4 +17,10 @@ public class ObjectStuff : MonoBehaviour
         gameObject.SetActive(true);
     }
 
+    public void TurnOnWatch(Timewarp tw)
+    {
+        tw.enabled = true;
+    }
+
+
 }

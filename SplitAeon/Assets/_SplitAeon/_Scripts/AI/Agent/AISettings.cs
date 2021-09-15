@@ -8,6 +8,9 @@ public class AISettings : ScriptableObject
     [Header("Type")]
     public EnemyType enemyType;
 
+    [Header("Movement")]
+    public float moveSpeed = 3.5f;
+
     [Header("Idle")]
     public float maxIdleTime = 2.0f;
     public float minIdleTime = 1.0f;
@@ -28,4 +31,43 @@ public class AISettings : ScriptableObject
 
     [Header("Death")]
     public float bodyDecayTime = 5.0f;
+
+    private void OnValidate()
+    {
+        if(Application.isPlaying)
+        {
+            switch (enemyType)
+            {
+                case EnemyType.cultist:
+                    {
+                        var managers = FindObjectsOfType<AIManager>();
+                        foreach (var manager in managers)
+                        {
+                            foreach(var cultist in manager.cultistPool.activeAgents)
+                            {
+                                cultist.StabiliseSettings();
+                            }
+                        }
+                        break;
+                    }
+                case EnemyType.belcher:
+                    {
+                        var managers = FindObjectsOfType<AIManager>();
+                        foreach (var manager in managers)
+                        {
+                            foreach (var belcher in manager.belcherPool.activeAgents)
+                            {
+                                belcher.StabiliseSettings();
+                            }
+                        }
+                        break;
+                    }
+                default:
+                    {
+                        Debug.Log("Pick an enemyType");
+                        break;
+                    }
+            }
+        }
+    }
 }
