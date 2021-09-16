@@ -11,10 +11,9 @@ public class AIManagerSettings : ScriptableObject
         public GameObject targetPrefab;
         public int maxCount;
         public string containerName;
-        public EnemyType enemyType;
     }
 
-    public EnemyInfo[] enemies;
+    public EnemyInfo[] enemies = new EnemyInfo[1];
 
     public List<AgentObjectPool> CreateObjectPools(AIManager aiManager)
     {
@@ -29,7 +28,25 @@ public class AIManagerSettings : ScriptableObject
     static AgentObjectPool CreatePool(AIManager aiManager, EnemyInfo enemyInfo)
     {
         AgentObjectPool enemyPool = new AgentObjectPool();
-        enemyPool.InitialiseObjectPool(aiManager, enemyInfo.containerName, enemyInfo.maxCount, enemyInfo.targetPrefab, enemyInfo.enemyType);
+        EnemyType enemyType = enemyInfo.targetPrefab.GetComponent<AIAgent>().settings.enemyType;
+        enemyPool.InitialiseObjectPool(aiManager, enemyInfo.containerName, enemyInfo.maxCount, enemyInfo.targetPrefab, enemyType);
         return enemyPool;
+    }
+
+    private void OnValidate()
+    {
+        if(enemies.Length == 0)
+        {
+            enemies = new EnemyInfo[1];
+            Debug.LogWarning("There needs to be at least one enemy type");
+        }
+
+        for (int i = 0; i < enemies.Length; i++)
+        {
+            if(enemies[i].maxCount < 1)
+            {
+                enemies[i].maxCount = 1;
+            }
+        }
     }
 }
