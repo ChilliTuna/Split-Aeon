@@ -49,7 +49,7 @@ public class WeaponManager : MonoBehaviour
         weaponIndex = 3;
         player.viewmodelAnimator = weapons[3].GetComponent<Melee>().animator;
 
-        //SwitchWeapon(0);
+        SwitchWeapon(3);
     }
 
     void Update()
@@ -94,24 +94,34 @@ public class WeaponManager : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.Alpha1))
         {
-            if (weapons[3])
-
-            SwitchWeapon(3);
+            if (weapons[3].isUnlocked)
+            {
+                SwitchWeapon(3);
+            }
         }
 
         if (Input.GetKeyDown(KeyCode.Alpha2))
         {
-            SwitchWeapon(0);
+            if (weapons[0].isUnlocked)
+            {
+                SwitchWeapon(0);
+            }
         }
 
         if (Input.GetKeyDown(KeyCode.Alpha3))
         {
-            SwitchWeapon(1);
+            if (weapons[1].isUnlocked)
+            {
+                SwitchWeapon(1);
+            }
         }
 
         if (Input.GetKeyDown(KeyCode.Alpha4))
         {
-            SwitchWeapon(2);
+            if (weapons[2].isUnlocked)
+            {
+                SwitchWeapon(2);
+            }
         }
     }
 
