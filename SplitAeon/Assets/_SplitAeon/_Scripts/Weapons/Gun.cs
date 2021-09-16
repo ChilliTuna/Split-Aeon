@@ -57,6 +57,10 @@ public class Gun : Weapon
 
     public Animator animator;
 
+    [Header("Unlock State")]
+
+
+
     // Runtime Variables
 
     [HideInInspector]
@@ -97,6 +101,7 @@ public class Gun : Weapon
                 ammoLoaded = clipSize;
             }
         }
+
     }
 
     public override void PrimaryUse()

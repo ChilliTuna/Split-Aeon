@@ -57,6 +57,12 @@ public class Melee : Weapon
 
     void Swing()
     {
+
+        if (manager.player.isBusy)
+        {
+            return;
+        }
+
         Debug.Log("Melee Swing");
         animator.SetTrigger("Swing");
         animator.SetBool("SwingSide", !animator.GetBool("SwingSide"));
@@ -69,12 +75,18 @@ public class Melee : Weapon
 
     void Push()
     {
+
+        if (manager.player.isBusy)
+        {
+            return;
+        }
+
         Debug.Log("Melee Push");
         animator.SetTrigger("Push");
 
         manager.weaponAudioSource.PlayOneShot(pushClips[Mathf.FloorToInt(Random.Range(0, pushClips.Length))]);
 
-        hitbox.EnableDamage();
+        hitbox.EnablePush();
 
     }
 }
