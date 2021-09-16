@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class DebugProjectile : MonoBehaviour
 {
-    Rigidbody rigidbody;
+    Rigidbody m_rigidBody;
     public float force = 5.0f;
 
     public DebugArcGizmo debugger;
@@ -12,7 +12,7 @@ public class DebugProjectile : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        rigidbody = GetComponent<Rigidbody>();
+        m_rigidBody = GetComponent<Rigidbody>();
         ResetDebugBall();
     }
 
@@ -34,6 +34,6 @@ public class DebugProjectile : MonoBehaviour
         transform.position = Vector3.zero;
         Vector3 luanchVec = debugger.CalcLaunchVec();
         transform.LookAt(transform.position + luanchVec);
-        rigidbody.velocity = transform.forward * luanchVec.magnitude;
+        m_rigidBody.velocity = transform.forward * luanchVec.magnitude;
     }
 }

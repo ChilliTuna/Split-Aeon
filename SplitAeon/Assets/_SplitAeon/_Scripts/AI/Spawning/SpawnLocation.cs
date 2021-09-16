@@ -30,6 +30,10 @@ public class SpawnLocation : MonoBehaviour
     public void StartSpawning()
     {
         m_isSpawning = true;
+
+        // DEBUGGONG PURPOSE: END THE SPAWNING STRAIGHT AWAY
+        // Ideally the spawn would last as long as the animation that plays it
+        EndSpawning();
     }
 
     public void EndSpawning()
@@ -49,18 +53,25 @@ public class SpawnLocation : MonoBehaviour
             Gizmos.DrawCube(position, Vector3.one);
         }
 
-        switch(spawnType)
+        if(isSpawning)
         {
-            case SpawnType.FIXED:
-                {
-                    DrawCube(transform.position, Color.red);
-                    break;
-                }
-            case SpawnType.DYNAMIC:
-                {
-                    DrawCube(transform.position, Color.yellow);
-                    break;
-                }
+            DrawCube(transform.position, Color.blue);
+        }
+        else
+        {
+            switch (spawnType)
+            {
+                case SpawnType.FIXED:
+                    {
+                        DrawCube(transform.position, Color.red);
+                        break;
+                    }
+                case SpawnType.DYNAMIC:
+                    {
+                        DrawCube(transform.position, Color.yellow);
+                        break;
+                    }
+            }
         }
     }
 }

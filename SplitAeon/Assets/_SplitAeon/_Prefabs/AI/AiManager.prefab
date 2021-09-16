@@ -43,12 +43,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e13979468138ba94294ec5a24375c4f1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  settings: {fileID: 11400000, guid: a1c56649ebd1a1c46aabe1fd5254bf37, type: 2}
   playerTransform: {fileID: 0}
   playerCam: {fileID: 0}
-  damagePlayerEvent:
+  playerHealth: {fileID: 0}
+  agentdeathEvent:
     m_PersistentCalls:
       m_Calls: []
-  agentdeathEvent:
+  spawnEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  damagePlayerEvent:
     m_PersistentCalls:
       m_Calls: []
   neighbourRadius: 1.5

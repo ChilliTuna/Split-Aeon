@@ -18,6 +18,7 @@ public class AIAgent : MonoBehaviour
     StateMachine<AIAgent> m_stateMachine;
     NavMeshAgent m_navAgent;
     Ragdoll m_ragdoll;
+    Health m_health;
 
     float m_distToPlayerSquared;
 
@@ -27,6 +28,7 @@ public class AIAgent : MonoBehaviour
     public float distToPlayerSquared { get { return m_distToPlayerSquared; } }
     public Transform playerTransform { get { return aiManager.playerTransform; } }
     public Ragdoll ragdoll {  get { return m_ragdoll; } }
+    public Health health { get { return m_health; } }
     public List<Neighbour> neighbours { get { return m_neighbours; } }
 
     public float currentSpeed { get { return m_navAgent.velocity.magnitude; } }
@@ -76,6 +78,7 @@ public class AIAgent : MonoBehaviour
 
         m_navAgent = GetComponent<NavMeshAgent>();
         m_ragdoll = GetComponent<Ragdoll>();
+        m_health = GetComponent<Health>();
 
         // Create State Machine
         m_stateMachine = new StateMachine<AIAgent>(this);
@@ -88,6 +91,7 @@ public class AIAgent : MonoBehaviour
         m_distToPlayerSquared = (playerTransform.position - transform.position).sqrMagnitude;
 
         StabiliseSettings();
+        ResetHealth();
     }
 
     public void ChangeState(int stateIndex)
@@ -114,15 +118,27 @@ public class AIAgent : MonoBehaviour
 
     public void DamagePlayer()
     {
+        aiManager.playerHealth.Hit(settings.attackDamage);
         aiManager.damagePlayerEvent.Invoke();
     }
 
     public void Die()
     {
+        if(m_stateMachine.currentIndex == (int)StateIndex.dead)
+        {
+            // Check if this is already in the dead state and if it is, do nothing
+            return;
+        }
+
         // This would ideally have an animation as well as some sort of clean up for corpses
         // For now just Change state to dead which will activate a ragdoll
         aiManager.agentdeathEvent.Invoke();
         ChangeState(StateIndex.dead);
+    }
+
+    public void ResetHealth()
+    {
+        m_health.health = m_health.maxHealth;
     }
 
     public void DisablePoolObject()
@@ -150,10 +166,14 @@ public class AIAgent : MonoBehaviour
         m_navAgent.Move(seekDir * Time.deltaTime);
     }
 
-    // This function is called to ensure that the nav agents movespeed is the same as the agent's settings
+    // This function is called to ensure that the agents components match the agent's settings
     public void StabiliseSettings()
     {
         m_navAgent.speed = settings.moveSpeed;
+        m_navAgent.angularSpeed = settings.angularSpeed;
+        m_navAgent.acceleration = settings.acceleration;
+
+        m_health.maxHealth = settings.health;
     }
 
     private void OnDrawGizmos()
