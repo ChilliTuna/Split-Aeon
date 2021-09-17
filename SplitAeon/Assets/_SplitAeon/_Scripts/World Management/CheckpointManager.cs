@@ -25,6 +25,8 @@ public class CheckpointManager : MonoBehaviour
     private Vector3 respawnPosition;
     private Quaternion respawnRotation;
 
+    private bool isInPast;
+
     private List<Zone> completedZones = new List<Zone>();
 
     public UnityEvent onCheckpoint;
@@ -33,6 +35,7 @@ public class CheckpointManager : MonoBehaviour
     private void Start()
     {
         player = GetComponent<Timewarp>().player;
+        SetCheckpoint();
     }
 
     private void Update()
@@ -53,6 +56,7 @@ public class CheckpointManager : MonoBehaviour
         SaveAmmoCounts();
         respawnPosition = player.transform.position;
         respawnRotation = player.transform.rotation;
+        isInPast = Globals.isInPast;
         SaveZones();
         onCheckpoint.Invoke();
         //Save defeated zones
@@ -66,6 +70,7 @@ public class CheckpointManager : MonoBehaviour
         player.transform.position = respawnPosition;
         player.GetComponent<CharacterController>().enabled = true;
         player.transform.rotation = respawnRotation;
+        Globals.isInPast = isInPast;
         LoadZones();
         onRespawn.Invoke();
         //Reset non-saved zones
@@ -127,7 +132,7 @@ public class CheckpointManager : MonoBehaviour
     private void LoadZones()
     {
         GameManager gm = gameObject.GetComponent<GameManager>();
-        List<AIAgent> allAgents = gm.gameObject.GetComponent<SilhouetteGenerator>().aiManager.GetAllActiveAgents();
+        List<AIAgent> allAgents = gm.gameObject.GetComponent<SilhouetteGenerator>().pastAiManager.GetAllActiveAgents();
         foreach (AIAgent agent in allAgents)
         {
             agent.DisablePoolObject();

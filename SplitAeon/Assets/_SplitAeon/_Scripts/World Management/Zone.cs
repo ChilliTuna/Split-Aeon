@@ -42,7 +42,7 @@ public class Zone : MonoBehaviour
     {
         if (other.gameObject.GetComponent<Player>())
         {
-            zoneManager.ExitZone();
+            zoneManager.ExitZone(this);
         }
     }
 
