@@ -30,6 +30,10 @@ public class Timewarp : MonoBehaviour
     public GameObject warpingBlockedText;
     public GameObject warpWarningImage;
 
+    public float warpDelay = 1;
+
+    private CustomTimer timer = new CustomTimer();
+
     [Space]
     public UnityEvent onTimeWarp;
 
@@ -52,6 +56,8 @@ public class Timewarp : MonoBehaviour
 
     private void Update()
     {
+        timer.Count();
+
         if (Input.GetKeyDown(KeyCode.E))
         {
             TryWarp();
@@ -84,7 +90,15 @@ public class Timewarp : MonoBehaviour
 
     public void TryWarp()
     {
-        // for now, just teleport, do check for objects here
+        if (timer.GetIsActive())
+        {
+            if (timer.GetCurrentTime() < warpDelay)
+            {
+                return;
+            }
+            timer.Stop();
+            timer.Reset();
+        }
         if (shouldDoWarpChecking)
         {
             if (isInPast)
@@ -111,8 +125,6 @@ public class Timewarp : MonoBehaviour
     {
         player.GetComponent<Player>().viewmodelAnimator.SetTrigger("Warp");
 
-        onTimeWarp.Invoke();
-
         if (isInPast)
         {
             controller.enabled = false;
@@ -129,6 +141,10 @@ public class Timewarp : MonoBehaviour
         TriggerTeleportEffect();
 
         ChangeWorldInternal(!isInPast);
+
+        timer.Start();
+
+        onTimeWarp.Invoke();
     }
 
     private void TriggerTeleportEffect()
@@ -156,5 +172,45 @@ public class Timewarp : MonoBehaviour
     public void ToggleWarpWarning(bool newActive)
     {
         warpWarningImage.SetActive(newActive);
+    }
+}
+
+public class CustomTimer
+{
+    private float currentTime = 0;
+
+    private bool isActive = false;
+
+    public void Count()
+    {
+        if (isActive)
+        {
+            currentTime += Time.deltaTime;
+        }
+    }
+
+    public void Start()
+    {
+        isActive = true;
+    }
+
+    public void Stop()
+    {
+        isActive = false;
+    }
+
+    public bool GetIsActive()
+    {
+        return isActive;
+    }
+
+    public float GetCurrentTime()
+    {
+        return currentTime;
+    }
+
+    public void Reset()
+    {
+        currentTime = 0;
     }
 }

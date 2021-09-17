@@ -41,13 +41,11 @@ public class GameManager : MonoBehaviour
         Debug.Log("you are die");
     }
 
-    public void TimeSwap()
+    public void AIManagerTimeSwap()
     {
         pastAIManager.TogglePlayerInsideState();
         futureAIManager.TogglePlayerInsideState();
     }
-
-
 }
 
 public static class Globals
