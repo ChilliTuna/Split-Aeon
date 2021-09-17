@@ -43,6 +43,8 @@ public class Gun : Weapon
     public Transform muzzlePosition;
 
     public GameObject muzzleFlashPrefab;
+    public float muzzleFlashTime;
+
     public GameObject impactPrefab;
 
     public float impactDecay;
@@ -54,6 +56,10 @@ public class Gun : Weapon
     [Header("Animations")]
 
     public Animator animator;
+
+    [Header("Unlock State")]
+
+
 
     // Runtime Variables
 
@@ -95,6 +101,7 @@ public class Gun : Weapon
                 ammoLoaded = clipSize;
             }
         }
+
     }
 
     public override void PrimaryUse()
@@ -137,7 +144,7 @@ public class Gun : Weapon
                 animator.SetBool("ShootHold", true);
             }
 
-            CreateMuzzleFlash();
+            ShowMuzzleFlash();
             ammoLoaded -= 1;
 
             if (shellParticle)
@@ -223,22 +230,52 @@ public class Gun : Weapon
         }
     }
 
-    void CreateMuzzleFlash()
+    void ShowMuzzleFlash()
     {
         manager.weaponAudioSource.PlayOneShot(shootClips[Mathf.FloorToInt(Random.Range(0, shootClips.Length))]);
-        Instantiate(muzzleFlashPrefab, muzzlePosition);
+
+        muzzleFlashPrefab.SetActive(true);
+
+        Invoke("HideMuzzleFlash", 0.075f);
+
+        //Instantiate(muzzleFlashPrefab, muzzlePosition);
+    }
+
+    void HideMuzzleFlash()
+    {
+        muzzleFlashPrefab.SetActive(false);
+
     }
 
     public void CreateImpactChilded(RaycastHit hitData)
     {
-        GameObject impact = Instantiate(impactPrefab, hitData.point, Quaternion.LookRotation(hitData.normal), hitData.collider.gameObject.transform);
-        Destroy(impact, impactDecay);
+        GameObject decal = DecalPool.POOL.GetPooledObject();
+
+        if (decal != null)
+        {
+            decal.transform.position = hitData.point;
+            decal.transform.rotation = Quaternion.LookRotation(hitData.normal);
+            decal.transform.parent = hitData.collider.gameObject.transform;
+            decal.SetActive(true);
+        }
+
+        //GameObject impact = Instantiate(impactPrefab, hitData.point, Quaternion.LookRotation(hitData.normal), hitData.collider.gameObject.transform);
+        //Destroy(impact, impactDecay);
     }
 
     public void CreateImpactFree(RaycastHit hitData)
     {
-        GameObject impact = Instantiate(impactPrefab, hitData.point, Quaternion.LookRotation(hitData.normal));
-        Destroy(impact, impactDecay);
+        GameObject decal = DecalPool.POOL.GetPooledObject();
+
+        if (decal != null)
+        {
+            decal.transform.position = hitData.point;
+            decal.transform.rotation = Quaternion.LookRotation(hitData.normal);
+            decal.SetActive(true);
+        }
+
+        //GameObject impact = Instantiate(impactPrefab, hitData.point, Quaternion.LookRotation(hitData.normal));
+        //Destroy(impact, impactDecay);
     }
 
     public void EjectShell()

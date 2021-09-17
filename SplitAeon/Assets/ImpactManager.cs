@@ -12,7 +12,7 @@ public class ImpactManager : MonoBehaviour
 
     public GameObject fallbackImpact;
 
-    void Start()
+    private void OnEnable()
     {
         if (Physics.CheckSphere(gameObject.transform.position, 0.2f, mask))
         {
@@ -32,6 +32,17 @@ public class ImpactManager : MonoBehaviour
             }
 
             fallbackImpact.SetActive(true);
+        }
+    }
+
+    private void OnDisable()
+    {
+
+        transform.parent = null;
+
+        foreach (ImpactSurface s in surfaces)
+        {
+            s.impactEffect.SetActive(false);
         }
     }
 

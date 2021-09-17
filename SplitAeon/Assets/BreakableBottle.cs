@@ -37,7 +37,7 @@ public class BreakableBottle : MonoBehaviour
 
         rend.enabled = false;
         particle.Play();
-
+        
         Destroy(this.gameObject, 5);
     }
 
