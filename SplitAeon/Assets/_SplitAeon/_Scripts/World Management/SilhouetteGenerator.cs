@@ -3,7 +3,8 @@ using UnityEngine;
 
 public class SilhouetteGenerator : MonoBehaviour
 {
-    public AIManager aiManager;
+    public AIManager pastAiManager;
+    public AIManager futureAiManager;
 
     private List<AIAgent> aiAgents = new List<AIAgent>();
 
@@ -24,14 +25,21 @@ public class SilhouetteGenerator : MonoBehaviour
         {
             aiAgents.Clear();
         }
-        aiAgents = aiManager.activeAgents;
+        if (Globals.isInPast)
+        {
+            aiAgents = futureAiManager.activeAgents;
+        }
+        else
+        {
+            aiAgents = pastAiManager.activeAgents;
+        }
     }
 
     public void CreateSilhouettes()
     {
         ClearSilhouettes();
         GetActiveAIAgents();
-        if (aiManager.playerInTimePeriod)
+        if (Globals.isInPast)
         {
             foreach (AIAgent agent in aiAgents)
             {
