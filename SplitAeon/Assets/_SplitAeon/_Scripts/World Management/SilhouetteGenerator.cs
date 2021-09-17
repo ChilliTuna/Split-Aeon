@@ -3,8 +3,8 @@ using UnityEngine;
 
 public class SilhouetteGenerator : MonoBehaviour
 {
-    public AIManager pastAiManager;
-    public AIManager futureAiManager;
+    private AIManager pastAiManager;
+    private AIManager futureAiManager;
 
     private List<AIAgent> aiAgents = new List<AIAgent>();
 
@@ -16,6 +16,9 @@ public class SilhouetteGenerator : MonoBehaviour
 
     private void Start()
     {
+        GameManager gm = gameObject.GetComponent<GameManager>();
+        pastAiManager = gm.pastAIManager;
+        futureAiManager = gm.futureAIManager;
         offsetAmount = GetComponent<Timewarp>().offsetAmount;
     }
 

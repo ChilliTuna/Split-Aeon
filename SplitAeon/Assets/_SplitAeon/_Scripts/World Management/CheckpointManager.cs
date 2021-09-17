@@ -132,7 +132,7 @@ public class CheckpointManager : MonoBehaviour
     private void LoadZones()
     {
         GameManager gm = gameObject.GetComponent<GameManager>();
-        List<AIAgent> allAgents = gm.gameObject.GetComponent<SilhouetteGenerator>().pastAiManager.GetAllActiveAgents();
+        List<AIAgent> allAgents = gm.pastAIManager.GetAllActiveAgents();
         foreach (AIAgent agent in allAgents)
         {
             agent.DisablePoolObject();
