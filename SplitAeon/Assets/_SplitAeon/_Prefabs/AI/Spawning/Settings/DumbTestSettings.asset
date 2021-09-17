@@ -9,11 +9,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2e39d1d6dc053454ea4296df531e2471, type: 3}
-  m_Name: Basic Projectile Settings
+  m_Script: {fileID: 11500000, guid: 9a049dc0527d8944ca539d4146f28e69, type: 3}
+  m_Name: DumbTestSettings
   m_EditorClassIdentifier: 
-  animationShootTime: 1.7
-  lifeTime: 5
-  targetOffset: {x: 0, y: 1.6, z: 0}
-  controlTime: 2.3
-  controlExponent: 2.52
+  desiredWaveCount: 5
+  maximumEnemyPopulation: 4
+  allowableOverSpawnLimit: 2
+  waveSeperationTime: 5
+  miniWaveTime: 0.01
+  enemyType: 1

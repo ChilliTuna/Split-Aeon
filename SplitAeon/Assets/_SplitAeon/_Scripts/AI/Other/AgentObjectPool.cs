@@ -71,7 +71,7 @@ public class AgentObjectPool
         m_activeCount++;
     }
 
-    public bool SetObjectActive(out GameObject targetPoolObject)
+    public bool SetObjectActive(out AIAgent targetPoolObject)
     {
         bool result = false;
 
@@ -90,8 +90,8 @@ public class AgentObjectPool
             if (!target.gameObject.activeInHierarchy)
             {
                 target.SetActive(true);
-                targetPoolObject = target.gameObject;
-                targetPoolObject.SetActive(true);
+                targetPoolObject = target.agent;
+                targetPoolObject.gameObject.SetActive(true);
                 m_activeCount++;
                 result = true;
                 break;

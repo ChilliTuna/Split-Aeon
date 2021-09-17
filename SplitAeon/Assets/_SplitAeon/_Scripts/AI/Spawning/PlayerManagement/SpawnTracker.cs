@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class SpawnManager : MonoBehaviour
+public class SpawnTracker : MonoBehaviour
 {
     public Vector3 cellSize = Vector3.one;
     public Vector3 offset = Vector3.one * 0.5f;
@@ -20,7 +20,7 @@ public class SpawnManager : MonoBehaviour
 
         foreach(EnemySpawner spawner in spawnerArray)
         {
-            spawner.spawnManager = this;
+            spawner.spawnTracker = this;
         }
     }
 
@@ -66,10 +66,10 @@ public class SpawnManager : MonoBehaviour
         return GetPlayerAdjacentCells(this, m_spawnPartitions, playerTransform);
     }
 
-    public static IVec3[,,] GetPlayerAdjacentCells(SpawnManager spawnManager, SpawnPartitions spawnPartitions, Transform playerTransform)
+    public static IVec3[,,] GetPlayerAdjacentCells(SpawnTracker spawnTracker, SpawnPartitions spawnPartitions, Transform playerTransform)
     {
         IVec3 playerCell = GetPlayerCell(spawnPartitions, playerTransform);
-        int arraySize = 1 + (spawnManager.cellRange * 2);
+        int arraySize = 1 + (spawnTracker.cellRange * 2);
         IVec3[,,] playerCellArray = new IVec3[arraySize, arraySize, arraySize];
 
         for (int x = 0; x < arraySize; x++)
@@ -79,9 +79,9 @@ public class SpawnManager : MonoBehaviour
                 for (int z = 0; z < arraySize; z++)
                 {
                     IVec3 adjacentCell = IVec3.zero;
-                    adjacentCell.x = playerCell.x + x - spawnManager.cellRange;
-                    adjacentCell.y = playerCell.y + y - spawnManager.cellRange;
-                    adjacentCell.z = playerCell.z + z - spawnManager.cellRange;
+                    adjacentCell.x = playerCell.x + x - spawnTracker.cellRange;
+                    adjacentCell.y = playerCell.y + y - spawnTracker.cellRange;
+                    adjacentCell.z = playerCell.z + z - spawnTracker.cellRange;
 
                     playerCellArray[x, y, z] = adjacentCell;
                 }

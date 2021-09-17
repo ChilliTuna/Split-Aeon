@@ -6,22 +6,14 @@ using UnityEngine.Events;
 public class EnemySpawner : MonoBehaviour
 {
     public AIManager aiManager;
-    [HideInInspector] public SpawnManager spawnManager;
+    [HideInInspector] public SpawnTracker spawnTracker;
 
     List<SpawnLocation> m_fixedSpawnLocations;
     List<SpawnLocation> m_dynamicSpawnLocations;
 
-    [Header("Wave control")]
-    public int miniWaveEnemyCount = 5;
-    public float miniWaveTime = 0.01f;
-
-    public int targetEnemyCount = 5;
-    public int allowableOverSpawnLimit = 2;
-
-    public float spawnTime = 5.0f;
+    public SpawnSettings settings;
 
     [Header("Initialiser values")]
-    public EnemyType enemyType;
     public Vector3 boxSize = new Vector3(5.0f, 5.0f, 5.0f);
     
     Transform m_playerTransform;
@@ -36,15 +28,25 @@ public class EnemySpawner : MonoBehaviour
 
     List<AgentObjectPool> m_enemyObjectPools;
 
-    private void Awake()
-    {
-        m_playerTransform = aiManager.playerTransform;
-        m_playerCam = aiManager.playerCam;
-    }
+    bool m_isInitialised = false;
 
     // Start is called before the first frame update
     void Start()
     {
+        Init();
+    }
+
+    private void Init()
+    {
+        if(m_isInitialised)
+        {
+            return;
+        }
+        m_isInitialised = true;
+
+        m_playerTransform = aiManager.playerTransform;
+        m_playerCam = aiManager.playerCam;
+
         m_fixedSpawnLocations = new List<SpawnLocation>();
         m_dynamicSpawnLocations = new List<SpawnLocation>();
 
@@ -54,7 +56,7 @@ public class EnemySpawner : MonoBehaviour
             Vector3 position = spawnPos.transform.position;
             Vector3 halfBox = boxSize / 2;
             // width check
-            if(position.x < transform.position.x - halfBox.x)
+            if (position.x < transform.position.x - halfBox.x)
             {
                 continue;
             }
@@ -83,11 +85,11 @@ public class EnemySpawner : MonoBehaviour
                 continue;
             }
 
-            if(spawnPos.spawnType == SpawnLocation.SpawnType.DYNAMIC)
+            if (spawnPos.spawnType == SpawnLocation.SpawnType.DYNAMIC)
             {
                 m_dynamicSpawnLocations.Add(spawnPos);
             }
-            else if(spawnPos.spawnType == SpawnLocation.SpawnType.FIXED)
+            else if (spawnPos.spawnType == SpawnLocation.SpawnType.FIXED)
             {
                 m_fixedSpawnLocations.Add(spawnPos);
             }
@@ -102,18 +104,18 @@ public class EnemySpawner : MonoBehaviour
         if(aiManager.playerInTimePeriod)
         {
             m_spawnTimer += Time.deltaTime;
-            if (m_spawnTimer > spawnTime)
+            if (m_spawnTimer > settings.waveSeperationTime)
             {
-                m_spawnTimer -= spawnTime;
-                InitiateMiniWave(aiManager.activeAgentCount);
+                m_spawnTimer -= settings.waveSeperationTime;
+                InitiateMiniWave(aiManager.aliveCount);
             }
 
             if (m_currentMiniWaveRemain > 0)
             {
                 m_miniWaveTimer += Time.deltaTime;
-                if (m_miniWaveTimer > miniWaveTime)
+                if (m_miniWaveTimer > settings.miniWaveTime)
                 {
-                    m_miniWaveTimer -= miniWaveTime;
+                    m_miniWaveTimer -= settings.miniWaveTime;
                     MiniWaveSpawn();
                 }
             }
@@ -122,16 +124,7 @@ public class EnemySpawner : MonoBehaviour
 
     void FindObjectPools()
     {
-        m_enemyObjectPools = new List<AgentObjectPool>();
-
-        if(enemyType.HasFlag(EnemyType.cultist))
-        {
-            m_enemyObjectPools.Add(aiManager.cultistPool);
-        }
-        if (enemyType.HasFlag(EnemyType.belcher))
-        {
-            m_enemyObjectPools.Add(aiManager.belcherPool);
-        }
+        m_enemyObjectPools = aiManager.enemyObjectPools;
     }
 
     AgentObjectPool GetRandomPool()
@@ -146,28 +139,54 @@ public class EnemySpawner : MonoBehaviour
         return m_enemyObjectPools[randIndex];
     }
 
+    public bool GetEnemyAgent(out AIAgent agent)
+    {
+        return aiManager.SetPoolObjectActive(GetRandomPool(), out agent);
+    }
+
     public void Spawn()
     {
-        GameObject enemyObject;
-        if(aiManager.SetPoolObjectActive(GetRandomPool(), out enemyObject))
+        if (GetEnemyAgent(out AIAgent agent))
         {
             // spawn will succeed
+            Vector3 spawnPosition = Vector3.zero;
             SpawnLocation location = GetSpawnLocation();
             if(location != null)
             {
                 location.StartSpawning();
 
-                AIAgent agent = enemyObject.GetComponent<AIAgent>();
-
-                agent.ChangeState(AIStates.StateIndex.chasePlayer);
-                agent.navAgent.Warp(location.transform.position);
-
-                aiManager.spawnEvent.Invoke();
+                spawnPosition = location.transform.position;
             }
             else
             {
                 // no available spawns some how. Likely there are no spawns around the player
             }
+
+            SpawnEvent(agent, spawnPosition, AIStates.StateIndex.chasePlayer);
+        }
+        else
+        {
+            // spawn will fail
+        }
+    }
+
+    void SpawnEvent(AIAgent agent, Vector3 position, AIStates.StateIndex stateIndex)
+    {
+        agent.ChangeState(stateIndex);
+        agent.navAgent.Warp(position);
+
+        agent.ResetHealth();
+
+        aiManager.spawnEvent.Invoke();
+    }
+
+    public void SpawnPassive(Vector3 position, List<Transform> patrolNodes)
+    {
+        if (GetEnemyAgent(out AIAgent agent))
+        {
+            agent.patrolNodes = patrolNodes;
+
+            SpawnEvent(agent, position, AIStates.StateIndex.idle);
         }
         else
         {
@@ -179,23 +198,7 @@ public class EnemySpawner : MonoBehaviour
     {
         m_possibleLocations.Clear();
 
-        HashSet<SpawnLocation> playerAdjacentLocations = spawnManager.GetPlayerAdjacentCellSpawnLocations();
-
-        //foreach(var fixedSpawn in m_fixedSpawnLocations)
-        //{
-        //    m_possibleLocations.Add(fixedSpawn);
-        //}
-        //
-        //foreach (var dynamicSpawn in m_dynamicSpawnLocations)
-        //{
-        //    Vector3 position = dynamicSpawn.transform.position;
-        //    Vector3 toPlayer = m_playerTransform.position - position;
-        //    if (Physics.Raycast(position, toPlayer, toPlayer.magnitude))
-        //    {
-        //        // Object is in the way of the player
-        //        m_possibleLocations.Add(dynamicSpawn);
-        //    }
-        //}
+        HashSet<SpawnLocation> playerAdjacentLocations = spawnTracker.GetPlayerAdjacentCellSpawnLocations();
 
         foreach (var location in playerAdjacentLocations)
         {
@@ -224,17 +227,39 @@ public class EnemySpawner : MonoBehaviour
         if(m_possibleLocations.Count > 0)
         {
             int rand = Random.Range(0, m_possibleLocations.Count);
-            return m_possibleLocations[rand];
+            SpawnLocation possibleSpawn = m_possibleLocations[rand];
+
+            // If this random location is already spawning, then we need to search for another location that is free.
+            int start = rand;
+            do
+            {
+                if (possibleSpawn.isSpawning)
+                {
+                    rand++;
+                    rand = rand % m_possibleLocations.Count;
+                    possibleSpawn = m_possibleLocations[rand];
+                }
+                else
+                {
+                    return possibleSpawn;
+                }
+            } while (rand != start);
         }
         return null;
     }
 
     public void InitiateMiniWave(int currentActiveAgentCount)
     {
-        int amountToAdd = miniWaveEnemyCount - currentActiveAgentCount;
-        if(amountToAdd <= 0)
+        int amountToAdd = settings.desiredWaveCount;
+        int roof = settings.maximumEnemyPopulation + settings.allowableOverSpawnLimit - currentActiveAgentCount;
+        int min = settings.allowableOverSpawnLimit;
+        if (roof >= min)
         {
-            amountToAdd = allowableOverSpawnLimit;
+            amountToAdd = Mathf.Clamp(amountToAdd, min, roof);
+        }
+        else
+        {
+            amountToAdd = min;
         }
 
         m_currentMiniWaveRemain = amountToAdd;
