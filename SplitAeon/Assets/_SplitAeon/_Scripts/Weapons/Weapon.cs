@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.UI;
 
 public abstract class Weapon : MonoBehaviour
 {
@@ -9,6 +10,9 @@ public abstract class Weapon : MonoBehaviour
 
     [HideInInspector]
     public bool isEquipped;
+
+    public bool isUnlocked;
+    public Button weaponWheelButton;
 
     public abstract void PrimaryUse();
     public abstract void SecondaryUse();

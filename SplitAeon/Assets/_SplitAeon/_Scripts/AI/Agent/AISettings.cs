@@ -10,6 +10,11 @@ public class AISettings : ScriptableObject
 
     [Header("Movement")]
     public float moveSpeed = 3.5f;
+    public float angularSpeed = 120.0f;
+    public float acceleration = 8.0f;
+
+    [Header("Gameplay")]
+    public float health = 30;
 
     [Header("Idle")]
     public float maxIdleTime = 2.0f;
@@ -26,6 +31,7 @@ public class AISettings : ScriptableObject
     public float attackChargeRate = 1.0f;
 
     [Header("Attack")]
+    public float attackDamage = 10.0f;
     public float rotationLerpSpeed = 0.1f;
     public float afterAttackLerpSpeed = 0.01f;
 
@@ -43,9 +49,12 @@ public class AISettings : ScriptableObject
                         var managers = FindObjectsOfType<AIManager>();
                         foreach (var manager in managers)
                         {
-                            foreach(var cultist in manager.cultistPool.activeAgents)
+                            foreach(var agent in manager.activeAgents)
                             {
-                                cultist.StabiliseSettings();
+                                if(agent.settings.enemyType == EnemyType.cultist)
+                                {
+                                    agent.StabiliseSettings();
+                                }
                             }
                         }
                         break;
@@ -55,9 +64,12 @@ public class AISettings : ScriptableObject
                         var managers = FindObjectsOfType<AIManager>();
                         foreach (var manager in managers)
                         {
-                            foreach (var belcher in manager.belcherPool.activeAgents)
+                            foreach (var agent in manager.activeAgents)
                             {
-                                belcher.StabiliseSettings();
+                                if (agent.settings.enemyType == EnemyType.belcher)
+                                {
+                                    agent.StabiliseSettings();
+                                }
                             }
                         }
                         break;

@@ -46,12 +46,10 @@ public class WeaponManager : MonoBehaviour
 
     void Start()
     {
-        weapons[0].GetComponent<Gun>().gameObject.SetActive(true);
-        weapons[0].GetComponent<Gun>().crosshair.SetActive(true);
-        weaponIndex = 0;
-        player.viewmodelAnimator = weapons[0].GetComponent<Gun>().animator;
+        weaponIndex = 3;
+        player.viewmodelAnimator = weapons[3].GetComponent<Melee>().animator;
 
-        //SwitchWeapon(0);
+        SwitchWeapon(3);
     }
 
     void Update()
@@ -89,24 +87,41 @@ public class WeaponManager : MonoBehaviour
             }
         }
 
+        foreach (Weapon wep in weapons)
+        {
+            wep.weaponWheelButton.interactable = wep.isUnlocked;
+        }
+
         if (Input.GetKeyDown(KeyCode.Alpha1))
         {
-            SwitchWeapon(0);
+            if (weapons[3].isUnlocked)
+            {
+                SwitchWeapon(3);
+            }
         }
 
         if (Input.GetKeyDown(KeyCode.Alpha2))
         {
-            SwitchWeapon(1);
+            if (weapons[0].isUnlocked)
+            {
+                SwitchWeapon(0);
+            }
         }
 
         if (Input.GetKeyDown(KeyCode.Alpha3))
         {
-            SwitchWeapon(2);
+            if (weapons[1].isUnlocked)
+            {
+                SwitchWeapon(1);
+            }
         }
 
         if (Input.GetKeyDown(KeyCode.Alpha4))
         {
-            SwitchWeapon(3);
+            if (weapons[2].isUnlocked)
+            {
+                SwitchWeapon(2);
+            }
         }
     }
 
@@ -181,5 +196,13 @@ public class WeaponManager : MonoBehaviour
         player.isBusy = false;
     }
 
+    public void UnlockWeapon(int weaponIndex)
+    {
+        weapons[weaponIndex].isUnlocked = true;
+    }
 
+    public void LockWeapon(int weaponIndex)
+    {
+        weapons[weaponIndex].isUnlocked = false;
+    }
 }

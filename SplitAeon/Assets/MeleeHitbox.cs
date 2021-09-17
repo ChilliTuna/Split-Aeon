@@ -9,48 +9,55 @@ public class MeleeHitbox : MonoBehaviour
     public bool damageActive;
     public bool pushActive;
 
-    private BoxCollider col;
+    bool hasHit;
 
-    private void Start()
+    private void OnTriggerStay(Collider other)
     {
-        col = GetComponent<BoxCollider>();
-    }
-    private void OnTriggerEnter(Collider other)
-    {
-        if (damageActive)
+        if (damageActive && !hasHit)
         {
-            if (other.GetComponent<Health>() && !other.CompareTag("Player"))
+            if (!other.CompareTag("Player"))
             {
-                other.GetComponent<Health>().Hit(weapon.damage);
-                Debug.Log("Hit " + other.name);
+                var health = other.gameObject.GetComponentInParent<Health>();
+                var target = other.gameObject.GetComponentInParent<Target>();
+
+                if (health)
+                {
+                    health.Hit(weapon.damage);
+                    Debug.Log("Hit " + other.name);
+                    DisableDamage();
+                }
+                else if (target)
+                {
+                    target.Hit();
+                    Debug.Log("Hit " + other.name);
+                    DisableDamage();
+                }
             }
+
         }       
     }
 
     public void EnableDamage()
     {
-        col.enabled = true;
         damageActive = true;
         Invoke("DisableDamage", 0.75f);
     }
 
     public void DisableDamage()
     {
-        col.enabled = true;
         damageActive = false;
     }
 
     public void EnablePush()
     {
-        col.enabled = true;
         pushActive = true;
         Invoke("DisablePush", 0.75f);
     }
 
     public void DisablePush()
     {
-        col.enabled = true;
         pushActive = false;
     }
+
 
 }
