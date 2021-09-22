@@ -18655,7 +18655,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &3278655541377185949
 Transform:
   m_ObjectHideFlags: 0
@@ -18698,12 +18698,12 @@ Camera:
   field of view: 67.380135
   orthographic: 0
   orthographic size: 5
-  m_Depth: -2
+  m_Depth: 4
   m_CullingMask:
     serializedVersion: 2
     m_Bits: 204276007
   m_RenderingPath: -1
-  m_TargetTexture: {fileID: 8400000, guid: 0bbc71291184abc41aad0b3ded4925d9, type: 2}
+  m_TargetTexture: {fileID: 0}
   m_TargetDisplay: 0
   m_TargetEye: 3
   m_HDR: 0
@@ -30978,6 +30978,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   maxHealth: 100
   health: 0
+  enableHealing: 0
+  timeBeforeHeal: 0
+  healAmount: 0
+  healTick: 0
   onHitEvents:
     m_PersistentCalls:
       m_Calls:
