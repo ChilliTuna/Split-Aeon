@@ -14,6 +14,8 @@ public class ObjectivePointer : MonoBehaviour
 
     private NavMeshPath path;
 
+    public LineRenderer rend;
+
 
     private float timer = 0f;
 
@@ -68,4 +70,8 @@ public class ObjectivePointer : MonoBehaviour
         UIPointer.transform.rotation = Quaternion.Euler(0, 0, angles.y);
     }
 
+    public void SetTarget(Transform t)
+    {
+        target = t;
+    }
 }
