@@ -13,13 +13,19 @@ public class ObjectiveManager : MonoBehaviour
 
     public Objective[] objectives;
 
-    public TextMeshProUGUI text;
+    private TextMeshProUGUI text;
+    private ObjectivePointer pointer;
 
     private Objective currentObjective;
     private int index;
 
+    public UnityEvent onFinalObjectiveCompleted;
+
     private void Start()
     {
+        text = GameObject.Find("ObjectiveTextReadout").GetComponent<TextMeshProUGUI>();
+        pointer = GameObject.Find("PlayerObjectivePointer").GetComponent<ObjectivePointer>();
+
         SetObjective(0);
     }
 
@@ -32,13 +38,6 @@ public class ObjectiveManager : MonoBehaviour
     public void NextObjective()
     {
         index++;
-
-        if (index > objectives.Length)
-        {
-            //Win game
-            Debug.LogWarning("All Objectives Completed!");
-            return;
-        }
 
         SetObjective(index);
     }
@@ -57,9 +56,19 @@ public class ObjectiveManager : MonoBehaviour
 
     public void SetObjective(int index)
     {
+
+        if (index >= objectives.Length)
+        {
+            //Win game
+            Debug.LogWarning("All Objectives Completed!");
+            onFinalObjectiveCompleted.Invoke();
+            return;
+        }
+
         currentObjective = objectives[index];
         UpdateObjectiveDisplay();
         currentObjective.StartObjective();
+        pointer.target = currentObjective.objectiveLocation;
     }
 
     public void UpdateObjectiveDisplay()
@@ -96,6 +105,15 @@ public class Objective
 
     [TextArea]
     public string description;
+
+    [Space(10)]
+
+    [Header("Objective Marker")]
+    public Transform objectiveLocation;
+
+    [Space(10)]
+
+    [Header("Events")]
 
     public UnityEvent onStartObjective;
     public UnityEvent onCompleteObjective;
