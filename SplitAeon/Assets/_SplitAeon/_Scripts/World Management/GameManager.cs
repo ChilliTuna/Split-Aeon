@@ -13,11 +13,16 @@ public class GameManager : MonoBehaviour
 
     public ZoneManager presentZoneManager;
     public ZoneManager pastZoneManager;
+    public AIManager pastAIManager;
+    public AIManager futureAIManager;
 
     // Start is called before the first frame update
     private void Start()
     {
         AssignToZoneManagers();
+
+        // This must be in start as aiManager must init variables in awake
+        futureAIManager.TogglePlayerInsideState();
     }
 
     public void WinGame()
@@ -34,6 +39,12 @@ public class GameManager : MonoBehaviour
     public void LoseGame()
     {
         Debug.Log("you are die");
+    }
+
+    public void AIManagerTimeSwap()
+    {
+        pastAIManager.TogglePlayerInsideState();
+        futureAIManager.TogglePlayerInsideState();
     }
 }
 

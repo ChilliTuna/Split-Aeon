@@ -28,7 +28,7 @@ public class Zone : MonoBehaviour
 
     public Color gizmoColour = Color.blue;
 
-    public UnityEvent onBeatZone;
+    public UnityEvent onCompleteZone;
 
     private void OnTriggerEnter(Collider other)
     {
@@ -38,13 +38,13 @@ public class Zone : MonoBehaviour
         }
     }
 
-    private void OnTriggerExit(Collider other)
-    {
-        if (other.gameObject.GetComponent<Player>())
-        {
-            zoneManager.ExitZone();
-        }
-    }
+    //private void OnTriggerExit(Collider other)
+    //{
+    //    if (other.gameObject.GetComponent<Player>())
+    //    {
+    //        zoneManager.ExitZone(this);
+    //    }
+    //}
 
     public void IncreaseAliveCount()
     {
@@ -123,7 +123,8 @@ public class Zone : MonoBehaviour
     {
         isComplete = true;
         zoneManager.completedZones.Add(this);
-        onBeatZone.Invoke();
+        onCompleteZone.Invoke();
+        zoneManager.ExitZone(this);
     }
 
     public void ResetZone()
