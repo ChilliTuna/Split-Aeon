@@ -38,13 +38,13 @@ public class Zone : MonoBehaviour
         }
     }
 
-    private void OnTriggerExit(Collider other)
-    {
-        if (other.gameObject.GetComponent<Player>())
-        {
-            zoneManager.ExitZone(this);
-        }
-    }
+    //private void OnTriggerExit(Collider other)
+    //{
+    //    if (other.gameObject.GetComponent<Player>())
+    //    {
+    //        zoneManager.ExitZone(this);
+    //    }
+    //}
 
     public void IncreaseAliveCount()
     {
@@ -124,6 +124,7 @@ public class Zone : MonoBehaviour
         isComplete = true;
         zoneManager.completedZones.Add(this);
         onCompleteZone.Invoke();
+        zoneManager.ExitZone(this);
     }
 
     public void ResetZone()
