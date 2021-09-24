@@ -8,13 +8,7 @@ public class EnemySpawner : MonoBehaviour
     public AIManager aiManager;
     [HideInInspector] public SpawnTracker spawnTracker;
 
-    List<SpawnLocation> m_fixedSpawnLocations;
-    List<SpawnLocation> m_dynamicSpawnLocations;
-
     public SpawnSettings settings;
-
-    [Header("Initialiser values")]
-    public Vector3 boxSize = new Vector3(5.0f, 5.0f, 5.0f);
     
     Transform m_playerTransform;
     Camera m_playerCam;
@@ -46,54 +40,6 @@ public class EnemySpawner : MonoBehaviour
 
         m_playerTransform = aiManager.playerTransform;
         m_playerCam = aiManager.playerCam;
-
-        m_fixedSpawnLocations = new List<SpawnLocation>();
-        m_dynamicSpawnLocations = new List<SpawnLocation>();
-
-        SpawnLocation[] allSpawnLocations = FindObjectsOfType<SpawnLocation>();
-        foreach (var spawnPos in allSpawnLocations)
-        {
-            Vector3 position = spawnPos.transform.position;
-            Vector3 halfBox = boxSize / 2;
-            // width check
-            if (position.x < transform.position.x - halfBox.x)
-            {
-                continue;
-            }
-            if (position.x > transform.position.x + halfBox.x)
-            {
-                continue;
-            }
-
-            // height check
-            if (position.y < transform.position.y - halfBox.y)
-            {
-                continue;
-            }
-            if (position.y > transform.position.y + halfBox.y)
-            {
-                continue;
-            }
-
-            // length check
-            if (position.z < transform.position.z - halfBox.z)
-            {
-                continue;
-            }
-            if (position.z > transform.position.z + halfBox.z)
-            {
-                continue;
-            }
-
-            if (spawnPos.spawnType == SpawnLocation.SpawnType.DYNAMIC)
-            {
-                m_dynamicSpawnLocations.Add(spawnPos);
-            }
-            else if (spawnPos.spawnType == SpawnLocation.SpawnType.FIXED)
-            {
-                m_fixedSpawnLocations.Add(spawnPos);
-            }
-        }
 
         FindObjectPools();
     }
@@ -150,7 +96,7 @@ public class EnemySpawner : MonoBehaviour
         {
             // spawn will succeed
             Vector3 spawnPosition = Vector3.zero;
-            SpawnLocation location = GetSpawnLocation();
+            SpawnLocation location = GetSpawnLocation(agent);
             if(location != null)
             {
                 location.StartSpawning();
@@ -194,7 +140,7 @@ public class EnemySpawner : MonoBehaviour
         }
     }
 
-    SpawnLocation GetSpawnLocation()
+    SpawnLocation GetSpawnLocation(AIAgent agent)
     {
         m_possibleLocations.Clear();
 
@@ -202,24 +148,9 @@ public class EnemySpawner : MonoBehaviour
 
         foreach (var location in playerAdjacentLocations)
         {
-            switch(location.spawnType)
+            if(location.IsSpawnable(m_playerTransform.position, settings.environmentMask, m_playerCam, agent.GetBounds(), agent.charCollider.height, agent.charCollider.radius))
             {
-                case SpawnLocation.SpawnType.FIXED:
-                    {
-                        m_possibleLocations.Add(location);
-                        break;
-                    }
-                case SpawnLocation.SpawnType.DYNAMIC:
-                    {
-                        Vector3 position = location.transform.position;
-                        Vector3 toPlayer = m_playerTransform.position - position;
-                        if (Physics.Raycast(position, toPlayer, toPlayer.magnitude))
-                        {
-                            // Object is in the way of the player
-                            m_possibleLocations.Add(location);
-                        }
-                        break;
-                    }
+                m_possibleLocations.Add(location);
             }
         }
 
@@ -274,42 +205,70 @@ public class EnemySpawner : MonoBehaviour
 
     private void OnDrawGizmos()
     {
-        Transform drawPlayer = m_playerTransform;
-        if(m_playerTransform == null)
-        {
-            drawPlayer = aiManager.playerTransform;
-        }
-
-        if(m_dynamicSpawnLocations == null)
+        if(!Application.isPlaying)
         {
             return;
         }
 
-        foreach (var dynamicSpawn in m_dynamicSpawnLocations)
+        /*
+        List<SpawnLocation> spawnLocations = new List<SpawnLocation>();
+        List<SpawnLocation> invalidSpawnLocations = new List<SpawnLocation>();
+        HashSet<SpawnLocation> playerAdjacentLocations = spawnTracker.GetPlayerAdjacentCellSpawnLocations();
+    
+        foreach (var location in playerAdjacentLocations)
         {
-            Vector3 position = dynamicSpawn.transform.position;
-            Vector3 toPlayer = drawPlayer.position - position;
-            if (Physics.Raycast(position, toPlayer, out RaycastHit hitInfo, toPlayer.magnitude))
+            if (location.IsSpawnable(m_playerTransform.position, settings.environmentMask, 2.0f, 0.5f))
             {
-                Gizmos.color = Color.red;
-                // Object is in the way of the player
-                Gizmos.DrawLine(position, hitInfo.point);
+                spawnLocations.Add(location);
             }
             else
             {
-                Gizmos.color = Color.blue;
-                // no object
-                Gizmos.DrawLine(position, drawPlayer.position);
+                invalidSpawnLocations.Add(location);
             }
         }
-    }
+    
+    
+        void DrawCapsuleCast(Vector3 origin, Vector3 point1Offset, Vector3 point2Offset)
+        {
+            Vector3 position = origin;
+            Vector3 dir = m_playerTransform.position - position;
+    
+            if (Physics.CapsuleCast(position + point1Offset, position + point2Offset, 0.5f, dir, out RaycastHit hitInfo, dir.magnitude, settings.environmentMask))
+            {
+                Vector3 hitDir = dir.normalized * hitInfo.distance;
+                Gizmos.DrawSphere(position + point1Offset + hitDir, 0.5f);
+                Gizmos.DrawSphere(position + point2Offset + hitDir, 0.5f);
+                Gizmos.DrawLine(position, position + hitDir);
+            }
+            else
+            {
+                Gizmos.DrawSphere(position + point1Offset + dir, 0.5f);
+                Gizmos.DrawSphere(position + point2Offset + dir, 0.5f);
+                Gizmos.DrawLine(position, position + dir);
+            }
+        }
+    
+        Vector3 start = Vector3.up * 0.5f;
+        Vector3 end = Vector3.up * (2.0f - 0.5f);
+    
+        Gizmos.color = Color.green;
+        foreach(var location in spawnLocations)
+        {
+            DrawCapsuleCast(location.transform.position, start, end);
+        }
+    
+        Gizmos.color = Color.red;
+        foreach (var location in invalidSpawnLocations)
+        {
+            DrawCapsuleCast(location.transform.position, start, end);
+        }
 
-    private void OnDrawGizmosSelected()
-    {
-        Color colour = Color.magenta;
-
-        colour.a *= 0.4f;
-        Gizmos.color = colour;
-        Gizmos.DrawCube(transform.position, boxSize);
+        */
+        Gizmos.matrix = Matrix4x4.TRS(m_playerCam.transform.position, m_playerCam.transform.rotation, new Vector3(m_playerCam.aspect, 1.0f, 1.0f));
+        Gizmos.DrawFrustum(Vector3.zero, m_playerCam.fieldOfView, m_playerCam.farClipPlane, m_playerCam.nearClipPlane, 1.0f);
+        
+    
+    
+        //GeometryUtility.TestPlanesAABB(GeometryUtility.CalculateFrustumPlanes(m_playerCam), )
     }
 }

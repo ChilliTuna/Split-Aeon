@@ -12,7 +12,7 @@ public class AIAgent : MonoBehaviour
     public AISettings settings;
     public Animator anim;
     public AttackType attack;
-    public Collider charCollider;
+    public CapsuleCollider charCollider;
 
     bool m_isInitialised = false;
     StateMachine<AIAgent> m_stateMachine;
@@ -174,6 +174,11 @@ public class AIAgent : MonoBehaviour
         m_navAgent.acceleration = settings.acceleration;
 
         m_health.maxHealth = settings.health;
+    }
+
+    public Bounds GetBounds()
+    {
+        return charCollider.bounds;
     }
 
     private void OnDrawGizmos()

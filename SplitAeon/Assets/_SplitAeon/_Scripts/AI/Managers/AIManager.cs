@@ -82,6 +82,16 @@ public class AIManager : MonoBehaviour
         return targetPool.SetObjectActive(out resultObject);
     }
 
+    public bool GetNextPoolObject(AgentObjectPool targetPool, out AIAgent resultObject)
+    {
+        return targetPool.GetNextObject(out resultObject);
+    }
+
+    public void SetTargetObjectActive(AgentObjectPool targetPool, AIAgent targetObject)
+    {
+        targetPool.SetTargetObjectActive(targetObject);
+    }
+
     public void AllAggro()
     {
         foreach(var agent in m_allAgents)

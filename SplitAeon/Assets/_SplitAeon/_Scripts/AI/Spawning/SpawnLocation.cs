@@ -33,12 +33,55 @@ public class SpawnLocation : MonoBehaviour
 
         // DEBUGGONG PURPOSE: END THE SPAWNING STRAIGHT AWAY
         // Ideally the spawn would last as long as the animation that plays it
-        EndSpawning();
+        //EndSpawning();
     }
 
     public void EndSpawning()
     {
         m_isSpawning = false;
+    }
+
+    bool IsInCameraView(Camera camera, Bounds agentBounds)
+    {
+        var frustumPlanes = GeometryUtility.CalculateFrustumPlanes(camera);
+        bool inCameraView = GeometryUtility.TestPlanesAABB(frustumPlanes, GetComponent<CapsuleCollider>().bounds);
+        return inCameraView;
+    }
+
+    public bool IsSpawnable(Vector3 targetPos, LayerMask environmentMask, Camera playerCam, Bounds agentBounds, float agentHeight, float agentRadius)
+    {
+        switch (spawnType)
+        {
+            case SpawnType.FIXED:
+                {
+                    return true;
+                }
+            case SpawnType.DYNAMIC:
+                {
+                    Vector3 position = transform.position;
+                    Vector3 toTarget = targetPos - position;
+                    Vector3 point1Offset = Vector3.up * agentRadius;
+                    Vector3 point2Offset = Vector3.up * (agentHeight - agentRadius);
+
+                    if (IsInCameraView(playerCam, agentBounds))
+                    {
+                        // Bounds are inside player frustum
+                        return false;
+                    }
+                    return true;
+
+                    if (Physics.CapsuleCast(position + point1Offset, position + point2Offset, 0.5f, toTarget, out RaycastHit hitInfo, toTarget.magnitude, environmentMask))
+                    {
+                        // Object is in the way of the player
+                        return true;
+                    }
+                    return false;
+                }
+            default:
+                {
+                    return true;
+                }
+        }
     }
 
     private void OnDrawGizmos()
@@ -53,9 +96,10 @@ public class SpawnLocation : MonoBehaviour
             Gizmos.DrawCube(position, Vector3.one);
         }
 
+        Color drawColour = Color.white;
         if(isSpawning)
         {
-            DrawCube(transform.position, Color.blue);
+            drawColour = Color.blue;
         }
         else
         {
@@ -63,15 +107,24 @@ public class SpawnLocation : MonoBehaviour
             {
                 case SpawnType.FIXED:
                     {
-                        DrawCube(transform.position, Color.red);
+                        drawColour = Color.red;
                         break;
                     }
                 case SpawnType.DYNAMIC:
                     {
-                        DrawCube(transform.position, Color.yellow);
+                        drawColour = Color.yellow;
                         break;
                     }
             }
         }
+
+        // Debug things
+        if(IsInCameraView(Camera.main, GetComponent<CapsuleCollider>().bounds))
+        {
+            drawColour = Color.green;
+        }
+        // end debug things
+
+        DrawCube(transform.position, drawColour);
     }
 }
