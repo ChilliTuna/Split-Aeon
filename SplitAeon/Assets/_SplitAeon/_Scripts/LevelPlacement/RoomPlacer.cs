@@ -68,4 +68,12 @@ public class RoomPlacer : MonoBehaviour
             AlignRoomPairToFuture(roomPair);
         }
     }
+
+    private void Start()
+    {
+        if(!Application.isEditor)
+        {
+            Destroy(this);
+        }
+    }
 }
