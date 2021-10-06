@@ -1,5 +1,5 @@
-﻿using UnityEngine;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using UnityEngine;
 
 public class ZoneManager : MonoBehaviour
 {
@@ -66,11 +66,17 @@ public class ZoneManager : MonoBehaviour
 
     public void IncreaseAliveCountForActiveZone()
     {
-        activeZone.IncreaseAliveCount();
+        if (activeZone)
+        {
+            activeZone.IncreaseAliveCount();
+        }
     }
-    
+
     public void DecreaseAliveCountForActiveZone()
     {
-        activeZone.DecreaseAliveCount();
+        if (activeZone)
+        {
+            activeZone.DecreaseAliveCount();
+        }
     }
 }

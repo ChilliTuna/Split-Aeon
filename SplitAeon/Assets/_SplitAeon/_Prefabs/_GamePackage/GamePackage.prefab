@@ -31,6 +31,7 @@ Transform:
   - {fileID: 6087812834129425061}
   - {fileID: 2845749332143058082}
   - {fileID: 2845749331385772542}
+  - {fileID: 1051249825600974296}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -50,6 +51,53 @@ MonoBehaviour:
   offset: {x: 0.5, y: 0.5, z: 0.5}
   cellRange: 2
   playerTransform: {fileID: 6087812834129425061}
+--- !u!1 &7271626477188671242
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1051249825600974296}
+  - component: {fileID: 4018789349503758262}
+  m_Layer: 0
+  m_Name: ObjectiveManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1051249825600974296
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7271626477188671242}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 1081195129617226739}
+  m_RootOrder: 4
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &4018789349503758262
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7271626477188671242}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aad00d36824d5ea429e27a20df6c7a38, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  objectives: []
+  onFinalObjectiveCompleted:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!114 &2111419621079298931
 MonoBehaviour:
   m_ObjectHideFlags: 0
