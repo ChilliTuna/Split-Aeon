@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
 using TMPro;
 
 public class Player : MonoBehaviour
@@ -94,7 +95,21 @@ public class Player : MonoBehaviour
 
     #endregion
 
+    #region Inputs
+
+    private UserActions userActions;
+
+    private InputAction movementForward;
+    private InputAction movementRight;
+
     #endregion
+
+    #endregion
+
+    private void Awake()
+    {
+        userActions = new UserActions();
+    }
 
     private void Start()
     {
@@ -112,13 +127,18 @@ public class Player : MonoBehaviour
         #endregion
     }
 
+    private void OnEnable()
+    {
+        EnableInputs();
+    }
+
     void Update()
     {
 
         #region Player Movement
 
-        float xMovement = Input.GetAxis("Horizontal");
-        float zMovement = Input.GetAxis("Vertical");
+        float xMovement = movementRight.ReadValue<float>();
+        float zMovement = movementForward.ReadValue<float>();
 
         if (xMovement == 0 & zMovement == 0)
         {
@@ -146,11 +166,6 @@ public class Player : MonoBehaviour
         }
 
         controller.Move(move * movementSpeed * Time.deltaTime);
-
-        if (Input.GetKeyDown(KeyCode.Space) && isGrounded)
-        {
-            playerVelocity.y = Mathf.Sqrt(jumpHeight * -2f * gravity);
-        }
 
         playerVelocity.y += gravity * Time.deltaTime;
 
@@ -219,26 +234,6 @@ public class Player : MonoBehaviour
 
         #endregion
 
-        #region Running
-
-        if (Input.GetKey(KeyCode.LeftShift) && Input.GetAxis("Vertical") > 0)
-        {
-            isRunning = true;
-
-            movementSpeed = sprintSpeed;
-        }
-        else
-        {
-            isRunning = false;
-        }
-
-        if (!isRunning)
-        {
-            movementSpeed = walkSpeed;
-        }
-
-        #endregion
-
         #region Animation
 
         if (xMovement != 0 || zMovement != 0)
@@ -288,4 +283,99 @@ public class Player : MonoBehaviour
 
     }
 
+    private void OnDisable()
+    {
+        DisableInputs();
+    }
+
+    #region MovementActions
+
+    void Jump(InputAction.CallbackContext obj)
+    {
+        if (isGrounded)
+        {
+            playerVelocity.y = Mathf.Sqrt(jumpHeight * -2f * gravity);
+        }
+    }
+
+    void StartSprint(InputAction.CallbackContext obj)
+    {
+        isRunning = true;
+        movementSpeed = sprintSpeed;
+    }
+
+    void EndSprint(InputAction.CallbackContext obj)
+    {
+        isRunning = false;
+        movementSpeed = walkSpeed;
+    }
+
+    #endregion
+
+    #region InputFunctions
+
+    void EnableInputs()
+    {
+        movementForward = userActions.PlayerMap.MoveForward;
+        movementForward.Enable();
+
+        movementRight = userActions.PlayerMap.MoveRight;
+        movementRight.Enable();
+
+        userActions.PlayerMap.Jump.performed += Jump;
+        userActions.PlayerMap.Jump.Enable();
+
+        userActions.PlayerMap.Sprint.performed += StartSprint;
+        userActions.PlayerMap.Sprint.canceled += EndSprint;
+        userActions.PlayerMap.Sprint.Enable();
+
+        //userActions.PlayerMap.Shoot.performed += Shoot;
+        //userActions.PlayerMap.Shoot.Enable();
+        //
+        //userActions.PlayerMap.ThrowCard.performed += ThrowCard;
+        //userActions.PlayerMap.ThrowCard.Enable();
+        //
+        //userActions.PlayerMap.Interact.performed += Interact;
+        //userActions.PlayerMap.Interact.Enable();
+        //
+        //userActions.PlayerMap.Weapon1.performed += ChangeToWeapon1;
+        //userActions.PlayerMap.Weapon1.Enable();
+        //
+        //userActions.PlayerMap.Weapon2.performed += ChangeToWeapon2;
+        //userActions.PlayerMap.Weapon2.Enable();
+        //
+        //userActions.PlayerMap.Weapon3.performed += ChangeToWeapon3;
+        //userActions.PlayerMap.Weapon3.Enable();
+        //
+        //userActions.PlayerMap.Weapon4.performed += ChangeToWeapon4;
+        //userActions.PlayerMap.Weapon4.Enable();
+        //
+        //userActions.PlayerMap.WeaponWheel.performed += WeaponWheel;
+        //userActions.PlayerMap.WeaponWheel.Enable();
+        //
+        //userActions.PlayerMap.Reload.performed += Reload;
+        //userActions.PlayerMap.Reload.Enable();
+        //
+
+
+    }
+
+    void DisableInputs()
+    {
+        movementForward.Disable();
+        movementRight.Disable();
+        userActions.PlayerMap.Jump.Disable();
+        //userActions.PlayerMap.Shoot.Disable();
+        //userActions.PlayerMap.ThrowCard.Disable();
+        //userActions.PlayerMap.Interact.Disable();
+        //userActions.PlayerMap.Weapon1.Disable();
+        //userActions.PlayerMap.Weapon2.Disable();
+        //userActions.PlayerMap.Weapon3.Disable();
+        //userActions.PlayerMap.Weapon4.Disable();
+        //userActions.PlayerMap.WeaponWheel.Disable();
+        //userActions.PlayerMap.Reload.Disable();
+        //userActions.PlayerMap.Sprint.Disable();
+    }
+
+    #endregion
 }
