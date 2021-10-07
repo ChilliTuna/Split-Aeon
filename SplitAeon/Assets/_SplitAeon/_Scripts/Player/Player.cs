@@ -106,6 +106,8 @@ public class Player : MonoBehaviour
 
     #endregion
 
+    #region Unity Functions
+
     private void Awake()
     {
         userActions = new UserActions();
@@ -288,7 +290,9 @@ public class Player : MonoBehaviour
         DisableInputs();
     }
 
-    #region MovementActions
+    #endregion
+
+    #region Movement Actions
 
     void Jump(InputAction.CallbackContext obj)
     {
@@ -312,7 +316,7 @@ public class Player : MonoBehaviour
 
     #endregion
 
-    #region InputFunctions
+    #region Input Functions
 
     void EnableInputs()
     {
@@ -356,7 +360,7 @@ public class Player : MonoBehaviour
         //userActions.PlayerMap.Reload.performed += Reload;
         //userActions.PlayerMap.Reload.Enable();
         //
-
+        //Time travel & objectives list also need to be done
 
     }
 
