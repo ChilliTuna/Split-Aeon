@@ -19,6 +19,9 @@ public class EnemySpawner : MonoBehaviour
     float m_miniWaveTimer = 0.0f;
 
     List<SpawnLocation> m_possibleLocations = new List<SpawnLocation>();
+    List<SpawnLocation> m_validOnCameraLocations = new List<SpawnLocation>();
+    List<SpawnLocation> m_offCameraLocations = new List<SpawnLocation>();
+
 
     List<AgentObjectPool> m_enemyObjectPools;
 
@@ -140,19 +143,50 @@ public class EnemySpawner : MonoBehaviour
         }
     }
 
-    SpawnLocation GetSpawnLocation(AIAgent agent)
+    void FindPossibleLocations(Bounds bounds)
     {
         m_possibleLocations.Clear();
+
+        m_offCameraLocations.Clear();
+        m_validOnCameraLocations.Clear();
 
         HashSet<SpawnLocation> playerAdjacentLocations = spawnTracker.GetPlayerAdjacentCellSpawnLocations();
 
         foreach (var location in playerAdjacentLocations)
         {
-            if(location.IsSpawnable(m_playerTransform.position, settings.environmentMask, m_playerCam, agent.GetBounds(), agent.charCollider.height, agent.charCollider.radius))
+            // Check to see if this location is spawnable.
+            if (location.spawnType == SpawnLocation.SpawnType.FIXED)
             {
+                // if it's fixed we don't need to bother checking camera views.
+                m_possibleLocations.Add(location);
+                continue;
+            }
+
+            bounds = location.FindBounds(bounds);
+
+            if (location.IsInCameraView(m_playerCam, bounds))
+            {
+                // location is in cam view
+
+                if (location.AgentBoundsRayCheck(bounds, m_playerCam.transform.position, settings.environmentMask))
+                {
+                    // location is safe to spawn at
+                    m_validOnCameraLocations.Add(location);
+                    m_possibleLocations.Add(location);
+                }
+            }
+            else
+            {
+                // location is off screen
+                m_offCameraLocations.Add(location);
                 m_possibleLocations.Add(location);
             }
         }
+    }
+
+    SpawnLocation GetSpawnLocation(AIAgent agent)
+    {
+        FindPossibleLocations(agent.GetBounds());
 
         // Just simply random for now
         if(m_possibleLocations.Count > 0)
@@ -210,65 +244,9 @@ public class EnemySpawner : MonoBehaviour
             return;
         }
 
-        /*
-        List<SpawnLocation> spawnLocations = new List<SpawnLocation>();
-        List<SpawnLocation> invalidSpawnLocations = new List<SpawnLocation>();
-        HashSet<SpawnLocation> playerAdjacentLocations = spawnTracker.GetPlayerAdjacentCellSpawnLocations();
-    
-        foreach (var location in playerAdjacentLocations)
-        {
-            if (location.IsSpawnable(m_playerTransform.position, settings.environmentMask, 2.0f, 0.5f))
-            {
-                spawnLocations.Add(location);
-            }
-            else
-            {
-                invalidSpawnLocations.Add(location);
-            }
-        }
-    
-    
-        void DrawCapsuleCast(Vector3 origin, Vector3 point1Offset, Vector3 point2Offset)
-        {
-            Vector3 position = origin;
-            Vector3 dir = m_playerTransform.position - position;
-    
-            if (Physics.CapsuleCast(position + point1Offset, position + point2Offset, 0.5f, dir, out RaycastHit hitInfo, dir.magnitude, settings.environmentMask))
-            {
-                Vector3 hitDir = dir.normalized * hitInfo.distance;
-                Gizmos.DrawSphere(position + point1Offset + hitDir, 0.5f);
-                Gizmos.DrawSphere(position + point2Offset + hitDir, 0.5f);
-                Gizmos.DrawLine(position, position + hitDir);
-            }
-            else
-            {
-                Gizmos.DrawSphere(position + point1Offset + dir, 0.5f);
-                Gizmos.DrawSphere(position + point2Offset + dir, 0.5f);
-                Gizmos.DrawLine(position, position + dir);
-            }
-        }
-    
-        Vector3 start = Vector3.up * 0.5f;
-        Vector3 end = Vector3.up * (2.0f - 0.5f);
-    
-        Gizmos.color = Color.green;
-        foreach(var location in spawnLocations)
-        {
-            DrawCapsuleCast(location.transform.position, start, end);
-        }
-    
         Gizmos.color = Color.red;
-        foreach (var location in invalidSpawnLocations)
-        {
-            DrawCapsuleCast(location.transform.position, start, end);
-        }
 
-        */
         Gizmos.matrix = Matrix4x4.TRS(m_playerCam.transform.position, m_playerCam.transform.rotation, new Vector3(m_playerCam.aspect, 1.0f, 1.0f));
         Gizmos.DrawFrustum(Vector3.zero, m_playerCam.fieldOfView, m_playerCam.farClipPlane, m_playerCam.nearClipPlane, 1.0f);
-        
-    
-    
-        //GeometryUtility.TestPlanesAABB(GeometryUtility.CalculateFrustumPlanes(m_playerCam), )
     }
 }

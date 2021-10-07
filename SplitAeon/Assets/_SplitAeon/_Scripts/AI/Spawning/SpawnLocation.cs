@@ -15,6 +15,8 @@ public class SpawnLocation : MonoBehaviour
 
     public bool isSpawning { get { return m_isSpawning; } }
 
+    public float skinWidth = 0.0001f;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -41,47 +43,53 @@ public class SpawnLocation : MonoBehaviour
         m_isSpawning = false;
     }
 
-    bool IsInCameraView(Camera camera, Bounds agentBounds)
+    public Bounds FindBounds(Bounds copyBounds)
+    {
+        copyBounds.center = transform.position + Vector3.up * copyBounds.extents.y;
+        return copyBounds;
+    }
+
+    public bool IsInCameraView(Camera camera, Bounds agentBounds)
     {
         var frustumPlanes = GeometryUtility.CalculateFrustumPlanes(camera);
-        bool inCameraView = GeometryUtility.TestPlanesAABB(frustumPlanes, GetComponent<CapsuleCollider>().bounds);
+        bool inCameraView = GeometryUtility.TestPlanesAABB(frustumPlanes, agentBounds);
         return inCameraView;
     }
 
-    public bool IsSpawnable(Vector3 targetPos, LayerMask environmentMask, Camera playerCam, Bounds agentBounds, float agentHeight, float agentRadius)
+    public bool AgentBoundsRayCheck(Bounds bounds, Vector3 target, LayerMask environmentMask)
     {
-        switch (spawnType)
+        Vector3[] origins = new Vector3[8];
+
+        Vector3 extents = bounds.extents - Vector3.one * skinWidth;
+        origins[0] = new Vector3(extents.x,   extents.y,  extents.z);
+        origins[1] = new Vector3(-extents.x,  extents.y,  extents.z);
+        origins[2] = new Vector3(-extents.x, -extents.y,  extents.z);
+        origins[3] = new Vector3(extents.x,  -extents.y,  extents.z);
+
+        origins[4] = new Vector3(extents.x,   extents.y, -extents.z);
+        origins[5] = new Vector3(-extents.x,  extents.y, -extents.z);
+        origins[6] = new Vector3(-extents.x, -extents.y, -extents.z);
+        origins[7] = new Vector3(extents.x,  -extents.y, -extents.z);
+
+        return AgentBoundsRayCheck(bounds.center, origins, target, environmentMask);
+    }
+
+    // returns true if all rays have hit an object. This would mean that the player can not see this spawn location
+    public bool AgentBoundsRayCheck(Vector3 boundsOrigin, Vector3[] extentsArray, Vector3 target, LayerMask environmentMask)
+    {
+        for (int i = 0; i < 8; i++)
         {
-            case SpawnType.FIXED:
-                {
-                    return true;
-                }
-            case SpawnType.DYNAMIC:
-                {
-                    Vector3 position = transform.position;
-                    Vector3 toTarget = targetPos - position;
-                    Vector3 point1Offset = Vector3.up * agentRadius;
-                    Vector3 point2Offset = Vector3.up * (agentHeight - agentRadius);
+            Vector3 rayOrigin = extentsArray[i] + boundsOrigin;
+            Vector3 rayTarget = target;
 
-                    if (IsInCameraView(playerCam, agentBounds))
-                    {
-                        // Bounds are inside player frustum
-                        return false;
-                    }
-                    return true;
-
-                    if (Physics.CapsuleCast(position + point1Offset, position + point2Offset, 0.5f, toTarget, out RaycastHit hitInfo, toTarget.magnitude, environmentMask))
-                    {
-                        // Object is in the way of the player
-                        return true;
-                    }
-                    return false;
-                }
-            default:
-                {
-                    return true;
-                }
+            Vector3 dir = rayTarget - rayOrigin;
+            if (!Physics.Raycast(rayOrigin, dir.normalized, out RaycastHit hitInfo, dir.magnitude, environmentMask))
+            {
+                // has not hit a wall
+                return false;
+            }
         }
+        return true;
     }
 
     private void OnDrawGizmos()
@@ -117,13 +125,6 @@ public class SpawnLocation : MonoBehaviour
                     }
             }
         }
-
-        // Debug things
-        if(IsInCameraView(Camera.main, GetComponent<CapsuleCollider>().bounds))
-        {
-            drawColour = Color.green;
-        }
-        // end debug things
 
         DrawCube(transform.position, drawColour);
     }
