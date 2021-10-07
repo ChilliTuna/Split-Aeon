@@ -24,6 +24,11 @@ public class AIAgent : MonoBehaviour
 
     List<Neighbour> m_neighbours = new List<Neighbour>();
 
+    public List<Collider> headColliders;
+    public List<Collider> upperTorsoColliders;
+    public List<Collider> lowerTorsoColliders;
+    public List<Collider> limbColliders;
+
     public NavMeshAgent navAgent { get { return m_navAgent; } }
     public float distToPlayerSquared { get { return m_distToPlayerSquared; } }
     public Transform playerTransform { get { return aiManager.playerTransform; } }
@@ -118,8 +123,38 @@ public class AIAgent : MonoBehaviour
 
     public void DamagePlayer()
     {
-        aiManager.playerHealth.Hit(settings.attackDamage);
+        aiManager.playerHealth.Hit(settings.attackDamage, null);
         aiManager.damagePlayerEvent.Invoke();
+    }
+
+    public void BeforeHit()
+    {
+        Collider hitCollider = health.hitCollider;
+
+        RagdollExtra.RagdollType type = hitCollider.GetComponent<RagdollExtra>().GetRagdollType();
+        switch (type)
+        {
+            case RagdollExtra.RagdollType.head:
+                {
+                    health.damageMultiplier = settings.headMultiplier;
+                    break;
+                }
+            case RagdollExtra.RagdollType.upperTorso:
+                {
+                    health.damageMultiplier = settings.upperTorsoMultipler;
+                    break;
+                }
+            case RagdollExtra.RagdollType.lowerTorso:
+                {
+                    health.damageMultiplier = settings.lowerTorsoMultiplier;
+                    break;
+                }
+            case RagdollExtra.RagdollType.limb:
+                {
+                    health.damageMultiplier = settings.limbMultiplier;
+                    break;
+                }
+        }
     }
 
     public void Die()
