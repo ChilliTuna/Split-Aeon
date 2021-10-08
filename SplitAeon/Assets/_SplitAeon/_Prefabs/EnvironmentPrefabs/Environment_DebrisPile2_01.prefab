@@ -1,5 +1,19 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!64 &1566669801792312788
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1065311599619088891}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 4
+  m_Convex: 1
+  m_CookingOptions: 30
+  m_Mesh: {fileID: 8256374022181846147, guid: fa301725c0c4fbf46943b7bc4f824fdb, type: 3}
 --- !u!1 &2830350370751753772
 GameObject:
   m_ObjectHideFlags: 0
@@ -10,11 +24,11 @@ GameObject:
   m_Component:
   - component: {fileID: 1538730831388402640}
   m_Layer: 0
-  m_Name: DebrisPile2
+  m_Name: Environment_DebrisPile2_01
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 4294967295
   m_IsActive: 1
 --- !u!4 &1538730831388402640
 Transform:
@@ -23,7 +37,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2830350370751753772}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
@@ -38,6 +52,104 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!64 &5788315566173141368
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3676037189230546665}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 4
+  m_Convex: 1
+  m_CookingOptions: 30
+  m_Mesh: {fileID: 366036672921721165, guid: 6efe7d8aba858e14f9e1db0273b3db0c, type: 3}
+--- !u!64 &6633164762902379107
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3769317587358224765}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 4
+  m_Convex: 1
+  m_CookingOptions: 30
+  m_Mesh: {fileID: 8256374022181846147, guid: fa301725c0c4fbf46943b7bc4f824fdb, type: 3}
+--- !u!64 &6605091442316846002
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3784576326565227801}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 4
+  m_Convex: 1
+  m_CookingOptions: 30
+  m_Mesh: {fileID: 366036672921721165, guid: 6efe7d8aba858e14f9e1db0273b3db0c, type: 3}
+--- !u!64 &1815991225941827265
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6295811800773426466}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 4
+  m_Convex: 1
+  m_CookingOptions: 30
+  m_Mesh: {fileID: 8256374022181846147, guid: fa301725c0c4fbf46943b7bc4f824fdb, type: 3}
+--- !u!64 &6174424260343312885
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7054005724211915389}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 4
+  m_Convex: 1
+  m_CookingOptions: 30
+  m_Mesh: {fileID: 8256374022181846147, guid: fa301725c0c4fbf46943b7bc4f824fdb, type: 3}
+--- !u!64 &6050343221977041221
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8840436660600672350}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 4
+  m_Convex: 1
+  m_CookingOptions: 30
+  m_Mesh: {fileID: -5679339233737277381, guid: c16555b6d2352cf4a8eca414eeecb207, type: 3}
+--- !u!64 &5748585239263094984
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9213394590874391873}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 4
+  m_Convex: 1
+  m_CookingOptions: 30
+  m_Mesh: {fileID: 366036672921721165, guid: 6efe7d8aba858e14f9e1db0273b3db0c, type: 3}
 --- !u!1001 &312614345873840412
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -93,6 +205,10 @@ PrefabInstance:
       propertyPath: m_LocalScale.x
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: -3239893054633565122, guid: fa301725c0c4fbf46943b7bc4f824fdb, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 4294967295
+      objectReference: {fileID: 0}
     - target: {fileID: -1623314960436349900, guid: fa301725c0c4fbf46943b7bc4f824fdb, type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
@@ -101,11 +217,20 @@ PrefabInstance:
       propertyPath: m_Name
       value: Environment_DebrisBrick_01 (5)
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: fa301725c0c4fbf46943b7bc4f824fdb, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 4294967295
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: fa301725c0c4fbf46943b7bc4f824fdb, type: 3}
 --- !u!4 &278124121126944503 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: fa301725c0c4fbf46943b7bc4f824fdb, type: 3}
+  m_PrefabInstance: {fileID: 312614345873840412}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &6295811800773426466 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: -3239893054633565122, guid: fa301725c0c4fbf46943b7bc4f824fdb, type: 3}
   m_PrefabInstance: {fileID: 312614345873840412}
   m_PrefabAsset: {fileID: 0}
 --- !u!1001 &2329098777500374886
@@ -175,6 +300,14 @@ PrefabInstance:
       propertyPath: m_Name
       value: Environment_DebrisPlank_01 (4)
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 6efe7d8aba858e14f9e1db0273b3db0c, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 4294967295
+      objectReference: {fileID: 0}
+    - target: {fileID: 1392024222192277903, guid: 6efe7d8aba858e14f9e1db0273b3db0c, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 4294967295
+      objectReference: {fileID: 0}
     - target: {fileID: 7476355247697655652, guid: 6efe7d8aba858e14f9e1db0273b3db0c, type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
@@ -184,6 +317,11 @@ PrefabInstance:
 --- !u!4 &2871088201765335181 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 6efe7d8aba858e14f9e1db0273b3db0c, type: 3}
+  m_PrefabInstance: {fileID: 2329098777500374886}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &3676037189230546665 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1392024222192277903, guid: 6efe7d8aba858e14f9e1db0273b3db0c, type: 3}
   m_PrefabInstance: {fileID: 2329098777500374886}
   m_PrefabAsset: {fileID: 0}
 --- !u!1001 &2870185741890581654
@@ -253,6 +391,14 @@ PrefabInstance:
       propertyPath: m_Name
       value: Environment_DebrisPlank_01 (5)
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 6efe7d8aba858e14f9e1db0273b3db0c, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 4294967295
+      objectReference: {fileID: 0}
+    - target: {fileID: 1392024222192277903, guid: 6efe7d8aba858e14f9e1db0273b3db0c, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 4294967295
+      objectReference: {fileID: 0}
     - target: {fileID: 7476355247697655652, guid: 6efe7d8aba858e14f9e1db0273b3db0c, type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
@@ -262,6 +408,11 @@ PrefabInstance:
 --- !u!4 &2332384965674275709 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 6efe7d8aba858e14f9e1db0273b3db0c, type: 3}
+  m_PrefabInstance: {fileID: 2870185741890581654}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &3784576326565227801 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1392024222192277903, guid: 6efe7d8aba858e14f9e1db0273b3db0c, type: 3}
   m_PrefabInstance: {fileID: 2870185741890581654}
   m_PrefabAsset: {fileID: 0}
 --- !u!1001 &3669671441138617923
@@ -327,6 +478,10 @@ PrefabInstance:
       propertyPath: m_LocalScale.z
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: -3239893054633565122, guid: fa301725c0c4fbf46943b7bc4f824fdb, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 4294967295
+      objectReference: {fileID: 0}
     - target: {fileID: -1623314960436349900, guid: fa301725c0c4fbf46943b7bc4f824fdb, type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
@@ -335,11 +490,20 @@ PrefabInstance:
       propertyPath: m_Name
       value: Environment_DebrisBrick_01 (4)
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: fa301725c0c4fbf46943b7bc4f824fdb, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 4294967295
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: fa301725c0c4fbf46943b7bc4f824fdb, type: 3}
 --- !u!4 &3848312442061580712 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: fa301725c0c4fbf46943b7bc4f824fdb, type: 3}
+  m_PrefabInstance: {fileID: 3669671441138617923}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &7054005724211915389 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: -3239893054633565122, guid: fa301725c0c4fbf46943b7bc4f824fdb, type: 3}
   m_PrefabInstance: {fileID: 3669671441138617923}
   m_PrefabAsset: {fileID: 0}
 --- !u!1001 &5077997632138173687
@@ -401,11 +565,24 @@ PrefabInstance:
       propertyPath: m_Name
       value: Environment_DebrisPile2_01
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: c16555b6d2352cf4a8eca414eeecb207, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 4294967295
+      objectReference: {fileID: 0}
+    - target: {fileID: 4384009857761496233, guid: c16555b6d2352cf4a8eca414eeecb207, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 4294967295
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c16555b6d2352cf4a8eca414eeecb207, type: 3}
 --- !u!4 &4751880950800169756 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: c16555b6d2352cf4a8eca414eeecb207, type: 3}
+  m_PrefabInstance: {fileID: 5077997632138173687}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &8840436660600672350 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 4384009857761496233, guid: c16555b6d2352cf4a8eca414eeecb207, type: 3}
   m_PrefabInstance: {fileID: 5077997632138173687}
   m_PrefabAsset: {fileID: 0}
 --- !u!1001 &6755726201465701829
@@ -471,6 +648,10 @@ PrefabInstance:
       propertyPath: m_LocalScale.z
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: -3239893054633565122, guid: fa301725c0c4fbf46943b7bc4f824fdb, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 4294967295
+      objectReference: {fileID: 0}
     - target: {fileID: -1623314960436349900, guid: fa301725c0c4fbf46943b7bc4f824fdb, type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
@@ -479,8 +660,17 @@ PrefabInstance:
       propertyPath: m_Name
       value: Environment_DebrisBrick_01 (7)
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: fa301725c0c4fbf46943b7bc4f824fdb, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 4294967295
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: fa301725c0c4fbf46943b7bc4f824fdb, type: 3}
+--- !u!1 &1065311599619088891 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: -3239893054633565122, guid: fa301725c0c4fbf46943b7bc4f824fdb, type: 3}
+  m_PrefabInstance: {fileID: 6755726201465701829}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &6506452771356860974 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: fa301725c0c4fbf46943b7bc4f824fdb, type: 3}
@@ -537,6 +727,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 601.225
       objectReference: {fileID: 0}
+    - target: {fileID: -3239893054633565122, guid: fa301725c0c4fbf46943b7bc4f824fdb, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 4294967295
+      objectReference: {fileID: 0}
     - target: {fileID: -1623314960436349900, guid: fa301725c0c4fbf46943b7bc4f824fdb, type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
@@ -545,8 +739,17 @@ PrefabInstance:
       propertyPath: m_Name
       value: Environment_DebrisBrick_01 (8)
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: fa301725c0c4fbf46943b7bc4f824fdb, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 4294967295
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: fa301725c0c4fbf46943b7bc4f824fdb, type: 3}
+--- !u!1 &3769317587358224765 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: -3239893054633565122, guid: fa301725c0c4fbf46943b7bc4f824fdb, type: 3}
+  m_PrefabInstance: {fileID: 7441872992009794883}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &6975057072776565416 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: fa301725c0c4fbf46943b7bc4f824fdb, type: 3}
@@ -619,12 +822,25 @@ PrefabInstance:
       propertyPath: m_Name
       value: Environment_DebrisPlank_01 (6)
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 6efe7d8aba858e14f9e1db0273b3db0c, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 4294967295
+      objectReference: {fileID: 0}
+    - target: {fileID: 1392024222192277903, guid: 6efe7d8aba858e14f9e1db0273b3db0c, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 4294967295
+      objectReference: {fileID: 0}
     - target: {fileID: 7476355247697655652, guid: 6efe7d8aba858e14f9e1db0273b3db0c, type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
       objectReference: {fileID: 2100000, guid: ac68b5c853795bb41af5217d2fa5c8e7, type: 2}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 6efe7d8aba858e14f9e1db0273b3db0c, type: 3}
+--- !u!1 &9213394590874391873 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1392024222192277903, guid: 6efe7d8aba858e14f9e1db0273b3db0c, type: 3}
+  m_PrefabInstance: {fileID: 7822184343434972366}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &7712205772635843365 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 6efe7d8aba858e14f9e1db0273b3db0c, type: 3}
