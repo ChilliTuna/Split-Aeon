@@ -294,7 +294,7 @@ public class Player : MonoBehaviour
 
     #region Movement Actions
 
-    void Jump(InputAction.CallbackContext obj)
+    void Jump()
     {
         if (isGrounded)
         {
@@ -302,13 +302,13 @@ public class Player : MonoBehaviour
         }
     }
 
-    void StartSprint(InputAction.CallbackContext obj)
+    void StartSprint()
     {
         isRunning = true;
         movementSpeed = sprintSpeed;
     }
 
-    void EndSprint(InputAction.CallbackContext obj)
+    void EndSprint()
     {
         isRunning = false;
         movementSpeed = walkSpeed;
@@ -326,39 +326,16 @@ public class Player : MonoBehaviour
         movementRight = userActions.PlayerMap.MoveRight;
         movementRight.Enable();
 
-        userActions.PlayerMap.Jump.performed += Jump;
+        userActions.PlayerMap.Jump.performed += ctx => Jump();
         userActions.PlayerMap.Jump.Enable();
 
-        userActions.PlayerMap.Sprint.performed += StartSprint;
-        userActions.PlayerMap.Sprint.canceled += EndSprint;
+        userActions.PlayerMap.Sprint.performed += ctx => StartSprint();
+        userActions.PlayerMap.Sprint.canceled += ctx => EndSprint();
         userActions.PlayerMap.Sprint.Enable();
 
-        //userActions.PlayerMap.Shoot.performed += Shoot;
-        //userActions.PlayerMap.Shoot.Enable();
-        //
-        //userActions.PlayerMap.ThrowCard.performed += ThrowCard;
-        //userActions.PlayerMap.ThrowCard.Enable();
         //
         //userActions.PlayerMap.Interact.performed += Interact;
         //userActions.PlayerMap.Interact.Enable();
-        //
-        //userActions.PlayerMap.Weapon1.performed += ChangeToWeapon1;
-        //userActions.PlayerMap.Weapon1.Enable();
-        //
-        //userActions.PlayerMap.Weapon2.performed += ChangeToWeapon2;
-        //userActions.PlayerMap.Weapon2.Enable();
-        //
-        //userActions.PlayerMap.Weapon3.performed += ChangeToWeapon3;
-        //userActions.PlayerMap.Weapon3.Enable();
-        //
-        //userActions.PlayerMap.Weapon4.performed += ChangeToWeapon4;
-        //userActions.PlayerMap.Weapon4.Enable();
-        //
-        //userActions.PlayerMap.WeaponWheel.performed += WeaponWheel;
-        //userActions.PlayerMap.WeaponWheel.Enable();
-        //
-        //userActions.PlayerMap.Reload.performed += Reload;
-        //userActions.PlayerMap.Reload.Enable();
         //
         //Time travel & objectives list also need to be done
 
@@ -369,16 +346,10 @@ public class Player : MonoBehaviour
         movementForward.Disable();
         movementRight.Disable();
         userActions.PlayerMap.Jump.Disable();
-        //userActions.PlayerMap.Shoot.Disable();
-        //userActions.PlayerMap.ThrowCard.Disable();
+        userActions.PlayerMap.Sprint.Disable();
+
         //userActions.PlayerMap.Interact.Disable();
-        //userActions.PlayerMap.Weapon1.Disable();
-        //userActions.PlayerMap.Weapon2.Disable();
-        //userActions.PlayerMap.Weapon3.Disable();
-        //userActions.PlayerMap.Weapon4.Disable();
-        //userActions.PlayerMap.WeaponWheel.Disable();
-        //userActions.PlayerMap.Reload.Disable();
-        //userActions.PlayerMap.Sprint.Disable();
+        //Time travel & objectives list also need to be done
     }
 
     #endregion
