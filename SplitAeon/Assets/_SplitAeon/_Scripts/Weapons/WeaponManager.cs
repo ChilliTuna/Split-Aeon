@@ -215,10 +215,6 @@ public class WeaponManager : MonoBehaviour
         
         userActions.PlayerMap.Reload.performed += ctx => Reload();
         userActions.PlayerMap.Reload.Enable();
-
-        //userActions.PlayerMap.WeaponWheel.performed += WeaponWheel;
-        //userActions.PlayerMap.WeaponWheel.Enable();
-        
     }
 
     void DisableInputs()
@@ -229,6 +225,5 @@ public class WeaponManager : MonoBehaviour
         userActions.PlayerMap.ChangeToThompson.Disable();
         userActions.PlayerMap.ChangeToShotgun.Disable();
         userActions.PlayerMap.Reload.Disable();
-        //userActions.PlayerMap.WeaponWheel.Disable();
     }
 }

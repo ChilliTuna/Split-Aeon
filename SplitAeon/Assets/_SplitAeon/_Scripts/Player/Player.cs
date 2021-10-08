@@ -333,11 +333,10 @@ public class Player : MonoBehaviour
         userActions.PlayerMap.Sprint.canceled += ctx => EndSprint();
         userActions.PlayerMap.Sprint.Enable();
 
-        //
         //userActions.PlayerMap.Interact.performed += Interact;
         //userActions.PlayerMap.Interact.Enable();
-        //
-        //Time travel & objectives list also need to be done
+        
+        //Time travel also need to be done
 
     }
 
@@ -349,7 +348,7 @@ public class Player : MonoBehaviour
         userActions.PlayerMap.Sprint.Disable();
 
         //userActions.PlayerMap.Interact.Disable();
-        //Time travel & objectives list also need to be done
+        //Time travel also need to be done
     }
 
     #endregion
