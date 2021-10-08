@@ -33,11 +33,6 @@ public class WeaponManager : MonoBehaviour
     [Header("Audio")]
     public AudioSource weaponAudioSource;
 
-    [Space(10)]
-
-    [Header("Controls")]
-    public KeyCode reloadKey;
-
     private int myIndex;
 
     [HideInInspector]
@@ -206,9 +201,6 @@ public class WeaponManager : MonoBehaviour
         userActions.PlayerMap.Shoot.canceled += ctx => ToggleShooting(false);
         userActions.PlayerMap.Shoot.Enable();
         
-        //userActions.PlayerMap.ThrowCard.performed += ThrowCard;
-        //userActions.PlayerMap.ThrowCard.Enable();
-        
         userActions.PlayerMap.ChangeToMelee.performed += ctx => SwitchWeapon(0);
         userActions.PlayerMap.ChangeToMelee.Enable();
         
@@ -221,23 +213,22 @@ public class WeaponManager : MonoBehaviour
         userActions.PlayerMap.ChangeToShotgun.performed += ctx => SwitchWeapon(3);
         userActions.PlayerMap.ChangeToShotgun.Enable();
         
-        //userActions.PlayerMap.WeaponWheel.performed += WeaponWheel;
-        //userActions.PlayerMap.WeaponWheel.Enable();
-        
         userActions.PlayerMap.Reload.performed += ctx => Reload();
         userActions.PlayerMap.Reload.Enable();
+
+        //userActions.PlayerMap.WeaponWheel.performed += WeaponWheel;
+        //userActions.PlayerMap.WeaponWheel.Enable();
         
     }
 
     void DisableInputs()
     {
         userActions.PlayerMap.Shoot.Disable();
-        //userActions.PlayerMap.ThrowCard.Disable();
         userActions.PlayerMap.ChangeToMelee.Disable();
         userActions.PlayerMap.ChangeToRevolver.Disable();
         userActions.PlayerMap.ChangeToThompson.Disable();
         userActions.PlayerMap.ChangeToShotgun.Disable();
-        //userActions.PlayerMap.WeaponWheel.Disable();
         userActions.PlayerMap.Reload.Disable();
+        //userActions.PlayerMap.WeaponWheel.Disable();
     }
 }
