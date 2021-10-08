@@ -201,16 +201,16 @@ public class WeaponManager : MonoBehaviour
         userActions.PlayerMap.Shoot.canceled += ctx => ToggleShooting(false);
         userActions.PlayerMap.Shoot.Enable();
         
-        userActions.PlayerMap.ChangeToMelee.performed += ctx => SwitchWeapon(0);
+        userActions.PlayerMap.ChangeToMelee.performed += ctx => SwitchWeapon(3);
         userActions.PlayerMap.ChangeToMelee.Enable();
         
-        userActions.PlayerMap.ChangeToRevolver.performed += ctx => SwitchWeapon(1);
+        userActions.PlayerMap.ChangeToRevolver.performed += ctx => SwitchWeapon(0);
         userActions.PlayerMap.ChangeToRevolver.Enable();
         
-        userActions.PlayerMap.ChangeToThompson.performed += ctx => SwitchWeapon(2);
+        userActions.PlayerMap.ChangeToThompson.performed += ctx => SwitchWeapon(1);
         userActions.PlayerMap.ChangeToThompson.Enable();
         
-        userActions.PlayerMap.ChangeToShotgun.performed += ctx => SwitchWeapon(3);
+        userActions.PlayerMap.ChangeToShotgun.performed += ctx => SwitchWeapon(2);
         userActions.PlayerMap.ChangeToShotgun.Enable();
         
         userActions.PlayerMap.Reload.performed += ctx => Reload();
