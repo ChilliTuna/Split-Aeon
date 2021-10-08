@@ -70,14 +70,6 @@ public class WeaponManager : MonoBehaviour
     {
         Shoot();
 
-        if (Input.GetKeyDown(reloadKey))
-        {
-            if (!player.isBusy)
-            {
-                weapons[weaponIndex].SecondaryUse();
-            }
-        }
-
         foreach (Weapon wep in weapons)
         {
             wep.weaponWheelButton.interactable = wep.isUnlocked;
@@ -192,6 +184,14 @@ public class WeaponManager : MonoBehaviour
         }
     }
 
+    void Reload()
+    {
+        if (!player.isBusy)
+        {
+            weapons[weaponIndex].SecondaryUse();
+        }
+    }
+
     void ToggleShooting(bool shouldShoot)
     {
         if (!Globals.isGamePaused)
@@ -209,23 +209,23 @@ public class WeaponManager : MonoBehaviour
         //userActions.PlayerMap.ThrowCard.performed += ThrowCard;
         //userActions.PlayerMap.ThrowCard.Enable();
         
-        userActions.PlayerMap.Weapon1.performed += ctx => SwitchWeapon(0);
-        userActions.PlayerMap.Weapon1.Enable();
+        userActions.PlayerMap.ChangeToMelee.performed += ctx => SwitchWeapon(0);
+        userActions.PlayerMap.ChangeToMelee.Enable();
         
-        userActions.PlayerMap.Weapon2.performed += ctx => SwitchWeapon(1);
-        userActions.PlayerMap.Weapon2.Enable();
+        userActions.PlayerMap.ChangeToRevolver.performed += ctx => SwitchWeapon(1);
+        userActions.PlayerMap.ChangeToRevolver.Enable();
         
-        userActions.PlayerMap.Weapon3.performed += ctx => SwitchWeapon(2);
-        userActions.PlayerMap.Weapon3.Enable();
+        userActions.PlayerMap.ChangeToThompson.performed += ctx => SwitchWeapon(2);
+        userActions.PlayerMap.ChangeToThompson.Enable();
         
-        userActions.PlayerMap.Weapon4.performed += ctx => SwitchWeapon(3);
-        userActions.PlayerMap.Weapon4.Enable();
+        userActions.PlayerMap.ChangeToShotgun.performed += ctx => SwitchWeapon(3);
+        userActions.PlayerMap.ChangeToShotgun.Enable();
         
         //userActions.PlayerMap.WeaponWheel.performed += WeaponWheel;
         //userActions.PlayerMap.WeaponWheel.Enable();
         
-        //userActions.PlayerMap.Reload.performed += Reload;
-        //userActions.PlayerMap.Reload.Enable();
+        userActions.PlayerMap.Reload.performed += ctx => Reload();
+        userActions.PlayerMap.Reload.Enable();
         
     }
 
@@ -233,11 +233,11 @@ public class WeaponManager : MonoBehaviour
     {
         userActions.PlayerMap.Shoot.Disable();
         //userActions.PlayerMap.ThrowCard.Disable();
-        userActions.PlayerMap.Weapon1.Disable();
-        userActions.PlayerMap.Weapon2.Disable();
-        userActions.PlayerMap.Weapon3.Disable();
-        userActions.PlayerMap.Weapon4.Disable();
+        userActions.PlayerMap.ChangeToMelee.Disable();
+        userActions.PlayerMap.ChangeToRevolver.Disable();
+        userActions.PlayerMap.ChangeToThompson.Disable();
+        userActions.PlayerMap.ChangeToShotgun.Disable();
         //userActions.PlayerMap.WeaponWheel.Disable();
-        //userActions.PlayerMap.Reload.Disable();
+        userActions.PlayerMap.Reload.Disable();
     }
 }
