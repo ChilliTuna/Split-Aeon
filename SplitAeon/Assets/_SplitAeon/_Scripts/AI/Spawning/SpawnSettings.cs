@@ -23,6 +23,8 @@ public class SpawnSettings : ScriptableObject
     [Tooltip("The time it takes from a single enemy spawn to the next enemy spawn during a wave.")]
     public float miniWaveTime = 0.01f;
 
+    public LayerMask environmentMask = ~0;
+
     private void OnValidate()
     {
         if(desiredWaveCount < 0)

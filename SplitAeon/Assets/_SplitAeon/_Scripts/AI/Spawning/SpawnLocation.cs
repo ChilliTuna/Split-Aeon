@@ -15,6 +15,8 @@ public class SpawnLocation : MonoBehaviour
 
     public bool isSpawning { get { return m_isSpawning; } }
 
+    public float skinWidth = 0.0001f;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -33,12 +35,61 @@ public class SpawnLocation : MonoBehaviour
 
         // DEBUGGONG PURPOSE: END THE SPAWNING STRAIGHT AWAY
         // Ideally the spawn would last as long as the animation that plays it
-        EndSpawning();
+        //EndSpawning();
     }
 
     public void EndSpawning()
     {
         m_isSpawning = false;
+    }
+
+    public Bounds FindBounds(Bounds copyBounds)
+    {
+        copyBounds.center = transform.position + Vector3.up * copyBounds.extents.y;
+        return copyBounds;
+    }
+
+    public bool IsInCameraView(Camera camera, Bounds agentBounds)
+    {
+        var frustumPlanes = GeometryUtility.CalculateFrustumPlanes(camera);
+        bool inCameraView = GeometryUtility.TestPlanesAABB(frustumPlanes, agentBounds);
+        return inCameraView;
+    }
+
+    public bool AgentBoundsRayCheck(Bounds bounds, Vector3 target, LayerMask environmentMask)
+    {
+        Vector3[] origins = new Vector3[8];
+
+        Vector3 extents = bounds.extents - Vector3.one * skinWidth;
+        origins[0] = new Vector3(extents.x,   extents.y,  extents.z);
+        origins[1] = new Vector3(-extents.x,  extents.y,  extents.z);
+        origins[2] = new Vector3(-extents.x, -extents.y,  extents.z);
+        origins[3] = new Vector3(extents.x,  -extents.y,  extents.z);
+
+        origins[4] = new Vector3(extents.x,   extents.y, -extents.z);
+        origins[5] = new Vector3(-extents.x,  extents.y, -extents.z);
+        origins[6] = new Vector3(-extents.x, -extents.y, -extents.z);
+        origins[7] = new Vector3(extents.x,  -extents.y, -extents.z);
+
+        return AgentBoundsRayCheck(bounds.center, origins, target, environmentMask);
+    }
+
+    // returns true if all rays have hit an object. This would mean that the player can not see this spawn location
+    public bool AgentBoundsRayCheck(Vector3 boundsOrigin, Vector3[] extentsArray, Vector3 target, LayerMask environmentMask)
+    {
+        for (int i = 0; i < 8; i++)
+        {
+            Vector3 rayOrigin = extentsArray[i] + boundsOrigin;
+            Vector3 rayTarget = target;
+
+            Vector3 dir = rayTarget - rayOrigin;
+            if (!Physics.Raycast(rayOrigin, dir.normalized, out RaycastHit hitInfo, dir.magnitude, environmentMask))
+            {
+                // has not hit a wall
+                return false;
+            }
+        }
+        return true;
     }
 
     private void OnDrawGizmos()
@@ -53,9 +104,10 @@ public class SpawnLocation : MonoBehaviour
             Gizmos.DrawCube(position, Vector3.one);
         }
 
+        Color drawColour = Color.white;
         if(isSpawning)
         {
-            DrawCube(transform.position, Color.blue);
+            drawColour = Color.blue;
         }
         else
         {
@@ -63,15 +115,17 @@ public class SpawnLocation : MonoBehaviour
             {
                 case SpawnType.FIXED:
                     {
-                        DrawCube(transform.position, Color.red);
+                        drawColour = Color.red;
                         break;
                     }
                 case SpawnType.DYNAMIC:
                     {
-                        DrawCube(transform.position, Color.yellow);
+                        drawColour = Color.yellow;
                         break;
                     }
             }
         }
+
+        DrawCube(transform.position, drawColour);
     }
 }
