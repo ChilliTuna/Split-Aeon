@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 3668268928930509327}
   - component: {fileID: 8056811182175226336}
   - component: {fileID: 1911676646451276597}
+  - component: {fileID: 7070665342232837031}
   m_Layer: 0
   m_Name: Environment_Small_TPipe
   m_TagString: Untagged
@@ -25,8 +26,8 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3075695485462186331}
-  m_LocalRotation: {x: 0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -0.000000019073486, y: -0.03522562, z: -1.985129}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 2623149785644247356}
@@ -81,6 +82,19 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!65 &7070665342232837031
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3075695485462186331}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 0.17570342, y: 0.24519214, z: 0.3156436}
+  m_Center: {x: 0, y: 0.03522562, z: 0.1578218}
 --- !u!1 &3399263859700659078
 GameObject:
   m_ObjectHideFlags: 0
