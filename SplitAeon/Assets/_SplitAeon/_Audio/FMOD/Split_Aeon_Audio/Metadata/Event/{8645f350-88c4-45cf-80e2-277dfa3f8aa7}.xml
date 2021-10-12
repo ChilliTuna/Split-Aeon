@@ -2,13 +2,13 @@
 <objects serializationModel="Studio.02.02.00">
 	<object class="Event" id="{8645f350-88c4-45cf-80e2-277dfa3f8aa7}">
 		<property name="name">
-			<value>Thompson_Shot</value>
+			<value>Tommy_Shot</value>
 		</property>
 		<property name="outputFormat">
 			<value>1</value>
 		</property>
 		<relationship name="folder">
-			<destination>{90cf5d61-ee7f-445a-a1d7-db7a6fd71fe2}</destination>
+			<destination>{b4304c89-27ac-41fd-9483-ee5b5b4ab005}</destination>
 		</relationship>
 		<relationship name="mixer">
 			<destination>{09feab51-425d-4032-8a00-24247a029955}</destination>
@@ -89,9 +89,19 @@
 	</object>
 	<object class="MixerBusPanner" id="{dba560bc-5509-47f2-a2e0-8e8ccff0fcc0}" />
 	<object class="MultiSound" id="{c8e553e7-e663-46f6-9ce5-e16d901045ee}">
+		<property name="isAsync">
+			<value>true</value>
+		</property>
 		<property name="length">
 			<value>0.5</value>
 		</property>
+		<property name="volume">
+			<value>-10</value>
+		</property>
+		<relationship name="modulators">
+			<destination>{1b98bedf-573a-427c-b224-67f8039556a1}</destination>
+			<destination>{a225b5c5-038d-4e70-9531-b86814c87563}</destination>
+		</relationship>
 		<relationship name="sounds">
 			<destination>{ec2fef8f-4f04-4566-ac1a-2f94ae0f6b9e}</destination>
 			<destination>{87d7c148-71f6-43c2-8a8e-d919c1ecfc9f}</destination>
@@ -121,6 +131,22 @@
 	</object>
 	<object class="MixerBusPanner" id="{0b1f1bd0-bf87-437f-bd4d-dc7bb2188b30}" />
 	<object class="MixerBusFader" id="{c0c9c594-9054-4501-87ab-d550787658ab}" />
+	<object class="RandomizerModulator" id="{1b98bedf-573a-427c-b224-67f8039556a1}">
+		<property name="nameOfPropertyBeingModulated">
+			<value>volume</value>
+		</property>
+		<property name="amount">
+			<value>3</value>
+		</property>
+	</object>
+	<object class="RandomizerModulator" id="{a225b5c5-038d-4e70-9531-b86814c87563}">
+		<property name="nameOfPropertyBeingModulated">
+			<value>pitch</value>
+		</property>
+		<property name="amount">
+			<value>2.08333349</value>
+		</property>
+	</object>
 	<object class="SingleSound" id="{ec2fef8f-4f04-4566-ac1a-2f94ae0f6b9e}">
 		<relationship name="audioFile">
 			<destination>{adeac744-cb85-4d56-8b75-0a5220b4fa79}</destination>

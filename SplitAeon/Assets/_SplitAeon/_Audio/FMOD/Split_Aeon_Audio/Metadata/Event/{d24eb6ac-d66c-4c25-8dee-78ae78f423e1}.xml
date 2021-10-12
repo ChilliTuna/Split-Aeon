@@ -182,7 +182,6 @@
 			<destination>{6252e473-a8db-40ae-b0a5-92002475b536}</destination>
 		</relationship>
 		<relationship name="sounds">
-			<destination>{c15eae77-3695-4b6f-a933-5d72e1089287}</destination>
 			<destination>{a470eb6e-33a1-4e26-b832-0592b8d20b16}</destination>
 			<destination>{a2021fa2-c7ef-4ea4-ad1d-24411990a0a5}</destination>
 			<destination>{c7e9877a-a3b3-4f18-af2e-f8ef83c1d11f}</destination>
@@ -452,11 +451,6 @@
 		<property name="amount">
 			<value>5</value>
 		</property>
-	</object>
-	<object class="SingleSound" id="{c15eae77-3695-4b6f-a933-5d72e1089287}">
-		<relationship name="audioFile">
-			<destination>{5435504c-41f1-477d-acd9-d6e1b87c3d7e}</destination>
-		</relationship>
 	</object>
 	<object class="SingleSound" id="{a470eb6e-33a1-4e26-b832-0592b8d20b16}">
 		<relationship name="audioFile">
@@ -765,6 +759,7 @@
 	</object>
 	<object class="MixerBusEffectChain" id="{5bb4de50-73c2-48d3-96d4-045fb23a9af4}">
 		<relationship name="effects">
+			<destination>{2dd52730-c611-4f77-9168-a6b8be9bd679}</destination>
 			<destination>{ad22dc5f-f660-4cfe-b281-270f27ba6755}</destination>
 		</relationship>
 	</object>
@@ -789,6 +784,29 @@
 			<destination>{4435399c-cf04-4a90-b975-77f8bbfe7e56}</destination>
 			<destination>{b8004b7e-25a2-46cf-b34e-519385514eae}</destination>
 		</relationship>
+	</object>
+	<object class="SFXReverbEffect" id="{2dd52730-c611-4f77-9168-a6b8be9bd679}">
+		<property name="decayTime">
+			<value>1100</value>
+		</property>
+		<property name="earlyDelay">
+			<value>7</value>
+		</property>
+		<property name="lateDelay">
+			<value>11</value>
+		</property>
+		<property name="HFDecayRatio">
+			<value>40</value>
+		</property>
+		<property name="highCut">
+			<value>7800</value>
+		</property>
+		<property name="earlyLateMix">
+			<value>87</value>
+		</property>
+		<property name="wetLevel">
+			<value>-14</value>
+		</property>
 	</object>
 	<object class="MixerBusFader" id="{ad22dc5f-f660-4cfe-b281-270f27ba6755}" />
 	<object class="AutomationPoint" id="{b63329ee-1d86-4fb4-91f8-675a96d28c32}">
