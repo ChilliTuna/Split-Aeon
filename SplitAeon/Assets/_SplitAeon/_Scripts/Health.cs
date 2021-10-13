@@ -6,8 +6,18 @@ public class Health : MonoBehaviour
     [Header("Health Data")]
     public float maxHealth;
 
-    [HideInInspector]
+    //[HideInInspector]
     public float health;
+
+    [Header("Healing")]
+    public bool enableHealing;
+
+    public float timeBeforeHeal;
+    public float healAmount;
+    public float healTick;
+
+    private float lastHitTimer;
+    private float healTickTimer;
 
     [Header("On Hit")]
     public UnityEvent onHitEvents;
@@ -23,6 +33,8 @@ public class Health : MonoBehaviour
     public void Hit()
     {
         onHitEvents.Invoke();
+
+        lastHitTimer = 0;
 
         if (health <= 0)
         {
@@ -88,10 +100,33 @@ public class Health : MonoBehaviour
 
     private void Update()
     {
+
+        lastHitTimer += Time.deltaTime;
+
         if (health > maxHealth)
         {
             health = maxHealth;
         }
+
+        if (enableHealing)
+        {
+            if (lastHitTimer > timeBeforeHeal)
+            {
+                if (health < maxHealth)
+                {
+                    healTickTimer += Time.deltaTime;
+
+                    if (healTickTimer >= healTick)
+                    {
+                        healTickTimer = 0;
+                        Heal(healAmount);
+                    }
+
+                }
+            }
+        }
+
+
     }
 
 }
