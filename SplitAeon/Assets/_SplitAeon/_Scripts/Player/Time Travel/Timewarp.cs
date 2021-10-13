@@ -37,6 +37,24 @@ public class Timewarp : MonoBehaviour
     [Space]
     public UnityEvent onTimeWarp;
 
+    private UserActions userActions;
+
+    private void Awake()
+    {
+        userActions = new UserActions();
+    }
+
+    private void OnEnable()
+    {
+        userActions.PlayerMap.TimeTravel.performed += ctx => TryWarp();
+        userActions.PlayerMap.TimeTravel.Enable();
+    }
+
+    private void OnDisable()
+    {
+        userActions.PlayerMap.TimeTravel.Disable();
+    }
+
     private void Start()
     {
         volume.profile.TryGet(out cromAb);
@@ -57,11 +75,6 @@ public class Timewarp : MonoBehaviour
     private void Update()
     {
         timer.Count();
-
-        if (Input.GetKeyDown(KeyCode.E))
-        {
-            TryWarp();
-        }
 
         if (cromAb.intensity.value >= 0)
         {

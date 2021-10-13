@@ -91,7 +91,7 @@ public partial class @UserActions : IInputActionCollection2, IDisposable
                     ""initialStateCheck"": false
                 },
                 {
-                    ""name"": ""Weapon1"",
+                    ""name"": ""ChangeToRevolver"",
                     ""type"": ""Button"",
                     ""id"": ""23d4197e-40a0-4915-8684-74bf15723057"",
                     ""expectedControlType"": ""Button"",
@@ -100,7 +100,7 @@ public partial class @UserActions : IInputActionCollection2, IDisposable
                     ""initialStateCheck"": false
                 },
                 {
-                    ""name"": ""Weapon2"",
+                    ""name"": ""ChangeToThompson"",
                     ""type"": ""Button"",
                     ""id"": ""dd06e90f-784c-4905-b369-7f1db0a35198"",
                     ""expectedControlType"": ""Button"",
@@ -109,7 +109,7 @@ public partial class @UserActions : IInputActionCollection2, IDisposable
                     ""initialStateCheck"": false
                 },
                 {
-                    ""name"": ""Weapon3"",
+                    ""name"": ""ChangeToShotgun"",
                     ""type"": ""Button"",
                     ""id"": ""b34df450-32c2-40b0-8b4f-8c7b697a5020"",
                     ""expectedControlType"": ""Button"",
@@ -118,7 +118,7 @@ public partial class @UserActions : IInputActionCollection2, IDisposable
                     ""initialStateCheck"": false
                 },
                 {
-                    ""name"": ""Weapon4"",
+                    ""name"": ""ChangeToMelee"",
                     ""type"": ""Button"",
                     ""id"": ""063c1d80-bdc6-4ab7-959a-a9f11a045beb"",
                     ""expectedControlType"": ""Button"",
@@ -301,7 +301,7 @@ public partial class @UserActions : IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""Weapon1"",
+                    ""action"": ""ChangeToRevolver"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -312,7 +312,7 @@ public partial class @UserActions : IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""Weapon2"",
+                    ""action"": ""ChangeToThompson"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -323,7 +323,7 @@ public partial class @UserActions : IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""Weapon3"",
+                    ""action"": ""ChangeToShotgun"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -334,7 +334,7 @@ public partial class @UserActions : IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""Weapon4"",
+                    ""action"": ""ChangeToMelee"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -457,10 +457,10 @@ public partial class @UserActions : IInputActionCollection2, IDisposable
         m_PlayerMap_TimeTravel = m_PlayerMap.FindAction("TimeTravel", throwIfNotFound: true);
         m_PlayerMap_ThrowCard = m_PlayerMap.FindAction("ThrowCard", throwIfNotFound: true);
         m_PlayerMap_Interact = m_PlayerMap.FindAction("Interact", throwIfNotFound: true);
-        m_PlayerMap_Weapon1 = m_PlayerMap.FindAction("Weapon1", throwIfNotFound: true);
-        m_PlayerMap_Weapon2 = m_PlayerMap.FindAction("Weapon2", throwIfNotFound: true);
-        m_PlayerMap_Weapon3 = m_PlayerMap.FindAction("Weapon3", throwIfNotFound: true);
-        m_PlayerMap_Weapon4 = m_PlayerMap.FindAction("Weapon4", throwIfNotFound: true);
+        m_PlayerMap_ChangeToRevolver = m_PlayerMap.FindAction("ChangeToRevolver", throwIfNotFound: true);
+        m_PlayerMap_ChangeToThompson = m_PlayerMap.FindAction("ChangeToThompson", throwIfNotFound: true);
+        m_PlayerMap_ChangeToShotgun = m_PlayerMap.FindAction("ChangeToShotgun", throwIfNotFound: true);
+        m_PlayerMap_ChangeToMelee = m_PlayerMap.FindAction("ChangeToMelee", throwIfNotFound: true);
         m_PlayerMap_ObjectiveList = m_PlayerMap.FindAction("ObjectiveList", throwIfNotFound: true);
         m_PlayerMap_WeaponWheel = m_PlayerMap.FindAction("WeaponWheel", throwIfNotFound: true);
         m_PlayerMap_Reload = m_PlayerMap.FindAction("Reload", throwIfNotFound: true);
@@ -535,10 +535,10 @@ public partial class @UserActions : IInputActionCollection2, IDisposable
     private readonly InputAction m_PlayerMap_TimeTravel;
     private readonly InputAction m_PlayerMap_ThrowCard;
     private readonly InputAction m_PlayerMap_Interact;
-    private readonly InputAction m_PlayerMap_Weapon1;
-    private readonly InputAction m_PlayerMap_Weapon2;
-    private readonly InputAction m_PlayerMap_Weapon3;
-    private readonly InputAction m_PlayerMap_Weapon4;
+    private readonly InputAction m_PlayerMap_ChangeToRevolver;
+    private readonly InputAction m_PlayerMap_ChangeToThompson;
+    private readonly InputAction m_PlayerMap_ChangeToShotgun;
+    private readonly InputAction m_PlayerMap_ChangeToMelee;
     private readonly InputAction m_PlayerMap_ObjectiveList;
     private readonly InputAction m_PlayerMap_WeaponWheel;
     private readonly InputAction m_PlayerMap_Reload;
@@ -555,10 +555,10 @@ public partial class @UserActions : IInputActionCollection2, IDisposable
         public InputAction @TimeTravel => m_Wrapper.m_PlayerMap_TimeTravel;
         public InputAction @ThrowCard => m_Wrapper.m_PlayerMap_ThrowCard;
         public InputAction @Interact => m_Wrapper.m_PlayerMap_Interact;
-        public InputAction ChangeToMelee => m_Wrapper.m_PlayerMap_Weapon1;
-        public InputAction ChangeToRevolver => m_Wrapper.m_PlayerMap_Weapon2;
-        public InputAction ChangeToThompson => m_Wrapper.m_PlayerMap_Weapon3;
-        public InputAction ChangeToShotgun => m_Wrapper.m_PlayerMap_Weapon4;
+        public InputAction @ChangeToRevolver => m_Wrapper.m_PlayerMap_ChangeToRevolver;
+        public InputAction @ChangeToThompson => m_Wrapper.m_PlayerMap_ChangeToThompson;
+        public InputAction @ChangeToShotgun => m_Wrapper.m_PlayerMap_ChangeToShotgun;
+        public InputAction @ChangeToMelee => m_Wrapper.m_PlayerMap_ChangeToMelee;
         public InputAction @ObjectiveList => m_Wrapper.m_PlayerMap_ObjectiveList;
         public InputAction @WeaponWheel => m_Wrapper.m_PlayerMap_WeaponWheel;
         public InputAction @Reload => m_Wrapper.m_PlayerMap_Reload;
@@ -594,18 +594,18 @@ public partial class @UserActions : IInputActionCollection2, IDisposable
                 @Interact.started -= m_Wrapper.m_PlayerMapActionsCallbackInterface.OnInteract;
                 @Interact.performed -= m_Wrapper.m_PlayerMapActionsCallbackInterface.OnInteract;
                 @Interact.canceled -= m_Wrapper.m_PlayerMapActionsCallbackInterface.OnInteract;
-                ChangeToMelee.started -= m_Wrapper.m_PlayerMapActionsCallbackInterface.OnWeapon1;
-                ChangeToMelee.performed -= m_Wrapper.m_PlayerMapActionsCallbackInterface.OnWeapon1;
-                ChangeToMelee.canceled -= m_Wrapper.m_PlayerMapActionsCallbackInterface.OnWeapon1;
-                ChangeToRevolver.started -= m_Wrapper.m_PlayerMapActionsCallbackInterface.OnWeapon2;
-                ChangeToRevolver.performed -= m_Wrapper.m_PlayerMapActionsCallbackInterface.OnWeapon2;
-                ChangeToRevolver.canceled -= m_Wrapper.m_PlayerMapActionsCallbackInterface.OnWeapon2;
-                ChangeToThompson.started -= m_Wrapper.m_PlayerMapActionsCallbackInterface.OnWeapon3;
-                ChangeToThompson.performed -= m_Wrapper.m_PlayerMapActionsCallbackInterface.OnWeapon3;
-                ChangeToThompson.canceled -= m_Wrapper.m_PlayerMapActionsCallbackInterface.OnWeapon3;
-                ChangeToShotgun.started -= m_Wrapper.m_PlayerMapActionsCallbackInterface.OnWeapon4;
-                ChangeToShotgun.performed -= m_Wrapper.m_PlayerMapActionsCallbackInterface.OnWeapon4;
-                ChangeToShotgun.canceled -= m_Wrapper.m_PlayerMapActionsCallbackInterface.OnWeapon4;
+                @ChangeToRevolver.started -= m_Wrapper.m_PlayerMapActionsCallbackInterface.OnChangeToRevolver;
+                @ChangeToRevolver.performed -= m_Wrapper.m_PlayerMapActionsCallbackInterface.OnChangeToRevolver;
+                @ChangeToRevolver.canceled -= m_Wrapper.m_PlayerMapActionsCallbackInterface.OnChangeToRevolver;
+                @ChangeToThompson.started -= m_Wrapper.m_PlayerMapActionsCallbackInterface.OnChangeToThompson;
+                @ChangeToThompson.performed -= m_Wrapper.m_PlayerMapActionsCallbackInterface.OnChangeToThompson;
+                @ChangeToThompson.canceled -= m_Wrapper.m_PlayerMapActionsCallbackInterface.OnChangeToThompson;
+                @ChangeToShotgun.started -= m_Wrapper.m_PlayerMapActionsCallbackInterface.OnChangeToShotgun;
+                @ChangeToShotgun.performed -= m_Wrapper.m_PlayerMapActionsCallbackInterface.OnChangeToShotgun;
+                @ChangeToShotgun.canceled -= m_Wrapper.m_PlayerMapActionsCallbackInterface.OnChangeToShotgun;
+                @ChangeToMelee.started -= m_Wrapper.m_PlayerMapActionsCallbackInterface.OnChangeToMelee;
+                @ChangeToMelee.performed -= m_Wrapper.m_PlayerMapActionsCallbackInterface.OnChangeToMelee;
+                @ChangeToMelee.canceled -= m_Wrapper.m_PlayerMapActionsCallbackInterface.OnChangeToMelee;
                 @ObjectiveList.started -= m_Wrapper.m_PlayerMapActionsCallbackInterface.OnObjectiveList;
                 @ObjectiveList.performed -= m_Wrapper.m_PlayerMapActionsCallbackInterface.OnObjectiveList;
                 @ObjectiveList.canceled -= m_Wrapper.m_PlayerMapActionsCallbackInterface.OnObjectiveList;
@@ -646,18 +646,18 @@ public partial class @UserActions : IInputActionCollection2, IDisposable
                 @Interact.started += instance.OnInteract;
                 @Interact.performed += instance.OnInteract;
                 @Interact.canceled += instance.OnInteract;
-                ChangeToMelee.started += instance.OnWeapon1;
-                ChangeToMelee.performed += instance.OnWeapon1;
-                ChangeToMelee.canceled += instance.OnWeapon1;
-                ChangeToRevolver.started += instance.OnWeapon2;
-                ChangeToRevolver.performed += instance.OnWeapon2;
-                ChangeToRevolver.canceled += instance.OnWeapon2;
-                ChangeToThompson.started += instance.OnWeapon3;
-                ChangeToThompson.performed += instance.OnWeapon3;
-                ChangeToThompson.canceled += instance.OnWeapon3;
-                ChangeToShotgun.started += instance.OnWeapon4;
-                ChangeToShotgun.performed += instance.OnWeapon4;
-                ChangeToShotgun.canceled += instance.OnWeapon4;
+                @ChangeToRevolver.started += instance.OnChangeToRevolver;
+                @ChangeToRevolver.performed += instance.OnChangeToRevolver;
+                @ChangeToRevolver.canceled += instance.OnChangeToRevolver;
+                @ChangeToThompson.started += instance.OnChangeToThompson;
+                @ChangeToThompson.performed += instance.OnChangeToThompson;
+                @ChangeToThompson.canceled += instance.OnChangeToThompson;
+                @ChangeToShotgun.started += instance.OnChangeToShotgun;
+                @ChangeToShotgun.performed += instance.OnChangeToShotgun;
+                @ChangeToShotgun.canceled += instance.OnChangeToShotgun;
+                @ChangeToMelee.started += instance.OnChangeToMelee;
+                @ChangeToMelee.performed += instance.OnChangeToMelee;
+                @ChangeToMelee.canceled += instance.OnChangeToMelee;
                 @ObjectiveList.started += instance.OnObjectiveList;
                 @ObjectiveList.performed += instance.OnObjectiveList;
                 @ObjectiveList.canceled += instance.OnObjectiveList;
@@ -719,10 +719,10 @@ public partial class @UserActions : IInputActionCollection2, IDisposable
         void OnTimeTravel(InputAction.CallbackContext context);
         void OnThrowCard(InputAction.CallbackContext context);
         void OnInteract(InputAction.CallbackContext context);
-        void OnWeapon1(InputAction.CallbackContext context);
-        void OnWeapon2(InputAction.CallbackContext context);
-        void OnWeapon3(InputAction.CallbackContext context);
-        void OnWeapon4(InputAction.CallbackContext context);
+        void OnChangeToRevolver(InputAction.CallbackContext context);
+        void OnChangeToThompson(InputAction.CallbackContext context);
+        void OnChangeToShotgun(InputAction.CallbackContext context);
+        void OnChangeToMelee(InputAction.CallbackContext context);
         void OnObjectiveList(InputAction.CallbackContext context);
         void OnWeaponWheel(InputAction.CallbackContext context);
         void OnReload(InputAction.CallbackContext context);

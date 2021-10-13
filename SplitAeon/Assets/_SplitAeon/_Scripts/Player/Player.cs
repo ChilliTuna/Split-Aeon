@@ -332,12 +332,6 @@ public class Player : MonoBehaviour
         userActions.PlayerMap.Sprint.performed += ctx => StartSprint();
         userActions.PlayerMap.Sprint.canceled += ctx => EndSprint();
         userActions.PlayerMap.Sprint.Enable();
-
-        //userActions.PlayerMap.Interact.performed += Interact;
-        //userActions.PlayerMap.Interact.Enable();
-        
-        //Time travel also need to be done
-
     }
 
     void DisableInputs()
@@ -346,9 +340,6 @@ public class Player : MonoBehaviour
         movementRight.Disable();
         userActions.PlayerMap.Jump.Disable();
         userActions.PlayerMap.Sprint.Disable();
-
-        //userActions.PlayerMap.Interact.Disable();
-        //Time travel also need to be done
     }
 
     #endregion
