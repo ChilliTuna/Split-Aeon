@@ -37,7 +37,7 @@ public class SpawnLocation : MonoBehaviour
 
         // DEBUGGONG PURPOSE: END THE SPAWNING STRAIGHT AWAY
         // Ideally the spawn would last as long as the animation that plays it
-        //EndSpawning();
+        EndSpawning();
     }
 
     public void EndSpawning()
