@@ -199,8 +199,11 @@ public class Gun : Weapon
 
             if (isFullAuto)
             {
-                animator.SetBool("ShootHold", false);
+                animator.SetBool("ShootHold", true);
             }
+
+            TryReload();
+
         }
     }
 
