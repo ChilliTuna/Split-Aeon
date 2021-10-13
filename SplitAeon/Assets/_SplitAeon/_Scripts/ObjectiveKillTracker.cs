@@ -10,7 +10,7 @@ public class ObjectiveKillTracker : MonoBehaviour
 
     public int killTarget;
 
-    [HideInInspector]
+    //[HideInInspector]
     public int killCount;
 
     public UnityEvent onTargetReached;
@@ -20,13 +20,6 @@ public class ObjectiveKillTracker : MonoBehaviour
         if (isTrackingEnabled)
         {
             killCount++;
-
-            if (killCount == killTarget)
-            {
-                onTargetReached.Invoke();
-                ResetKills();
-                isTrackingEnabled = false;
-            }
 
         }
     }
@@ -39,6 +32,17 @@ public class ObjectiveKillTracker : MonoBehaviour
     public void ToggleBool(bool b)
     {
         isTrackingEnabled = b;
+    }
+
+
+    public void Update()
+    {
+        if (killCount >= killTarget)
+        {
+            onTargetReached.Invoke();
+            ResetKills();
+            isTrackingEnabled = false;
+        }
     }
 
 }
