@@ -22,11 +22,25 @@ public class RoomTracker : MonoBehaviour
     {
         _allRooms = FindObjectsOfType<RoomBounds>();
 
-        foreach(var room in _allRooms)
+        List<SpawnLocation> spawnLocations = new List<SpawnLocation>(FindObjectsOfType<SpawnLocation>());
+
+        foreach (var room in _allRooms)
         {
+            // Find Player's room
             if(room.EntryContainsPoint(transform.position))
             {
                 currentRoom = room;
+            }
+
+            // find Spawn Locations rooms
+            for(int i = 0; i < spawnLocations.Count; i++)
+            {
+                if(room.EntryContainsPoint(spawnLocations[i].transform.position))
+                {
+                    spawnLocations[i].room = room;
+                    spawnLocations.RemoveAt(i);
+                    i--;
+                }
             }
         }
 
@@ -52,6 +66,12 @@ public class RoomTracker : MonoBehaviour
         stateMachine = new StateMachine<RoomTracker>(this);
         RoomTrackerStateBucket.SetUpStateMachine(stateMachine);
         stateMachine.Init();
+
+        var spawnerArray = FindObjectsOfType<EnemySpawner>(true);
+        foreach (EnemySpawner spawner in spawnerArray)
+        {
+            spawner.roomTracker = this;
+        }
     }
 
     // Update is called once per frame
@@ -89,6 +109,40 @@ public class RoomTracker : MonoBehaviour
         }
 
         // did not find a relevant neighbour
+        return false;
+    }
+
+    public bool ValidateSpawnLocation(SpawnLocation location)
+    {
+        if(currentRoom != null)
+        {
+            // player is in a room
+            return ValidateSpawnLocation(location, currentRoom);
+        }
+        else
+        {
+            // player is somehow outside all rooms
+            return ValidateSpawnLocation(location, previousRoom);
+        }
+    }
+
+    static bool ValidateSpawnLocation(SpawnLocation location, RoomBounds targetRoom)
+    {
+        if(location.room == targetRoom)
+        {
+            // spawn location is in current room
+            return true;
+        }
+        
+        foreach(var neighbour in targetRoom.neighbours)
+        {
+            if(location.room == neighbour)
+            {
+                // spawn location is in neighbour room
+                return true;
+            }
+        }
+
         return false;
     }
 

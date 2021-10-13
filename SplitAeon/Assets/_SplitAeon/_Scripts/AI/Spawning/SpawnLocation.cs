@@ -13,6 +13,8 @@ public class SpawnLocation : MonoBehaviour
     public SpawnType spawnType = 0;
     bool m_isSpawning = false;
 
+    [HideInInspector] public RoomBounds room = null;
+
     public bool isSpawning { get { return m_isSpawning; } }
 
     public float skinWidth = 0.0001f;

@@ -266,7 +266,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7180683567832467982, guid: 54da44f46314e4b4ca2e3ae6f0b89494, type: 3}
       propertyPath: m_RootOrder
-      value: 9
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 7180683567832467982, guid: 54da44f46314e4b4ca2e3ae6f0b89494, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -623,6 +623,12 @@ MonoBehaviour:
   neighbours:
   - {fileID: 1393456832}
   - {fileID: 1645159968}
+  enterRoom:
+    m_PersistentCalls:
+      m_Calls: []
+  exitRoom:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!1 &307360175
 GameObject:
   m_ObjectHideFlags: 0
@@ -973,7 +979,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2111419619898652962, guid: ac7cad56bd643e14b8f559b771b6d16d, type: 3}
       propertyPath: cellRange
-      value: 1
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 2111419619898652962, guid: ac7cad56bd643e14b8f559b771b6d16d, type: 3}
       propertyPath: cellSize.x
@@ -1734,7 +1740,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7180683567832467982, guid: 54da44f46314e4b4ca2e3ae6f0b89494, type: 3}
       propertyPath: m_RootOrder
-      value: 12
+      value: 9
       objectReference: {fileID: 0}
     - target: {fileID: 7180683567832467982, guid: 54da44f46314e4b4ca2e3ae6f0b89494, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -1917,7 +1923,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &841489310
 Transform:
   m_ObjectHideFlags: 0
@@ -3091,6 +3097,12 @@ MonoBehaviour:
   exitExpansion: 5
   neighbours:
   - {fileID: 298690616}
+  enterRoom:
+    m_PersistentCalls:
+      m_Calls: []
+  exitRoom:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!1001 &1397775922
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -3550,7 +3562,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7180683567832467982, guid: 54da44f46314e4b4ca2e3ae6f0b89494, type: 3}
       propertyPath: m_RootOrder
-      value: 10
+      value: 7
       objectReference: {fileID: 0}
     - target: {fileID: 7180683567832467982, guid: 54da44f46314e4b4ca2e3ae6f0b89494, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -3611,7 +3623,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7180683567832467982, guid: 54da44f46314e4b4ca2e3ae6f0b89494, type: 3}
       propertyPath: m_RootOrder
-      value: 11
+      value: 8
       objectReference: {fileID: 0}
     - target: {fileID: 7180683567832467982, guid: 54da44f46314e4b4ca2e3ae6f0b89494, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -3806,7 +3818,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   currentRoom: {fileID: 0}
-  previousRoom: {fileID: 0}
   index: 0
   roomName: 
   prevName: 
@@ -3863,6 +3874,12 @@ MonoBehaviour:
   exitExpansion: 5
   neighbours:
   - {fileID: 298690616}
+  enterRoom:
+    m_PersistentCalls:
+      m_Calls: []
+  exitRoom:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!1001 &1687361234
 PrefabInstance:
   m_ObjectHideFlags: 0

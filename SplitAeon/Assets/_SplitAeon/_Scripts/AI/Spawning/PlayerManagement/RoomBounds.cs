@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class RoomBounds : MonoBehaviour
 {
@@ -10,6 +11,9 @@ public class RoomBounds : MonoBehaviour
     public float exitExpansion = 5.0f;
 
     public RoomBounds[] neighbours;
+
+    public UnityEvent enterRoom;
+    public UnityEvent exitRoom;
 
     void Awake()
     {
