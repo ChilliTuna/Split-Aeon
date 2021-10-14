@@ -7,8 +7,6 @@ using UnityEngine.InputSystem;
 public enum InputActions
 {
     MoveForward,
-    MoveBackward,
-    MoveLeft,
     MoveRight,
     Jump,
     Shoot,
@@ -39,7 +37,7 @@ public class KeyRebinder : MonoBehaviour
 
     private bool hasFoundAction = false;
 
-    private List<InputActions> specialBinds = new List<InputActions> { InputActions.MoveForward, InputActions.MoveBackward, InputActions.MoveLeft, InputActions.MoveRight, InputActions.Sprint };
+    private List<InputActions> specialBinds = new List<InputActions> { InputActions.MoveForward, InputActions.MoveRight };
 
     private InputActionRebindingExtensions.RebindingOperation rebindingOperation;
 
@@ -52,12 +50,19 @@ public class KeyRebinder : MonoBehaviour
         hasFoundAction = dictionary.TryGetValue(inputActions, out thisAction);
     }
 
-    private void Start()
+    private void OnEnable()
     {
         LoadBinding();
         if (hasFoundAction)
         {
-            StartCoroutine(UpdateText());
+            if (specialBinds.Contains(inputActions))
+            {
+                StartCoroutine(UpdateSpecialRebindText());
+            }
+            else
+            {
+                StartCoroutine(UpdateText());
+            }
         }
     }
 
@@ -80,8 +85,9 @@ public class KeyRebinder : MonoBehaviour
 
     private void SpecialRebind()
     {
-        if (inputActions == InputActions.MoveForward)
+        for (int i = 1; i < 3; i++)
         {
+            rebindingOperation = thisAction.PerformInteractiveRebinding(thisAction.GetBindingIndex() + i).OnComplete(operation => DisposeRebindingOperation()).Start();
         }
     }
 
@@ -89,9 +95,7 @@ public class KeyRebinder : MonoBehaviour
     {
         dictionary = new Dictionary<InputActions, InputAction>();
         dictionary.Add(InputActions.MoveForward, userActions.PlayerMap.MoveForward);
-        dictionary.Add(InputActions.MoveBackward, userActions.PlayerMap.MoveForward);
-        dictionary.Add(InputActions.MoveLeft, userActions.PlayerMap.MoveForward);
-        dictionary.Add(InputActions.MoveRight, userActions.PlayerMap.MoveForward);
+        dictionary.Add(InputActions.MoveRight, userActions.PlayerMap.MoveRight);
         dictionary.Add(InputActions.Jump, userActions.PlayerMap.Jump);
         dictionary.Add(InputActions.Shoot, userActions.PlayerMap.Shoot);
         dictionary.Add(InputActions.TimeTravel, userActions.PlayerMap.TimeTravel);
@@ -130,15 +134,27 @@ public class KeyRebinder : MonoBehaviour
     private IEnumerator UpdateSpecialRebindText()
     {
         yield return new WaitForSeconds(0.1f);
-        //control = InputSystem.FindControl(thisAction.bindings[thisAction.GetBindingIndex()].effectivePath);
-        //if (control.shortDisplayName != null)
-        //{
-        //    associatedText.text = control.shortDisplayName;
-        //}
-        //else
-        //{
-        //    associatedText.text = control.displayName;
-        //}
+        InputControl con1 = InputSystem.FindControl(thisAction.bindings[thisAction.GetBindingIndex() + 1].effectivePath);
+        InputControl con2 = InputSystem.FindControl(thisAction.bindings[thisAction.GetBindingIndex() + 2].effectivePath);
+        string outText = "";
+        if (con1.shortDisplayName != null)
+        {
+            outText = con1.shortDisplayName;
+        }
+        else
+        {
+            outText = con1.displayName;
+        }
+        outText += " / ";
+        if (con2.shortDisplayName != null)
+        {
+            outText += con2.shortDisplayName;
+        }
+        else
+        {
+            outText += con2.displayName;
+        }
+        associatedText.text = outText;
         yield return null;
     }
 

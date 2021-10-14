@@ -1,12 +1,8 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.InputSystem;
-using TMPro;
 
 public class Player : MonoBehaviour
 {
-
     #region Variables
 
     [HideInInspector] public CharacterController controller;
@@ -15,52 +11,57 @@ public class Player : MonoBehaviour
 
     [Header("Movement")]
     private float movementSpeed;
+
     public float walkSpeed;
     public float sprintSpeed;
 
-    #endregion
+    #endregion Movement
 
     #region Jumping
 
     [Header("Jumping")]
-
     public float gravity;
+
     public float jumpHeight;
     private Vector3 playerVelocity;
 
-    #endregion
+    #endregion Jumping
 
     #region States
 
     [HideInInspector]
     public bool isRunning;
+
     [HideInInspector]
     public bool isMoving;
+
     [HideInInspector]
     public bool isBusy;
 
-    #endregion
+    #endregion States
 
     #region Ground Check
 
     [Header("Ground Check")]
     public Transform groundCheck;
+
     public float groundDistance = 0.3f;
     public LayerMask ignoreMask;
-    bool isGrounded;
+    private bool isGrounded;
 
-    #endregion
+    #endregion Ground Check
 
     #region Camera
 
     [Header("Camera")]
     public float mouseSensitivity = 100f;
+
     private float xRotation = 0f;
     public Camera cam;
 
     [Space(5)]
-
     public int cameraFOV;
+
     public int sprintFOVIncrease;
 
     private int cameraSprintFOV;
@@ -72,7 +73,7 @@ public class Player : MonoBehaviour
     [HideInInspector]
     public bool lockMouse = false;
 
-    #endregion
+    #endregion Camera
 
     #region Animation
 
@@ -80,20 +81,20 @@ public class Player : MonoBehaviour
     [HideInInspector]
     public Animator viewmodelAnimator;
 
-    #endregion
+    #endregion Animation
 
     #region Footsteps
 
     [Header("Footsteps")]
     public Footstepper stepper;
 
-    #endregion
+    #endregion Footsteps
 
     #region Blends
 
-    float weaponMoveBlend;
+    private float weaponMoveBlend;
 
-    #endregion
+    #endregion Blends
 
     #region Inputs
 
@@ -102,9 +103,9 @@ public class Player : MonoBehaviour
     private InputAction movementForward;
     private InputAction movementRight;
 
-    #endregion
+    #endregion Inputs
 
-    #endregion
+    #endregion Variables
 
     #region Unity Functions
 
@@ -126,7 +127,7 @@ public class Player : MonoBehaviour
 
         currentFOV = cam.fieldOfView;
 
-        #endregion
+        #endregion Initialization
     }
 
     private void OnEnable()
@@ -135,9 +136,8 @@ public class Player : MonoBehaviour
         EnableInputs();
     }
 
-    void Update()
+    private void Update()
     {
-
         #region Player Movement
 
         float xMovement = movementRight.ReadValue<float>();
@@ -152,14 +152,21 @@ public class Player : MonoBehaviour
             isMoving = true;
         }
 
+        if (movementForward.ReadValue<float>() <= 0)
+        {
+            EndSprint();
+        }
+
         #region Ground Check
+
         isGrounded = Physics.CheckSphere(groundCheck.position, groundDistance, ~ignoreMask);
 
         if (isGrounded && playerVelocity.y < 0)
         {
             playerVelocity.y = -2f;
         }
-        #endregion
+
+        #endregion Ground Check
 
         Vector3 move = transform.right * xMovement + transform.forward * zMovement;
 
@@ -174,7 +181,7 @@ public class Player : MonoBehaviour
 
         controller.Move(playerVelocity * Time.deltaTime);
 
-        #endregion
+        #endregion Player Movement
 
         #region Camera Movement
 
@@ -224,10 +231,9 @@ public class Player : MonoBehaviour
             {
                 recoilHorizontal = 0;
             }
-
         }
 
-        #endregion
+        #endregion Recoil Management
 
         xRotation -= mouseYAxis;
         xRotation = Mathf.Clamp(xRotation, -90f, 90f);
@@ -235,13 +241,12 @@ public class Player : MonoBehaviour
         cam.transform.localRotation = Quaternion.Euler(xRotation, 0f, 0f);
         transform.Rotate(Vector3.up * mouseXAxis);
 
-        #endregion
+        #endregion Camera Movement
 
         #region Animation
 
         if (xMovement != 0 || zMovement != 0)
         {
-
             viewmodelAnimator.SetBool("isMoving", true);
 
             if (isRunning)
@@ -252,7 +257,6 @@ public class Player : MonoBehaviour
             {
                 weaponMoveBlend = Mathf.Lerp(weaponMoveBlend, 0f, Time.deltaTime * 10f);
             }
-
         }
         else
         {
@@ -281,9 +285,7 @@ public class Player : MonoBehaviour
             stepper.stopSounds = true;
         }
 
-
-        #endregion
-
+        #endregion Animation
     }
 
     private void OnDisable()
@@ -291,11 +293,11 @@ public class Player : MonoBehaviour
         DisableInputs();
     }
 
-    #endregion
+    #endregion Unity Functions
 
     #region Movement Actions
 
-    void Jump()
+    private void Jump()
     {
         if (isGrounded)
         {
@@ -303,19 +305,22 @@ public class Player : MonoBehaviour
         }
     }
 
-    void StartSprint()
+    private void StartSprint()
     {
-        isRunning = true;
-        movementSpeed = sprintSpeed;
+        if (movementForward.ReadValue<float>() > 0)
+        {
+            isRunning = true;
+            movementSpeed = sprintSpeed;
+        }
     }
 
-    void EndSprint()
+    private void EndSprint()
     {
         isRunning = false;
         movementSpeed = walkSpeed;
     }
 
-    #endregion
+    #endregion Movement Actions
 
     #region Input Functions
 
@@ -343,5 +348,5 @@ public class Player : MonoBehaviour
         userActions.PlayerMap.Sprint.Disable();
     }
 
-    #endregion
+    #endregion Input Functions
 }
