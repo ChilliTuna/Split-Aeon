@@ -131,6 +131,7 @@ public class Player : MonoBehaviour
 
     private void OnEnable()
     {
+        userActions.PlayerMap.Jump.LoadBinding(InputActions.Jump);
         EnableInputs();
     }
 
@@ -318,7 +319,7 @@ public class Player : MonoBehaviour
 
     #region Input Functions
 
-    void EnableInputs()
+    public void EnableInputs()
     {
         movementForward = userActions.PlayerMap.MoveForward;
         movementForward.Enable();
@@ -334,7 +335,7 @@ public class Player : MonoBehaviour
         userActions.PlayerMap.Sprint.Enable();
     }
 
-    void DisableInputs()
+    public void DisableInputs()
     {
         movementForward.Disable();
         movementRight.Disable();
