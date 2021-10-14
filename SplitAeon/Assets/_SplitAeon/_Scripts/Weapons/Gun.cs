@@ -1,6 +1,9 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 
+using FMOD;
+using FMODUnity;
+
 public class Gun : Weapon
 {
 
@@ -35,9 +38,13 @@ public class Gun : Weapon
     public float verticalRecoil;
 
     [Header("Audio")]
-    public AudioClip[] shootClips;
-    public AudioClip reloadClip;
-    public AudioClip emptyClip;
+    //public AudioClip[] shootClips;
+    //public AudioClip reloadClip;
+    //public AudioClip emptyClip;
+
+    public StudioEventEmitter shots;
+    public StudioEventEmitter reload;
+    public StudioEventEmitter empty;
 
     [Header("Effects")]
     public Transform muzzlePosition;
@@ -195,7 +202,9 @@ public class Gun : Weapon
         }
         else
         {
-            manager.weaponAudioSource.PlayOneShot(emptyClip);
+            //manager.weaponAudioSource.PlayOneShot(emptyClip);
+
+            empty.Play();
 
             if (isFullAuto)
             {
@@ -221,7 +230,8 @@ public class Gun : Weapon
         }
 
         manager.player.viewmodelAnimator.SetTrigger("Reload");
-        manager.weaponAudioSource.PlayOneShot(reloadClip);
+        //manager.weaponAudioSource.PlayOneShot(reloadClip);
+        reload.Play();
     }
 
     public void LoadAmmo()
@@ -235,7 +245,8 @@ public class Gun : Weapon
 
     void ShowMuzzleFlash()
     {
-        manager.weaponAudioSource.PlayOneShot(shootClips[Mathf.FloorToInt(Random.Range(0, shootClips.Length))]);
+        //manager.weaponAudioSource.PlayOneShot(shootClips[Mathf.FloorToInt(Random.Range(0, shootClips.Length))]);
+        shots.Play();
 
         muzzleFlashPrefab.SetActive(true);
 

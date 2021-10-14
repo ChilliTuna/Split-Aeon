@@ -4,6 +4,8 @@ using TMPro;
 using System;
 using System.Collections;
 
+using FMODUnity;
+
 public class WeaponManager : MonoBehaviour
 {
 
@@ -29,8 +31,10 @@ public class WeaponManager : MonoBehaviour
 
     [Space(10)]
 
-    [Header("Audio")]
-    public AudioSource weaponAudioSource;
+    //[Header("Audio")]
+    //public AudioSource weaponAudioSource;
+
+    public StudioEventEmitter meleeSounds;
 
     [Space(10)]
 

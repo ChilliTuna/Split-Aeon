@@ -4,6 +4,8 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 
+using FMODUnity;
+
 [System.Serializable]
 public class Card
 {
@@ -54,9 +56,10 @@ public class CardManager : MonoBehaviour
     public Card splashCard;
 
     [Header("Audio")]
-    public AudioSource weaponAudioSource;
+    //public AudioSource weaponAudioSource;
+    //public AudioClip[] lethalThrowClips;
 
-    public AudioClip[] lethalThrowClips;
+    public StudioEventEmitter cardSounds;
 
     [HideInInspector]
     public int cardLethalPool;
@@ -147,7 +150,9 @@ public class CardManager : MonoBehaviour
         {
             Debug.LogWarning("Throwing Card");
 
-            weaponAudioSource.PlayOneShot(lethalThrowClips[Mathf.FloorToInt(Random.Range(0, lethalThrowClips.Length))]);
+            //weaponAudioSource.PlayOneShot(lethalThrowClips[Mathf.FloorToInt(Random.Range(0, lethalThrowClips.Length))]);
+
+            cardSounds.Play();
 
             GameObject thrownLethal;
             thrownLethal = Instantiate(selectedCard, lethalSpawnLocation.transform.position, Quaternion.identity);

@@ -2,6 +2,9 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+using FMOD;
+using FMODUnity;
+
 public class BreakableBottle : MonoBehaviour
 {
 
@@ -9,21 +12,27 @@ public class BreakableBottle : MonoBehaviour
     public ParticleSystem particle;
     public AudioClip[] clips;
 
-    AudioSource source;
+    //AudioSource source;
+
+    StudioEventEmitter emitter;
+
     MeshCollider coll;
     BoxCollider boxColl;
 
 
     private void Start()
     {
-        source = GetComponent<AudioSource>();
+        //source = GetComponent<AudioSource>();
+        emitter = GetComponent<StudioEventEmitter>();
         coll = GetComponentInChildren<MeshCollider>();
         boxColl = GetComponentInChildren<BoxCollider>();
     }
 
     public void Break()
     {
-        source.PlayOneShot(clips[Mathf.FloorToInt(Random.Range(0, clips.Length))]);
+        //source.PlayOneShot(clips[Mathf.FloorToInt(Random.Range(0, clips.Length))]);
+
+        emitter.Play();
 
         if (coll)
         {
