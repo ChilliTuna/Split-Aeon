@@ -17,6 +17,11 @@ public class Player : MonoBehaviour
     public float walkSpeed;
     public float sprintSpeed;
 
+    float xMovement;
+    float zMovement;
+
+    public bool lockMovement;
+
     #endregion
 
     #region Jumping
@@ -117,8 +122,16 @@ public class Player : MonoBehaviour
 
         #region Player Movement
 
-        float xMovement = Input.GetAxis("Horizontal");
-        float zMovement = Input.GetAxis("Vertical");
+        if (!lockMovement)
+        {
+            xMovement = Input.GetAxis("Horizontal");
+            zMovement = Input.GetAxis("Vertical");
+        }
+        else
+        {
+            xMovement = 0f;
+            zMovement = 0f;
+        }
 
         if (xMovement == 0 & zMovement == 0)
         {
@@ -147,7 +160,7 @@ public class Player : MonoBehaviour
 
         controller.Move(move * movementSpeed * Time.deltaTime);
 
-        if (Input.GetKeyDown(KeyCode.Space) && isGrounded)
+        if (Input.GetKeyDown(KeyCode.Space) && isGrounded && !lockMovement)
         {
             playerVelocity.y = Mathf.Sqrt(jumpHeight * -2f * gravity);
         }
@@ -288,4 +301,13 @@ public class Player : MonoBehaviour
 
     }
 
+    public void LockPlayerMovement()
+    {
+        lockMovement = true;
+    }
+
+    public void UnlockPlayerMovement()
+    {
+        lockMovement = false;
+    }
 }
