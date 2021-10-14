@@ -31,8 +31,10 @@ public class ObjectivePointer : MonoBehaviour
         {
             UIPointer.SetActive(false);
             return;
-        }      
-       
+        }
+
+        UIPointer.SetActive(true);
+
         timer += Time.deltaTime;
 
         if (timer > pingTime)

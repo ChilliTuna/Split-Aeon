@@ -11,12 +11,13 @@ GameObject:
   - component: {fileID: 6065479823376769947}
   - component: {fileID: 7170630377166662718}
   - component: {fileID: 4929125058220398836}
+  - component: {fileID: 6094631551013330260}
   m_Layer: 0
   m_Name: Environment_Medium_Ticket_Board_001
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 4294967295
   m_IsActive: 1
 --- !u!4 &6065479823376769947
 Transform:
@@ -59,7 +60,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 5561349426305759274, guid: 5f35fbbd217a3ac4f89debe0f3bb933d, type: 3}
+  - {fileID: 2100000, guid: 6276ff009f2c7e64fb1ebb68dad9ba5f, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -81,3 +82,16 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!65 &6094631551013330260
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6874526508365101345}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 1.181896, y: 1.8025001, z: 0.7218672}
+  m_Center: {x: 0.0000003874302, y: 0.90125006, z: 0}

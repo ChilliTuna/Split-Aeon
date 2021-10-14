@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class WeaponWheelController : MonoBehaviour
 {
+    private UserActions userActions;
 
     public Animator anim;
     public bool isOpen = false;
@@ -12,6 +13,22 @@ public class WeaponWheelController : MonoBehaviour
 
     public KeyCode weaponWheelButton;
 
+    private void Awake()
+    {
+        userActions = new UserActions();
+    }
+
+    private void OnEnable()
+    {
+        userActions.PlayerMap.WeaponWheel.performed += ctx => ToggleWeaponWheel();
+        userActions.PlayerMap.WeaponWheel.Enable();
+    }
+
+    private void OnDisable()
+    {
+        userActions.PlayerMap.WeaponWheel.Disable();
+    }
+
     private void Start()
     {
         player = GetComponentInParent<Player>();
@@ -19,20 +36,7 @@ public class WeaponWheelController : MonoBehaviour
 
     void Update()
     {
-        if (Input.GetKeyDown(weaponWheelButton))
-        {
-            if (isOpen)
-            {
-                CloseWeaponWheel();
-            }
-            else if (!player.isBusy)
-            {
-                OpenWeaponWheel();
-            }
-        }
-
         player.lockMouse = isOpen;
-
     }
 
     public void OpenWeaponWheel()
@@ -64,6 +68,18 @@ public class WeaponWheelController : MonoBehaviour
 
             anim.SetBool("isOpen", false);
             Cursor.lockState = CursorLockMode.Locked;
+        }
+    }
+
+    void ToggleWeaponWheel()
+    {
+        if (isOpen)
+        {
+            CloseWeaponWheel();
+        }
+        else if (!player.isBusy)
+        {
+            OpenWeaponWheel();
         }
     }
 }

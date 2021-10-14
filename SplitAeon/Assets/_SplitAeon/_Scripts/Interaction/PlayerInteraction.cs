@@ -6,32 +6,51 @@ public class PlayerInteraction : MonoBehaviour
     public float interactionDistance;
     public Text interactionText;
 
-    public KeyCode key;
+    private int interactionLayerMask = 1 << 19;
 
-    int interactionLayerMask = 1 << 19;
-    
-    Camera cam;
+    private Camera cam;
 
-    void Start()
+    private bool successfulHit = false;
+
+    private Interactable currentInteractable;
+
+    private UserActions userActions;
+
+    private void Awake()
+    {
+        userActions = new UserActions();
+    }
+
+    private void OnEnable()
+    {
+        userActions.PlayerMap.Interact.performed += ctx => HandleInteraction(currentInteractable);
+        userActions.PlayerMap.Interact.Enable();
+    }
+
+    private void OnDisable()
+    {
+        userActions.PlayerMap.Interact.Disable();
+    }
+
+    private void Start()
     {
         cam = GetComponentInChildren<Camera>();
     }
 
-    void Update()
+    private void Update()
     {
         Ray ray = cam.ScreenPointToRay(new Vector3(Screen.width / 2f, Screen.height / 2f, 0f));
         RaycastHit hit;
 
-        bool successfulHit = false;
+        successfulHit = false;
 
         if (Physics.Raycast(ray, out hit, interactionDistance, interactionLayerMask))
         {
-            Interactable interactable = hit.collider.GetComponent<Interactable>();
+            currentInteractable = hit.collider.GetComponent<Interactable>();
 
-            if (interactable != null)
+            if (currentInteractable != null)
             {
-                HandleInteraction(interactable);
-                interactionText.text = interactable.GetDescription();
+                interactionText.text = currentInteractable.GetDescription();
                 successfulHit = true;
             }
         }
@@ -42,11 +61,14 @@ public class PlayerInteraction : MonoBehaviour
         }
     }
 
-    void HandleInteraction(Interactable interactable)
+    private void HandleInteraction(Interactable interactable)
     {
-        if (Input.GetKeyDown(key))
+        if (successfulHit)
         {
-            interactable.Interact();
+            if (currentInteractable != null)
+            {
+                interactable.Interact();
+            }
         }
     }
 }
