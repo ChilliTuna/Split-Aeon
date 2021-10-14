@@ -71,28 +71,22 @@ public class AgentObjectPool
         m_activeCount++;
     }
 
-    public bool SetObjectActive(out AIAgent targetPoolObject)
+    public bool GetNextObject(out AIAgent resultPoolObject)
     {
         bool result = false;
 
         int startIndex = m_currentIndex;
-        targetPoolObject = null;
+        resultPoolObject = null;
 
         do
         {
             m_currentIndex++;
-            if (m_currentIndex >= m_maxCount)
-            {
-                m_currentIndex = 0;
-            }
+            m_currentIndex = m_currentIndex % m_maxCount;
 
             EnemyPoolObject target = m_objectPool[m_currentIndex];
             if (!target.gameObject.activeInHierarchy)
             {
-                target.SetActive(true);
-                targetPoolObject = target.agent;
-                targetPoolObject.gameObject.SetActive(true);
-                m_activeCount++;
+                resultPoolObject = target.agent;
                 result = true;
                 break;
             }
@@ -100,6 +94,24 @@ public class AgentObjectPool
         } while (m_currentIndex != startIndex);
 
         return result;
+    }
+
+    public bool SetObjectActive(out AIAgent targetPoolObject)
+    {
+        bool result = GetNextObject(out targetPoolObject);
+        if(result)
+        {
+            SetTargetObjectActive(targetPoolObject);
+        }
+
+        return result;
+    }
+
+    public void SetTargetObjectActive(AIAgent targetPoolObject)
+    {
+        targetPoolObject.attachedPoolObject.SetActive(true);
+        targetPoolObject.gameObject.SetActive(true);
+        m_activeCount++;
     }
 
     public void DisableObject(EnemyPoolObject target)

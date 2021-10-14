@@ -8,13 +8,7 @@ public class EnemySpawner : MonoBehaviour
     public AIManager aiManager;
     [HideInInspector] public SpawnTracker spawnTracker;
 
-    List<SpawnLocation> m_fixedSpawnLocations;
-    List<SpawnLocation> m_dynamicSpawnLocations;
-
     public SpawnSettings settings;
-
-    [Header("Initialiser values")]
-    public Vector3 boxSize = new Vector3(5.0f, 5.0f, 5.0f);
     
     Transform m_playerTransform;
     Camera m_playerCam;
@@ -25,6 +19,9 @@ public class EnemySpawner : MonoBehaviour
     float m_miniWaveTimer = 0.0f;
 
     List<SpawnLocation> m_possibleLocations = new List<SpawnLocation>();
+    List<SpawnLocation> m_validOnCameraLocations = new List<SpawnLocation>();
+    List<SpawnLocation> m_offCameraLocations = new List<SpawnLocation>();
+
 
     List<AgentObjectPool> m_enemyObjectPools;
 
@@ -46,54 +43,6 @@ public class EnemySpawner : MonoBehaviour
 
         m_playerTransform = aiManager.playerTransform;
         m_playerCam = aiManager.playerCam;
-
-        m_fixedSpawnLocations = new List<SpawnLocation>();
-        m_dynamicSpawnLocations = new List<SpawnLocation>();
-
-        SpawnLocation[] allSpawnLocations = FindObjectsOfType<SpawnLocation>();
-        foreach (var spawnPos in allSpawnLocations)
-        {
-            Vector3 position = spawnPos.transform.position;
-            Vector3 halfBox = boxSize / 2;
-            // width check
-            if (position.x < transform.position.x - halfBox.x)
-            {
-                continue;
-            }
-            if (position.x > transform.position.x + halfBox.x)
-            {
-                continue;
-            }
-
-            // height check
-            if (position.y < transform.position.y - halfBox.y)
-            {
-                continue;
-            }
-            if (position.y > transform.position.y + halfBox.y)
-            {
-                continue;
-            }
-
-            // length check
-            if (position.z < transform.position.z - halfBox.z)
-            {
-                continue;
-            }
-            if (position.z > transform.position.z + halfBox.z)
-            {
-                continue;
-            }
-
-            if (spawnPos.spawnType == SpawnLocation.SpawnType.DYNAMIC)
-            {
-                m_dynamicSpawnLocations.Add(spawnPos);
-            }
-            else if (spawnPos.spawnType == SpawnLocation.SpawnType.FIXED)
-            {
-                m_fixedSpawnLocations.Add(spawnPos);
-            }
-        }
 
         FindObjectPools();
     }
@@ -150,7 +99,7 @@ public class EnemySpawner : MonoBehaviour
         {
             // spawn will succeed
             Vector3 spawnPosition = Vector3.zero;
-            SpawnLocation location = GetSpawnLocation();
+            SpawnLocation location = GetSpawnLocation(agent);
             if(location != null)
             {
                 location.StartSpawning();
@@ -194,34 +143,50 @@ public class EnemySpawner : MonoBehaviour
         }
     }
 
-    SpawnLocation GetSpawnLocation()
+    void FindPossibleLocations(Bounds bounds)
     {
         m_possibleLocations.Clear();
+
+        m_offCameraLocations.Clear();
+        m_validOnCameraLocations.Clear();
 
         HashSet<SpawnLocation> playerAdjacentLocations = spawnTracker.GetPlayerAdjacentCellSpawnLocations();
 
         foreach (var location in playerAdjacentLocations)
         {
-            switch(location.spawnType)
+            // Check to see if this location is spawnable.
+            if (location.spawnType == SpawnLocation.SpawnType.FIXED)
             {
-                case SpawnLocation.SpawnType.FIXED:
-                    {
-                        m_possibleLocations.Add(location);
-                        break;
-                    }
-                case SpawnLocation.SpawnType.DYNAMIC:
-                    {
-                        Vector3 position = location.transform.position;
-                        Vector3 toPlayer = m_playerTransform.position - position;
-                        if (Physics.Raycast(position, toPlayer, toPlayer.magnitude))
-                        {
-                            // Object is in the way of the player
-                            m_possibleLocations.Add(location);
-                        }
-                        break;
-                    }
+                // if it's fixed we don't need to bother checking camera views.
+                m_possibleLocations.Add(location);
+                continue;
+            }
+
+            bounds = location.FindBounds(bounds);
+
+            if (location.IsInCameraView(m_playerCam, bounds))
+            {
+                // location is in cam view
+
+                if (location.AgentBoundsRayCheck(bounds, m_playerCam.transform.position, settings.environmentMask))
+                {
+                    // location is safe to spawn at
+                    m_validOnCameraLocations.Add(location);
+                    m_possibleLocations.Add(location);
+                }
+            }
+            else
+            {
+                // location is off screen
+                m_offCameraLocations.Add(location);
+                m_possibleLocations.Add(location);
             }
         }
+    }
+
+    SpawnLocation GetSpawnLocation(AIAgent agent)
+    {
+        FindPossibleLocations(agent.GetBounds());
 
         // Just simply random for now
         if(m_possibleLocations.Count > 0)
@@ -274,42 +239,14 @@ public class EnemySpawner : MonoBehaviour
 
     private void OnDrawGizmos()
     {
-        Transform drawPlayer = m_playerTransform;
-        if(m_playerTransform == null)
-        {
-            drawPlayer = aiManager.playerTransform;
-        }
-
-        if(m_dynamicSpawnLocations == null)
+        if(!Application.isPlaying)
         {
             return;
         }
 
-        foreach (var dynamicSpawn in m_dynamicSpawnLocations)
-        {
-            Vector3 position = dynamicSpawn.transform.position;
-            Vector3 toPlayer = drawPlayer.position - position;
-            if (Physics.Raycast(position, toPlayer, out RaycastHit hitInfo, toPlayer.magnitude))
-            {
-                Gizmos.color = Color.red;
-                // Object is in the way of the player
-                Gizmos.DrawLine(position, hitInfo.point);
-            }
-            else
-            {
-                Gizmos.color = Color.blue;
-                // no object
-                Gizmos.DrawLine(position, drawPlayer.position);
-            }
-        }
-    }
+        Gizmos.color = Color.red;
 
-    private void OnDrawGizmosSelected()
-    {
-        Color colour = Color.magenta;
-
-        colour.a *= 0.4f;
-        Gizmos.color = colour;
-        Gizmos.DrawCube(transform.position, boxSize);
+        Gizmos.matrix = Matrix4x4.TRS(m_playerCam.transform.position, m_playerCam.transform.rotation, new Vector3(m_playerCam.aspect, 1.0f, 1.0f));
+        Gizmos.DrawFrustum(Vector3.zero, m_playerCam.fieldOfView, m_playerCam.farClipPlane, m_playerCam.nearClipPlane, 1.0f);
     }
 }

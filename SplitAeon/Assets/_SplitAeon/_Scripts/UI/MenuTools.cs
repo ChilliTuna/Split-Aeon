@@ -30,21 +30,21 @@ public class MenuTools : MonoBehaviour
         }
         else
         {
+            SetIsPaused(false);
             pauseMenu.GetComponent<PauseMenuManager>().ClosePauseMenu();
         }
     }
 
     public static void SetIsPaused(bool shouldBePaused)
     {
+        Globals.isGamePaused = !shouldBePaused;
         if (shouldBePaused)
         {
-            Globals.isGamePaused = true;
             Cursor.lockState = CursorLockMode.None;
             Time.timeScale = 0;
         }
         else
         {
-            Globals.isGamePaused = false;
             Cursor.lockState = CursorLockMode.Locked;
             Time.timeScale = 1;
         }
@@ -117,4 +117,5 @@ public class MenuTools : MonoBehaviour
             yield return 0;
         }
     }
+
 }
