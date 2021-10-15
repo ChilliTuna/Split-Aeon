@@ -50,19 +50,20 @@ public class KeyRebinder : MonoBehaviour
         hasFoundAction = dictionary.TryGetValue(inputActions, out thisAction);
     }
 
-    private void OnEnable()
+    private void Start()
     {
         LoadBinding();
-        if (hasFoundAction)
+    }
+
+    private void Update()
+    {
+        if (specialBinds.Contains(inputActions))
         {
-            if (specialBinds.Contains(inputActions))
-            {
-                StartCoroutine(UpdateSpecialRebindText());
-            }
-            else
-            {
-                StartCoroutine(UpdateText());
-            }
+            UpdateSpecialRebindText();
+        }
+        else
+        {
+            UpdateText();
         }
     }
 
@@ -73,21 +74,17 @@ public class KeyRebinder : MonoBehaviour
             if (specialBinds.Contains(inputActions))
             {
                 SpecialRebind();
-                StartCoroutine(UpdateSpecialRebindText());
-                SaveBinding();
                 return;
             }
-            rebindingOperation = thisAction.PerformInteractiveRebinding().OnComplete(operation => DisposeRebindingOperation()).Start();
-            StartCoroutine(UpdateText());
+            rebindingOperation = thisAction.PerformInteractiveRebinding().OnComplete(operation => FinaliseRebind()).Start();
         }
-        SaveBinding();
     }
 
     private void SpecialRebind()
     {
         for (int i = 1; i < 3; i++)
         {
-            rebindingOperation = thisAction.PerformInteractiveRebinding(thisAction.GetBindingIndex() + i).OnComplete(operation => DisposeRebindingOperation()).Start();
+            rebindingOperation = thisAction.PerformInteractiveRebinding(thisAction.GetBindingIndex() + i).OnComplete(operation => FinaliseRebind()).Start();
         }
     }
 
@@ -111,14 +108,14 @@ public class KeyRebinder : MonoBehaviour
         dictionary.Add(InputActions.Pause, userActions.PlayerMap.Pause);
     }
 
-    private void DisposeRebindingOperation()
+    private void FinaliseRebind()
     {
+        SaveBinding();
         rebindingOperation.Dispose();
     }
 
-    private IEnumerator UpdateText()
+    private void UpdateText()
     {
-        yield return new WaitForSeconds(0.1f);
         control = InputSystem.FindControl(thisAction.bindings[thisAction.GetBindingIndex()].effectivePath);
         if (control.shortDisplayName != null)
         {
@@ -128,12 +125,10 @@ public class KeyRebinder : MonoBehaviour
         {
             associatedText.text = control.displayName;
         }
-        yield return null;
     }
 
-    private IEnumerator UpdateSpecialRebindText()
+    private void UpdateSpecialRebindText()
     {
-        yield return new WaitForSeconds(0.1f);
         InputControl con1 = InputSystem.FindControl(thisAction.bindings[thisAction.GetBindingIndex() + 1].effectivePath);
         InputControl con2 = InputSystem.FindControl(thisAction.bindings[thisAction.GetBindingIndex() + 2].effectivePath);
         string outText = "";
@@ -155,7 +150,6 @@ public class KeyRebinder : MonoBehaviour
             outText += con2.displayName;
         }
         associatedText.text = outText;
-        yield return null;
     }
 
     private void SaveBinding()
