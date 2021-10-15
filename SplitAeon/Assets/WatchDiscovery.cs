@@ -17,7 +17,7 @@ public class WatchDiscovery : MonoBehaviour
 
     public void Discover()
     {
-        player.LockPlayerMovement();
+        //player.DisableInputs();
 
         anim.SetTrigger("Discovery");
 
@@ -27,7 +27,7 @@ public class WatchDiscovery : MonoBehaviour
 
     void UnlockPlayer()
     {
-        player.UnlockPlayerMovement();
+        //player.EnableInputs();
     }
 
 

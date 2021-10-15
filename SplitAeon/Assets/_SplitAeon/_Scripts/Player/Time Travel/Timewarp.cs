@@ -4,6 +4,8 @@ using UnityEngine.Events;
 using UnityEngine.Rendering;
 using UnityEngine.Rendering.HighDefinition;
 
+using FMODUnity;
+
 public class Timewarp : MonoBehaviour
 {
     public Volume volume;
@@ -17,8 +19,7 @@ public class Timewarp : MonoBehaviour
     private CharacterController controller;
     public GameObject player;
 
-    public AudioClip[] clips;
-    public AudioSource source;
+    public StudioEventEmitter warpSound;
 
     public float offsetAmount = 100;
 
@@ -162,8 +163,7 @@ public class Timewarp : MonoBehaviour
 
     private void TriggerTeleportEffect()
     {
-        source.PlayOneShot(clips[Mathf.FloorToInt(Random.Range(0, clips.Length))]);
-
+        warpSound.Play();
         cromAb.intensity.value = 1;
         bloom.intensity.value = 1;
         exposure.compensation.value = 5;

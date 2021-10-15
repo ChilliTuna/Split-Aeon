@@ -18,11 +18,6 @@ public class Player : MonoBehaviour
     public float walkSpeed;
     public float sprintSpeed;
 
-    float xMovement;
-    float zMovement;
-
-    public bool lockMovement;
-
     #endregion
 
     #region Jumping
