@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
 using TMPro;
 
 public class Player : MonoBehaviour
@@ -94,7 +95,23 @@ public class Player : MonoBehaviour
 
     #endregion
 
+    #region Inputs
+
+    private UserActions userActions;
+
+    private InputAction movementForward;
+    private InputAction movementRight;
+
     #endregion
+
+    #endregion
+
+    #region Unity Functions
+
+    private void Awake()
+    {
+        userActions = new UserActions();
+    }
 
     private void Start()
     {
@@ -112,13 +129,18 @@ public class Player : MonoBehaviour
         #endregion
     }
 
+    private void OnEnable()
+    {
+        EnableInputs();
+    }
+
     void Update()
     {
 
         #region Player Movement
 
-        float xMovement = Input.GetAxis("Horizontal");
-        float zMovement = Input.GetAxis("Vertical");
+        float xMovement = movementRight.ReadValue<float>();
+        float zMovement = movementForward.ReadValue<float>();
 
         if (xMovement == 0 & zMovement == 0)
         {
@@ -146,11 +168,6 @@ public class Player : MonoBehaviour
         }
 
         controller.Move(move * movementSpeed * Time.deltaTime);
-
-        if (Input.GetKeyDown(KeyCode.Space) && isGrounded)
-        {
-            playerVelocity.y = Mathf.Sqrt(jumpHeight * -2f * gravity);
-        }
 
         playerVelocity.y += gravity * Time.deltaTime;
 
@@ -219,26 +236,6 @@ public class Player : MonoBehaviour
 
         #endregion
 
-        #region Running
-
-        if (Input.GetKey(KeyCode.LeftShift) && Input.GetAxis("Vertical") > 0)
-        {
-            isRunning = true;
-
-            movementSpeed = sprintSpeed;
-        }
-        else
-        {
-            isRunning = false;
-        }
-
-        if (!isRunning)
-        {
-            movementSpeed = walkSpeed;
-        }
-
-        #endregion
-
         #region Animation
 
         if (xMovement != 0 || zMovement != 0)
@@ -288,4 +285,62 @@ public class Player : MonoBehaviour
 
     }
 
+    private void OnDisable()
+    {
+        DisableInputs();
+    }
+
+    #endregion
+
+    #region Movement Actions
+
+    void Jump()
+    {
+        if (isGrounded)
+        {
+            playerVelocity.y = Mathf.Sqrt(jumpHeight * -2f * gravity);
+        }
+    }
+
+    void StartSprint()
+    {
+        isRunning = true;
+        movementSpeed = sprintSpeed;
+    }
+
+    void EndSprint()
+    {
+        isRunning = false;
+        movementSpeed = walkSpeed;
+    }
+
+    #endregion
+
+    #region Input Functions
+
+    void EnableInputs()
+    {
+        movementForward = userActions.PlayerMap.MoveForward;
+        movementForward.Enable();
+
+        movementRight = userActions.PlayerMap.MoveRight;
+        movementRight.Enable();
+
+        userActions.PlayerMap.Jump.performed += ctx => Jump();
+        userActions.PlayerMap.Jump.Enable();
+
+        userActions.PlayerMap.Sprint.performed += ctx => StartSprint();
+        userActions.PlayerMap.Sprint.canceled += ctx => EndSprint();
+        userActions.PlayerMap.Sprint.Enable();
+    }
+
+    void DisableInputs()
+    {
+        movementForward.Disable();
+        movementRight.Disable();
+        userActions.PlayerMap.Jump.Disable();
+        userActions.PlayerMap.Sprint.Disable();
+    }
+
+    #endregion
 }

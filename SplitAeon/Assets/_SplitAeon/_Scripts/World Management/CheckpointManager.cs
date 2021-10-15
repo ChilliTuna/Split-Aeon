@@ -40,13 +40,16 @@ public class CheckpointManager : MonoBehaviour
 
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.K))
+        if (Globals.isInDebug)
         {
-            Respawn();
-        }
-        else if (Input.GetKeyDown(KeyCode.J))
-        {
-            SetCheckpoint();
+            if (Input.GetKeyDown(KeyCode.K))
+            {
+                Respawn();
+            }
+            else if (Input.GetKeyDown(KeyCode.J))
+            {
+                SetCheckpoint();
+            }
         }
     }
 

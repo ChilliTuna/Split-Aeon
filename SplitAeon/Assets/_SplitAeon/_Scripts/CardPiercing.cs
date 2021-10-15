@@ -11,9 +11,10 @@ public class CardPiercing : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.gameObject.GetComponent<Health>())
+        var health = other.gameObject.GetComponentInParent<Health>();
+        if (health)
         {
-            other.gameObject.GetComponent<Health>().Hit(damage);
+            health.Hit(damage, other);
             hitCounter++;
         }
         else if (other.gameObject.GetComponent<Target>())

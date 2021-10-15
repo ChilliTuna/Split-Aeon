@@ -7,6 +7,7 @@ public class EnemySpawner : MonoBehaviour
 {
     public AIManager aiManager;
     [HideInInspector] public SpawnTracker spawnTracker;
+    [HideInInspector] public RoomTracker roomTracker;
 
     public SpawnSettings settings;
     
@@ -154,6 +155,13 @@ public class EnemySpawner : MonoBehaviour
 
         foreach (var location in playerAdjacentLocations)
         {
+            // Check if the spawn location is not in the player's room
+            if(!roomTracker.ValidateSpawnLocation(location))
+            {
+                // This room is not located near the player's room
+                continue;
+            }
+
             // Check to see if this location is spawnable.
             if (location.spawnType == SpawnLocation.SpawnType.FIXED)
             {
