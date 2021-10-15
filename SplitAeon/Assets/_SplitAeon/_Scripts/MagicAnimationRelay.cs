@@ -21,7 +21,7 @@ public class MagicAnimationRelay : MonoBehaviour
 
     public void TimeWarp()
     {
-        TW.GetComponent<Timewarp>().TryWarp();
+        TW.GetComponent<Timewarp>().DoWarp();
     }
 
 
