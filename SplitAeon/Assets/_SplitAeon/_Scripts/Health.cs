@@ -8,6 +8,7 @@ public class Health : MonoBehaviour
 
     //[HideInInspector]
     public float health;
+    [HideInInspector] public float damageMultiplier = 1.0f;
 
     [Header("Healing")]
     public bool enableHealing;
@@ -21,11 +22,16 @@ public class Health : MonoBehaviour
 
     [Header("On Hit")]
     public UnityEvent onHitEvents;
+    public UnityEvent beforeDamageEvents;
+    public UnityEvent afterDamageEvents;
 
     [Header("On Death")]
     public bool destroyOnDeath;
 
     public UnityEvent onDeathEvents;
+
+    private Collider m_hitCollider = null;
+    public Collider hitCollider { get { return m_hitCollider; } }
 
     /// <summary>
     /// Called when the object is hit.
@@ -46,10 +52,12 @@ public class Health : MonoBehaviour
     /// Called when the object is hit.
     /// </summary>
     /// <param name="damage">The amount to damage the object by.</param>
-    public void Hit(float damage)
+    public void Hit(float damage, Collider collider)
     {
-        Damage(damage);
+        m_hitCollider = collider;
+        Damage(damage, collider);
         Hit();
+        m_hitCollider = null;
     }
 
     /// <summary>
@@ -71,9 +79,13 @@ public class Health : MonoBehaviour
     /// Damages the health of the current object.
     /// </summary>
     /// <param name="damage">The amount to damage the object by.</param>
-    public void Damage(float damage)
+    public void Damage(float damage, Collider collider)
     {
+        beforeDamageEvents.Invoke();
+        damage *= damageMultiplier;
         health -= damage;
+        damageMultiplier = 1.0f;
+        afterDamageEvents.Invoke();
     }
 
     /// <summary>

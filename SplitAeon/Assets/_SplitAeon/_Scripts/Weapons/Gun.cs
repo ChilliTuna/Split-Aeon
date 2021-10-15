@@ -184,7 +184,7 @@ public class Gun : Weapon
                     {
                         CreateImpactChilded(hit);
 
-                        health.Hit(damage);
+                        health.Hit(damage, hit.collider);
                     }
                     else if (hit.collider.gameObject.GetComponent<Target>())
                     {
