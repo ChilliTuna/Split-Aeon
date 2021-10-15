@@ -5,13 +5,13 @@ using UnityEngine;
 public class MagicAnimationRelay : MonoBehaviour
 {
 
-    public Timewarp TW;
+    public GameObject TW;
 
     public CardManager cardManager;
 
     private void Awake()
     {
-        TW = FindObjectOfType<Timewarp>();
+        TW = FindObjectOfType<GameManager>().gameObject;
     }
 
     public void ThrowCard()
@@ -21,7 +21,7 @@ public class MagicAnimationRelay : MonoBehaviour
 
     public void TimeWarp()
     {
-        TW.TryWarp();
+        TW.GetComponent<Timewarp>().TryWarp();
     }
 
 
