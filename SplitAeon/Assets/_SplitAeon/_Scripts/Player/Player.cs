@@ -133,6 +133,9 @@ public class Player : MonoBehaviour
     private void OnEnable()
     {
         userActions.PlayerMap.Jump.LoadBinding(InputActions.Jump);
+        userActions.PlayerMap.MoveForward.LoadBinding(InputActions.MoveForward);
+        userActions.PlayerMap.MoveRight.LoadBinding(InputActions.MoveRight);
+        userActions.PlayerMap.Sprint.LoadBinding(InputActions.Sprint);
         EnableInputs();
     }
 

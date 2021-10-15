@@ -1,5 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -37,7 +36,9 @@ public class KeyRebinder : MonoBehaviour
 
     private bool hasFoundAction = false;
 
-    private List<InputActions> specialBinds = new List<InputActions> { InputActions.MoveForward, InputActions.MoveRight };
+    public bool isComposite = false;
+
+    public int index = 0;
 
     private InputActionRebindingExtensions.RebindingOperation rebindingOperation;
 
@@ -57,9 +58,9 @@ public class KeyRebinder : MonoBehaviour
 
     private void Update()
     {
-        if (specialBinds.Contains(inputActions))
+        if (isComposite)
         {
-            UpdateSpecialRebindText();
+            UpdateCompositeRebindText();
         }
         else
         {
@@ -71,21 +72,20 @@ public class KeyRebinder : MonoBehaviour
     {
         if (hasFoundAction)
         {
-            if (specialBinds.Contains(inputActions))
+            if (isComposite)
             {
-                SpecialRebind();
-                return;
+                RebindComposite();
             }
-            rebindingOperation = thisAction.PerformInteractiveRebinding().OnComplete(operation => FinaliseRebind()).Start();
+            else
+            {
+            rebindingOperation = thisAction.PerformInteractiveRebinding().OnMatchWaitForAnother(0.1f).OnComplete(operation => FinaliseRebind()).Start();
+            }
         }
     }
 
-    private void SpecialRebind()
+    private void RebindComposite()
     {
-        for (int i = 1; i < 3; i++)
-        {
-            rebindingOperation = thisAction.PerformInteractiveRebinding(thisAction.GetBindingIndex() + i).OnComplete(operation => FinaliseRebind()).Start();
-        }
+        rebindingOperation = thisAction.PerformInteractiveRebinding(thisAction.GetBindingIndex() + 1 + index).OnMatchWaitForAnother(0.1f).OnComplete(operation => FinaliseRebind()).Start();
     }
 
     private void WriteDictionary()
@@ -127,29 +127,17 @@ public class KeyRebinder : MonoBehaviour
         }
     }
 
-    private void UpdateSpecialRebindText()
+    private void UpdateCompositeRebindText()
     {
-        InputControl con1 = InputSystem.FindControl(thisAction.bindings[thisAction.GetBindingIndex() + 1].effectivePath);
-        InputControl con2 = InputSystem.FindControl(thisAction.bindings[thisAction.GetBindingIndex() + 2].effectivePath);
-        string outText = "";
-        if (con1.shortDisplayName != null)
+        control = InputSystem.FindControl(thisAction.bindings[thisAction.GetBindingIndex() + 1 + index].effectivePath);
+        if (control.shortDisplayName != null)
         {
-            outText = con1.shortDisplayName;
+            associatedText.text = control.shortDisplayName;
         }
         else
         {
-            outText = con1.displayName;
+            associatedText.text = control.displayName;
         }
-        outText += " / ";
-        if (con2.shortDisplayName != null)
-        {
-            outText += con2.shortDisplayName;
-        }
-        else
-        {
-            outText += con2.displayName;
-        }
-        associatedText.text = outText;
     }
 
     private void SaveBinding()
