@@ -822,6 +822,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8158372587253320012}
+  - component: {fileID: 5832854421462547454}
   m_Layer: 0
   m_Name: GalleryRoom_V001
   m_TagString: Untagged
@@ -1080,6 +1081,26 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &5832854421462547454
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8158372587253320015}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 91981c15481d8a844b56df51706ab1d9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  exitExpansion: 5
+  neighbours: []
+  enterRoom:
+    m_PersistentCalls:
+      m_Calls: []
+  exitRoom:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!1 &8158372587661797308
 GameObject:
   m_ObjectHideFlags: 0
@@ -37593,6 +37614,10 @@ PrefabInstance:
     - target: {fileID: 4126926459885058385, guid: f62a16a255e8bc3499b5030f44078fdb, type: 3}
       propertyPath: m_Name
       value: Environment_Medium_DoorWall_DoubleSided_Roof_001 (2)
+      objectReference: {fileID: 0}
+    - target: {fileID: 7459981207808232392, guid: f62a16a255e8bc3499b5030f44078fdb, type: 3}
+      propertyPath: m_Enabled
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8447078282127463569, guid: f62a16a255e8bc3499b5030f44078fdb, type: 3}
       propertyPath: m_IsActive

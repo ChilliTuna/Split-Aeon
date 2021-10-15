@@ -139,21 +139,21 @@ public class RoomBounds : MonoBehaviour
         return exitBounds.Contains(point);
     }
 
-    //private void OnDrawGizmos()
-    //{
-    //    if(Application.isPlaying)
-    //    {
-    //        Color colour = Color.red;
-    //        colour.a *= 0.4f;
-    //        Gizmos.color = colour;
-    //
-    //        Gizmos.DrawCube(entryBounds.center, entryBounds.size);
-    //
-    //        colour = Color.green;
-    //        colour.a *= 0.4f;
-    //
-    //        Gizmos.color = colour;
-    //        Gizmos.DrawCube(exitBounds.center, exitBounds.size);
-    //    }
-    //}
+    private void OnDrawGizmos()
+    {
+        if(Application.isPlaying)
+        {
+            Color colour = Color.red;
+            colour.a *= 0.4f;
+            Gizmos.color = colour;
+    
+            Gizmos.DrawCube(entryBounds.center, entryBounds.size);
+    
+            colour = Color.green;
+            colour.a *= 0.4f;
+    
+            Gizmos.color = colour;
+            Gizmos.DrawCube(exitBounds.center, exitBounds.size);
+        }
+    }
 }
