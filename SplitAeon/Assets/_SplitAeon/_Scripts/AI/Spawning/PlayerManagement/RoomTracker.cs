@@ -38,6 +38,7 @@ public class RoomTracker : MonoBehaviour
                 if(room.EntryContainsPoint(spawnLocations[i].transform.position))
                 {
                     spawnLocations[i].room = room;
+                    room.spawnLocations.Add(spawnLocations[i]);
                     spawnLocations.RemoveAt(i);
                     i--;
                 }
@@ -144,6 +145,13 @@ public class RoomTracker : MonoBehaviour
         }
 
         return false;
+    }
+
+    // This should be called when the player has swapped time periods
+    public void TimeSwap()
+    {
+        currentRoom = currentRoom.timePartner;
+        m_previousRoom = m_previousRoom.timePartner;
     }
 
     private void OnDestroy()

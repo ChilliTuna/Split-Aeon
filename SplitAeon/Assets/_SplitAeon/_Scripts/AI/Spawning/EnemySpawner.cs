@@ -10,7 +10,7 @@ public class EnemySpawner : MonoBehaviour
     [HideInInspector] public RoomTracker roomTracker;
 
     public SpawnSettings settings;
-    
+
     Transform m_playerTransform;
     Camera m_playerCam;
 
@@ -101,15 +101,21 @@ public class EnemySpawner : MonoBehaviour
             // spawn will succeed
             Vector3 spawnPosition = Vector3.zero;
             SpawnLocation location = GetSpawnLocation(agent);
+            if(location == null)
+            {
+                // no available spawns some how. Likely there are no spawns around the player
+                location = FindSpawnLocationFromRoomNeighbours(agent, roomTracker.currentRoom);
+            }
+
             if(location != null)
             {
                 location.StartSpawning();
-
                 spawnPosition = location.transform.position;
             }
             else
             {
-                // no available spawns some how. Likely there are no spawns around the player
+                // if location is still null, just use the center of the room + offset
+                spawnPosition = roomTracker.currentRoom.GetSafeSpawnPosition();
             }
 
             SpawnEvent(agent, spawnPosition, AIStates.StateIndex.chasePlayer);
@@ -144,19 +150,24 @@ public class EnemySpawner : MonoBehaviour
         }
     }
 
-    void FindPossibleLocations(Bounds bounds)
+    void FindPossibleLocations(Bounds agentBounds)
+    {
+        HashSet<SpawnLocation> playerAdjacentLocations = spawnTracker.GetPlayerAdjacentCellSpawnLocations();
+
+        FindPossibleLocations(agentBounds, playerAdjacentLocations);
+    }
+
+    void FindPossibleLocations(Bounds agentBounds, HashSet<SpawnLocation> playerAdjacentLocations)
     {
         m_possibleLocations.Clear();
 
         m_offCameraLocations.Clear();
         m_validOnCameraLocations.Clear();
 
-        HashSet<SpawnLocation> playerAdjacentLocations = spawnTracker.GetPlayerAdjacentCellSpawnLocations();
-
         foreach (var location in playerAdjacentLocations)
         {
             // Check if the spawn location is not in the player's room
-            if(!roomTracker.ValidateSpawnLocation(location))
+            if (!roomTracker.ValidateSpawnLocation(location))
             {
                 // This room is not located near the player's room
                 continue;
@@ -170,13 +181,14 @@ public class EnemySpawner : MonoBehaviour
                 continue;
             }
 
-            bounds = location.FindBounds(bounds);
+            // Find bounds in world space
+            agentBounds = location.FindBounds(agentBounds);
 
-            if (location.IsInCameraView(m_playerCam, bounds))
+            if (location.IsInCameraView(m_playerCam, agentBounds))
             {
                 // location is in cam view
 
-                if (location.AgentBoundsRayCheck(bounds, m_playerCam.transform.position, settings.environmentMask))
+                if (location.AgentBoundsRayCheck(agentBounds, m_playerCam.transform.position, settings.environmentMask))
                 {
                     // location is safe to spawn at
                     m_validOnCameraLocations.Add(location);
@@ -196,8 +208,20 @@ public class EnemySpawner : MonoBehaviour
     {
         FindPossibleLocations(agent.GetBounds());
 
+        return SearchPossibleLocations();
+    }
+
+    SpawnLocation GetSpawnLocation(AIAgent agent, HashSet<SpawnLocation> searchList)
+    {
+        FindPossibleLocations(agent.GetBounds(), searchList);
+
+        return SearchPossibleLocations();
+    }
+
+    SpawnLocation SearchPossibleLocations()
+    {
         // Just simply random for now
-        if(m_possibleLocations.Count > 0)
+        if (m_possibleLocations.Count > 0)
         {
             int rand = Random.Range(0, m_possibleLocations.Count);
             SpawnLocation possibleSpawn = m_possibleLocations[rand];
@@ -219,6 +243,17 @@ public class EnemySpawner : MonoBehaviour
             } while (rand != start);
         }
         return null;
+    }
+
+    SpawnLocation FindSpawnLocationFromRoomNeighbours(AIAgent agent, RoomBounds room)
+    {
+        HashSet<SpawnLocation> searchList = new HashSet<SpawnLocation>();
+        foreach(var neighbour in room.neighbours)
+        {
+            searchList.UnionWith(neighbour.spawnLocations);
+        }
+
+        return GetSpawnLocation(agent, searchList);
     }
 
     public void InitiateMiniWave(int currentActiveAgentCount)
@@ -243,18 +278,5 @@ public class EnemySpawner : MonoBehaviour
     {
         m_currentMiniWaveRemain--;
         Spawn();
-    }
-
-    private void OnDrawGizmos()
-    {
-        if(!Application.isPlaying)
-        {
-            return;
-        }
-
-        Gizmos.color = Color.red;
-
-        Gizmos.matrix = Matrix4x4.TRS(m_playerCam.transform.position, m_playerCam.transform.rotation, new Vector3(m_playerCam.aspect, 1.0f, 1.0f));
-        Gizmos.DrawFrustum(Vector3.zero, m_playerCam.fieldOfView, m_playerCam.farClipPlane, m_playerCam.nearClipPlane, 1.0f);
     }
 }
