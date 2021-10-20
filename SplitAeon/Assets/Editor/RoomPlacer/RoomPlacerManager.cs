@@ -5,11 +5,13 @@ using UnityEngine.SceneManagement;
 using UnityEditor;
 using UnityEditor.SceneManagement;
 
+using GameObjectPair = RoomPlacer.GameObjectPair;
+
 [InitializeOnLoad]
 public static class RoomPlacerSceneManager
 {
     static RoomPlacer m_roomPlacer = null;
-    static List<RoomPairData> m_roomDataList = null;
+    static List<RoomPlacerEditorList<RoomPairData>> m_roomDataListArray = null;
 
     delegate void VoidActionDelegate();
     static VoidActionDelegate m_sceneViewDelegate;
@@ -78,8 +80,35 @@ public static class RoomPlacerSceneManager
         }
 
         m_roomPlacer = target;
-        m_roomDataList = RoomPairData.FindRoomPairList(target.roomPairs);
+        InitroomDataListArray(target);
         m_sceneViewDelegate = FirstOnSceneAction;
+    }
+
+    public static void MarkDirty()
+    {
+        EditorUtility.SetDirty(m_roomPlacer);
+        EditorSceneManager.MarkSceneDirty(m_roomPlacer.gameObject.scene);
+    }
+
+    public static void InitroomDataListArray(RoomPlacer roomPlacer)
+    {
+        m_roomDataListArray = new List<RoomPlacerEditorList<RoomPairData>>();
+        for(int i = 0; i < roomPlacer.roomPairsList.Count; i++)
+        {
+            var toAdd = new RoomPlacerEditorList<RoomPairData>(roomPlacer, i);
+            m_roomDataListArray.Add(toAdd);
+        }
+    }
+
+    public static void AddNewList(RoomPlacer roomPlacer)
+    {
+        var toAdd = new RoomPlacerEditorList<RoomPairData>(roomPlacer, roomPlacer.roomPairsList.Count - 1);
+        m_roomDataListArray.Add(toAdd);
+    }
+
+    public static void RemoveBottomList()
+    {
+        m_roomDataListArray.RemoveAt(m_roomDataListArray.Count - 1);
     }
 
     public static void FindRoomPlacer()
@@ -90,7 +119,13 @@ public static class RoomPlacerSceneManager
     public static void ClearRoomPlacer()
     {
         m_roomPlacer = null;
-        m_roomDataList = null;
+        if(m_roomDataListArray != null)
+        {
+            foreach(var list in m_roomDataListArray)
+            {
+                list.Clear();
+            }
+        }
         m_sceneViewDelegate = FirstOnSceneAction;
     }
 
@@ -116,149 +151,49 @@ public static class RoomPlacerSceneManager
 
     static void OnSceneAction()
     {
-        foreach(RoomPairData roomPairData in m_roomDataList)
+        for(int i = 0; i < m_roomDataListArray.Count; i++)
         {
-            if(roomPairData.ValidateRoomPair(m_roomPlacer.offset))
-            {
-                // Change was detected
-                
-            }
+            m_roomDataListArray[i].OnSceneAction();
         }
     }
 
-    public static void AddRoomPairData(RoomPlacer.RoomPair roomPair)
+    public static void AddRoomPairData(RoomPlacer.GameObjectPair roomPair, int listIndex, bool value)
     {
-        m_roomDataList.Add(new RoomPairData(roomPair));
+        m_roomDataListArray[listIndex].Add(roomPair, value);
     }
 
-    public static void RemoveRoomPairData(RoomPlacer.RoomPair roomPair)
+    public static void RemoveRoomPairData(RoomPlacer.GameObjectPair roomPair, int listIndex)
     {
-        RoomPairData removeTarget = null;
-        for(int i = 0; i < m_roomDataList.Count; i++)
+        m_roomDataListArray[listIndex].Remove(roomPair);
+    }
+
+    public static void SwitchValidators(int listIndex, bool value)
+    {
+        m_roomDataListArray[listIndex].SetValidators(value);
+    }
+
+    public static void TrySetTrackersRoomPairList(int listIndex)
+    {
+        m_roomDataListArray[listIndex].TrySetTrackers();
+    }
+
+    public static void SmartAlignRooms(int listIndex, RoomPlacer.GameObjectPairList list)
+    {
+        var dataList = m_roomDataListArray[listIndex];
+        if(list.isRoomItemList)
         {
-            if (m_roomDataList[i].roomPair == roomPair)
+            foreach (var pairData in dataList.roomDataList)
             {
-                removeTarget = m_roomDataList[i];
-                break;
+                if(pairData.roomPair.IsFullyAssigned())
+                {
+                    Vector3 itemPrevOffset = pairData.futureRoomValues.prevPosition - pairData.pastRoomValues.prevPosition;
+                    pairData.roomPair.AlignItemToRoom(itemPrevOffset);
+                }
             }
-        }
-        if (removeTarget != null)
-        {
-            m_roomDataList.Remove(removeTarget);
         }
         else
         {
-            Debug.LogWarning("Something went wrong with removing. The target could not be found. Ensure that you reset the the Room Placer Manager before continuing.");
+            list.AlignAllRoomPairsToPast();
         }
-    }
-}
-
-// This class is used to maintain data between scene updates.
-class RoomPairData
-{
-    RoomPlacer.RoomPair m_roomPair;
-    RoomValues pastRoomValues;
-    RoomValues futureRoomValues;
-
-    Vector3 currentPositionPast { get { return m_roomPair.pastRoom.transform.position; } }
-    Quaternion currentRotationPast { get { return m_roomPair.pastRoom.transform.rotation; } }
-    Vector3 currentScalePast { get { return m_roomPair.pastRoom.transform.localScale; } }
-
-    Vector3 currentPositionFuture { get { return m_roomPair.futureRoom.transform.position; } }
-    Quaternion currentRotationFuture { get { return m_roomPair.futureRoom.transform.rotation; } }
-    Vector3 currentScaleFuture { get { return m_roomPair.futureRoom.transform.localScale; } }
-
-    public RoomPlacer.RoomPair roomPair { get { return m_roomPair; } }
-
-    public RoomPairData(RoomPlacer.RoomPair roomPair)
-    {
-        this.m_roomPair = roomPair;
-
-        pastRoomValues = new RoomValues(roomPair.pastRoom);
-        futureRoomValues = new RoomValues(roomPair.futureRoom);
-    }
-
-    public static List<RoomPairData> FindRoomPairList(List<RoomPlacer.RoomPair> roomPairList)
-    {
-        List<RoomPairData> resultList = new List<RoomPairData>();
-        foreach (RoomPlacer.RoomPair roomPair in roomPairList)
-        {
-            resultList.Add(new RoomPairData(roomPair));
-        }
-        return resultList;
-    }
-
-    public bool HasPastChanged()
-    {
-        return pastRoomValues.HasChanged(currentPositionPast, currentRotationPast, currentScalePast);
-    }
-
-    public bool HasFutureChanged()
-    {
-        return futureRoomValues.HasChanged(currentPositionFuture, currentRotationFuture, currentScaleFuture);
-    }
-
-    // This will check if a change needs to be made and will then apply that change to the affected room.
-    // Returns true if a change was detected.
-    public bool ValidateRoomPair(Vector3 offset)
-    {
-        if(roomPair.pastRoom == null || roomPair.futureRoom == null)
-        {
-            return false;
-        }
-
-        if (HasPastChanged())
-        {
-            roomPair.AlignToPast(offset);
-            return true;
-        }
-        if (HasFutureChanged())
-        {
-            roomPair.AlignToFuture(offset);
-            return true;
-        }
-        return false;
-    }
-}
-
-struct RoomValues
-{
-    Vector3 m_prevPosition;
-    Quaternion m_prevRotation;
-    Vector3 m_prevScale;
-
-    public RoomValues(GameObject roomTransform)
-    {
-        if (roomTransform != null)
-        {
-            m_prevPosition = roomTransform.transform.position;
-            m_prevRotation = roomTransform.transform.rotation;
-            m_prevScale = roomTransform.transform.localScale;
-        }
-        else
-        {
-            m_prevPosition = Vector3.zero;
-            m_prevRotation = Quaternion.identity;
-            m_prevScale = Vector3.zero;
-        }
-    }
-
-    public bool HasChanged(Vector3 currentPosition, Quaternion currentRotation, Vector3 currentScale)
-    {
-        bool result = DetectChange(m_prevPosition, currentPosition) || DetectChange(m_prevRotation, currentRotation) || DetectChange(m_prevScale, currentScale);
-        m_prevPosition = currentPosition;
-        m_prevRotation = currentRotation;
-        m_prevScale = currentScale;
-        return result;
-    }
-
-    bool DetectChange(Vector3 prev, Vector3 current)
-    {
-        return prev != current;
-    }
-
-    bool DetectChange(Quaternion prev, Quaternion current)
-    {
-        return prev != current;
     }
 }
