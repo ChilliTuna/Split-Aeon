@@ -4,6 +4,8 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 
+using FMODUnity;
+
 [System.Serializable]
 public class Card
 {
@@ -16,8 +18,7 @@ public class Card
 
 public class CardManager : MonoBehaviour
 {
-    [Header("Controls")]
-    public KeyCode cardLethalKey;
+    #region Variables
 
     [Header("Player")]
     public Player player;
@@ -54,38 +55,45 @@ public class CardManager : MonoBehaviour
     public Card splashCard;
 
     [Header("Audio")]
-    public AudioSource weaponAudioSource;
+    //public AudioSource weaponAudioSource;
+    //public AudioClip[] lethalThrowClips;
 
-    public AudioClip[] lethalThrowClips;
+    public StudioEventEmitter cardSounds;
 
     [HideInInspector]
     public int cardLethalPool;
 
     private float throwForce, throwLift, cardSpin;
 
+    //Input
+    private UserActions userActions;
+
+    #endregion
+
+    private void Awake()
+    {
+        userActions = new UserActions();
+    }
 
     void Start()
     {
         cardLethalPool = maxCardLethals;
     }
 
+    private void OnEnable()
+    {
+        userActions.PlayerMap.ThrowCard.performed += ctx => ThrowCard();
+        userActions.PlayerMap.ThrowCard.Enable();
+    }
+
+    private void OnDisable()
+    {
+        userActions.PlayerMap.ThrowCard.Disable();
+    }
+
     void Update()
     {
         cardPoolReadout.text = cardLethalPool.ToString();
-
-        if (Input.GetKeyDown(cardLethalKey))
-        {
-            if (!player.isBusy)
-            {
-                player.viewmodelAnimator.SetTrigger("Switch");
-
-                Invoke("TriggerCardThrowAnimation", 0.3f);
-
-                //magicAnims.TriggerCardThrow();
-
-                //ThrowCardLethal();
-            }
-        }
 
         switch (cardTypes)
         {
@@ -106,6 +114,20 @@ public class CardManager : MonoBehaviour
                 break;
         }
 
+    }
+
+    void ThrowCard()
+    {
+        if (!player.isBusy)
+        {
+            player.viewmodelAnimator.SetTrigger("Switch");
+
+            Invoke("TriggerCardThrowAnimation", 0.3f);
+
+            //magicAnims.TriggerCardThrow();
+
+            //ThrowCardLethal();
+        }
     }
 
     public void SetCardType(int index)
@@ -147,7 +169,9 @@ public class CardManager : MonoBehaviour
         {
             Debug.LogWarning("Throwing Card");
 
-            weaponAudioSource.PlayOneShot(lethalThrowClips[Mathf.FloorToInt(Random.Range(0, lethalThrowClips.Length))]);
+            //weaponAudioSource.PlayOneShot(lethalThrowClips[Mathf.FloorToInt(Random.Range(0, lethalThrowClips.Length))]);
+
+            cardSounds.Play();
 
             GameObject thrownLethal;
             thrownLethal = Instantiate(selectedCard, lethalSpawnLocation.transform.position, Quaternion.identity);

@@ -52,8 +52,9 @@ public class Melee : Weapon
 
     public override void SecondaryUse()
     {
-        Push();
+
     }
+
 
     void Swing()
     {
@@ -67,26 +68,10 @@ public class Melee : Weapon
         animator.SetTrigger("Swing");
         animator.SetBool("SwingSide", !animator.GetBool("SwingSide"));
 
-        manager.weaponAudioSource.PlayOneShot(swingClips[Mathf.FloorToInt(Random.Range(0, swingClips.Length))]);
+        manager.meleeSounds.Play();
 
         hitbox.EnableDamage();
 
     }
 
-    void Push()
-    {
-
-        if (manager.player.isBusy)
-        {
-            return;
-        }
-
-        Debug.Log("Melee Push");
-        animator.SetTrigger("Push");
-
-        manager.weaponAudioSource.PlayOneShot(pushClips[Mathf.FloorToInt(Random.Range(0, pushClips.Length))]);
-
-        hitbox.EnablePush();
-
-    }
 }

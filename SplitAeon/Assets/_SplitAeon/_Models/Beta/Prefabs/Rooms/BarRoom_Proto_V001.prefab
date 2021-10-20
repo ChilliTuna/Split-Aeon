@@ -126,6 +126,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3925101749038151883}
+  - component: {fileID: 3480308262680454338}
   m_Layer: 0
   m_Name: BarRoom_Proto_V001
   m_TagString: Untagged
@@ -179,6 +180,26 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 91, z: 0}
+--- !u!114 &3480308262680454338
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3925101749038151882}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 91981c15481d8a844b56df51706ab1d9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  exitExpansion: 5
+  neighbours: []
+  enterRoom:
+    m_PersistentCalls:
+      m_Calls: []
+  exitRoom:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!1 &3925101749323358913
 GameObject:
   m_ObjectHideFlags: 0
@@ -5678,14 +5699,14 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: f17fcd9151526944ea02e48b7373f1e9, type: 3}
---- !u!1 &535821829473840842 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 2896028624878166083, guid: f17fcd9151526944ea02e48b7373f1e9, type: 3}
-  m_PrefabInstance: {fileID: 3413550043226558089}
-  m_PrefabAsset: {fileID: 0}
 --- !u!4 &874911853170422896 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 2556657126534134521, guid: f17fcd9151526944ea02e48b7373f1e9, type: 3}
+  m_PrefabInstance: {fileID: 3413550043226558089}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &535821829473840842 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 2896028624878166083, guid: f17fcd9151526944ea02e48b7373f1e9, type: 3}
   m_PrefabInstance: {fileID: 3413550043226558089}
   m_PrefabAsset: {fileID: 0}
 --- !u!1001 &3485085758965261667

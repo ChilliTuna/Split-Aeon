@@ -904,6 +904,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8807985969048422185}
+  - component: {fileID: 5983259420730247905}
   m_Layer: 0
   m_Name: GreemRoom_Proto_V001
   m_TagString: Untagged
@@ -991,6 +992,26 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &5983259420730247905
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8807985969048422184}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 91981c15481d8a844b56df51706ab1d9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  exitExpansion: 5
+  neighbours: []
+  enterRoom:
+    m_PersistentCalls:
+      m_Calls: []
+  exitRoom:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!1001 &17866539851405471
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -5026,6 +5047,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Environment_Medium_Wall_DoubleSided_1_001 (2)
       objectReference: {fileID: 0}
+    - target: {fileID: 3449151416619050664, guid: f17fcd9151526944ea02e48b7373f1e9, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 50560dc8314aaa346958c8140a567b83, type: 2}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: f17fcd9151526944ea02e48b7373f1e9, type: 3}
 --- !u!4 &1678225201700102160 stripped
@@ -5666,6 +5691,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Environment_Medium_Wall_DoubleSided_1_001 (3)
       objectReference: {fileID: 0}
+    - target: {fileID: 3449151416619050664, guid: f17fcd9151526944ea02e48b7373f1e9, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 50560dc8314aaa346958c8140a567b83, type: 2}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: f17fcd9151526944ea02e48b7373f1e9, type: 3}
 --- !u!4 &2294133056753439214 stripped

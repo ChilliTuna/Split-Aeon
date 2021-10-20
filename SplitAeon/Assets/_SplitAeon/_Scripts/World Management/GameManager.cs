@@ -10,6 +10,7 @@ public class GameManager : MonoBehaviour
         -When the player has switched zones. Call the function that will "pause" the AI manager for that zone
         -How are the enemies going to hit the player. Invoking a damage event currently, with a collider attached to their arm. It works horribly right now.
     */
+    public bool isInDebug;
 
     public ZoneManager presentZoneManager;
     public ZoneManager pastZoneManager;
@@ -19,6 +20,8 @@ public class GameManager : MonoBehaviour
     // Start is called before the first frame update
     private void Start()
     {
+        Globals.isInDebug = isInDebug;
+
         AssignToZoneManagers();
 
         // This must be in start as aiManager must init variables in awake
@@ -50,6 +53,7 @@ public class GameManager : MonoBehaviour
 
 public static class Globals
 {
+    public static bool isInDebug = false;
     public static bool isGamePaused = false;
     public static bool isInPast = true;
 }

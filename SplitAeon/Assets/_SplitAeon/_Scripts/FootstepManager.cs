@@ -2,6 +2,9 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+using FMODUnity;
+using FMODUnityResonance;
+
 public class FootstepManager : MonoBehaviour
 {
 
@@ -14,10 +17,7 @@ public class FootstepManager : MonoBehaviour
 
     public float surfaceCheckInterval;
 
-    public List<StepSurface> surfaces = new List<StepSurface>();
-
-    public AudioClip[] fallbackStepSounds;
-
+    public List<string> surfaces = new List<string>();
 
     void Start()
     {
@@ -25,32 +25,38 @@ public class FootstepManager : MonoBehaviour
         InvokeRepeating("CheckSurface", 1, surfaceCheckInterval);
     }
 
-    private void Update()
+    public void SetCurrentSurface(string surface)
     {
-
-    }
-
-    public void SetCurrentSurface(StepSurface surface)
-    {
-        if (currentSurface != surface.name)
+        if (currentSurface != surface)
         {
-            if (surface.walkSounds.Length != 0)
+            if (surface == "Marble")
             {
-                stepper.walkClips = surface.walkSounds;
+                stepper.footsteps.SetParameter("Material", 0);
+
+                stepper.footsteps.Params[0].Value = 0;
+
+                Debug.Log("Setting material to marble");
+
             }
-            else
+            else if (surface == "Wood")
             {
-                stepper.walkClips = fallbackStepSounds;
+                stepper.footsteps.SetParameter("Material", 1);
+
+                stepper.footsteps.Params[0].Value = 1;
+
+                Debug.Log("Setting material to wood");
+
+            }
+            else if (surface == "Carpet")
+            {
+                stepper.footsteps.SetParameter("Material", 2);
+
+                stepper.footsteps.Params[0].Value = 2;
+
+                Debug.Log("Setting material to carpet");
+
             }
 
-            if (surface.runSounds.Length != 0)
-            {
-                stepper.runClips = surface.runSounds;
-            }
-            else
-            {
-                stepper.runClips = fallbackStepSounds;
-            }
         }
     }
 
@@ -58,31 +64,14 @@ public class FootstepManager : MonoBehaviour
     {
         foreach (Collider col in Physics.OverlapSphere(gameObject.transform.position, 0.3f, ~mask))
         {
-            foreach (StepSurface s in surfaces)
+            foreach (string s in surfaces)
             {
-                if (col.transform.tag == s.name)
+                if (col.transform.tag == s)
                 {
-                    //Debug.LogWarning("This is a floor of type " + s.name);
                     SetCurrentSurface(s);
                 }
 
             }
         }
     }
-
-
-}
-
-[System.Serializable]
-public class StepSurface
-{
-    public string name;
-
-    public AudioClip[] walkSounds;
-    public AudioClip[] runSounds;
-
-    //public AudioClip jumpSound;
-    //public AudioClip landSound;
-
-
 }

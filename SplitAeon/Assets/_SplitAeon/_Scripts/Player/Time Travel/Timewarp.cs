@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using FMODUnity;
+using System.Collections;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.Rendering;
@@ -17,8 +18,7 @@ public class Timewarp : MonoBehaviour
     private CharacterController controller;
     public GameObject player;
 
-    public AudioClip[] clips;
-    public AudioSource source;
+    public StudioEventEmitter warpSound;
 
     public float offsetAmount = 100;
 
@@ -36,6 +36,24 @@ public class Timewarp : MonoBehaviour
 
     [Space]
     public UnityEvent onTimeWarp;
+
+    private UserActions userActions;
+
+    private void Awake()
+    {
+        userActions = new UserActions();
+    }
+
+    private void OnEnable()
+    {
+        userActions.PlayerMap.TimeTravel.performed += ctx => TryWarp();
+        userActions.PlayerMap.TimeTravel.Enable();
+    }
+
+    private void OnDisable()
+    {
+        userActions.PlayerMap.TimeTravel.Disable();
+    }
 
     private void Start()
     {
@@ -57,11 +75,6 @@ public class Timewarp : MonoBehaviour
     private void Update()
     {
         timer.Count();
-
-        if (Input.GetKeyDown(KeyCode.E))
-        {
-            TryWarp();
-        }
 
         if (cromAb.intensity.value >= 0)
         {
@@ -125,6 +138,11 @@ public class Timewarp : MonoBehaviour
     {
         player.GetComponent<Player>().viewmodelAnimator.SetTrigger("Warp");
 
+        DoWarp();
+    }
+
+    public void DoWarp()
+    {
         if (isInPast)
         {
             controller.enabled = false;
@@ -138,19 +156,21 @@ public class Timewarp : MonoBehaviour
             controller.enabled = true;
         }
 
-        TriggerTeleportEffect();
-
         ChangeWorldInternal(!isInPast);
 
         timer.Start();
 
         onTimeWarp.Invoke();
+
+        TriggerTeleportEffect();
     }
 
     private void TriggerTeleportEffect()
     {
-        source.PlayOneShot(clips[Mathf.FloorToInt(Random.Range(0, clips.Length))]);
-
+        if (warpSound)
+        {
+            warpSound.Play();
+        }
         cromAb.intensity.value = 1;
         bloom.intensity.value = 1;
         exposure.compensation.value = 5;
