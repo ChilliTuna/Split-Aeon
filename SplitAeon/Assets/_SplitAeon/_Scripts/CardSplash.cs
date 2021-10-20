@@ -57,9 +57,10 @@ public class CardSplash : MonoBehaviour
 
             Debug.Log(ob.name);
 
-            if (ob.GetComponentInParent<Health>())
+            var health = ob.GetComponentInParent<Health>();
+            if (health)
             {
-                ob.GetComponentInParent<Health>().Hit(damage);
+                health.Hit(damage, ob);
             }
         }
 

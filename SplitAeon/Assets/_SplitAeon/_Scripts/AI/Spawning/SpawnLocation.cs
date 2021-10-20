@@ -13,6 +13,8 @@ public class SpawnLocation : MonoBehaviour
     public SpawnType spawnType = 0;
     bool m_isSpawning = false;
 
+    [HideInInspector] public RoomBounds room = null;
+
     public bool isSpawning { get { return m_isSpawning; } }
 
     public float skinWidth = 0.0001f;
@@ -35,7 +37,7 @@ public class SpawnLocation : MonoBehaviour
 
         // DEBUGGONG PURPOSE: END THE SPAWNING STRAIGHT AWAY
         // Ideally the spawn would last as long as the animation that plays it
-        //EndSpawning();
+        EndSpawning();
     }
 
     public void EndSpawning()

@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+using FMODUnity;
+
 public class Footstepper : MonoBehaviour
 {
 
@@ -13,12 +15,8 @@ public class Footstepper : MonoBehaviour
     float delay;
     float timer;
 
-    public AudioSource stepSource;
+    public StudioEventEmitter footsteps;
 
-    //[HideInInspector]
-    public AudioClip[] walkClips;
-    //[HideInInspector]
-    public AudioClip[] runClips;
 
     public bool stopSounds;
 
@@ -62,12 +60,22 @@ public class Footstepper : MonoBehaviour
         
         if (!player.isRunning)
         {
-            stepSource.PlayOneShot(walkClips[Random.Range(0, walkClips.Length)]);
+            footsteps.SetParameter("Speed Switch", 0);
+
+            footsteps.Params[1].Value = 0;
+
+            Debug.Log("Setting speed to walking");
         }
         else
         {
-            stepSource.PlayOneShot(runClips[Random.Range(0, runClips.Length)]);
+            footsteps.SetParameter("Speed Switch", 1);
+
+            footsteps.Params[1].Value = 1;
+
+            Debug.Log("Setting speed to running");
         }
-        
+
+        footsteps.Play();
+
     }
 }

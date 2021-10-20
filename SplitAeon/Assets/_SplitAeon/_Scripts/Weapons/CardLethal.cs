@@ -13,7 +13,7 @@ public class CardLethal : MonoBehaviour
         {
             StickToSurface(collision);
 
-            collision.collider.gameObject.GetComponent<Health>().Hit(damage);
+            collision.collider.gameObject.GetComponent<Health>().Hit(damage, collision.collider);
         }
         else if (collision.collider.gameObject.GetComponent<Target>())
         {
