@@ -15,6 +15,10 @@ public class AISettings : ScriptableObject
 
     [Header("Gameplay")]
     public float health = 30;
+    public float headMultiplier = 1.5f;
+    public float upperTorsoMultipler = 1.0f;
+    public float lowerTorsoMultiplier = 0.9f;
+    public float limbMultiplier = 0.7f;
 
     [Header("Idle")]
     public float maxIdleTime = 2.0f;

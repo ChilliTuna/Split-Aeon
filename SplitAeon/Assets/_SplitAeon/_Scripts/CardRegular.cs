@@ -8,11 +8,12 @@ public class CardRegular : MonoBehaviour
 
     private void OnCollisionEnter(Collision collision)
     {
-        if (collision.collider.gameObject.GetComponent<Health>())
+        var health = collision.collider.gameObject.GetComponentInParent<Health>();
+        if (health)
         {
             StickToSurface(collision);
 
-            collision.collider.gameObject.GetComponent<Health>().Hit(damage);
+            health.Hit(damage, collision.collider);
 
             GetComponent<BoxCollider>().enabled = false;
         }
