@@ -82,7 +82,7 @@ public class RoomPlacerEditor : Editor
         }
         else
         {
-            EditorGUILayout.TextField(roomPair.roomName);
+            roomPair.roomName = EditorGUILayout.TextField(roomPair.roomName);
             GUILayout.Space(-1);
         }
         roomPair.pastRoom = EditorGUILayout.ObjectField("Past Room", roomPair.pastRoom, typeof(GameObject), true) as GameObject;
