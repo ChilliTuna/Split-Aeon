@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
 
+using GameObjectPair = RoomPlacer.GameObjectPair;
+
 [CustomEditor(typeof(RoomPlacer))]
 public class RoomPlacerEditor : Editor
 {
@@ -10,11 +12,22 @@ public class RoomPlacerEditor : Editor
 
     bool m_isEditing = false;
 
+    bool m_shouldAddList = false;
+    bool m_shouldRemoveList = false;
+
+    bool m_showListSettings = false;
+
     static int _elementPixelSpace = 21;
     static int _beginPixelSpace = 10;
     static int _endPixelSpace = 5;
 
     public static bool showLayoutOptions = false;
+
+    string pastElementName = "Past Room";
+    string futureElementName = "Future Room";
+
+    string roomElementName = "Room";
+    string itemElementName = "Item";
 
     public override void OnInspectorGUI()
     {
@@ -37,15 +50,37 @@ public class RoomPlacerEditor : Editor
         // room placer is now the same as the managed one
         // finish validations
         ValidateOffset(roomPlacer);
+        ValidateListChanges(roomPlacer);
     }
 
     void ValidateOffset(RoomPlacer roomPlacer)
     {
         if (m_prevOffset != roomPlacer.offset)
         {
-            roomPlacer.AlignAllRoomPairsToPast();
+            for(int i = 0; i < roomPlacer.roomPairsList.Count; i++)
+            {
+                RoomPlacerSceneManager.SmartAlignRooms(i, roomPlacer.roomPairsList[i]);
+            }
+            RoomPlacerSceneManager.MarkDirty();
         }
         m_prevOffset = roomPlacer.offset;
+    }
+
+    void ValidateListChanges(RoomPlacer roomPlacer)
+    {
+        if(m_shouldAddList)
+        {
+            // Add list to room placer and manager
+            roomPlacer.CreateNewList();
+            RoomPlacerSceneManager.AddNewList(roomPlacer);
+        }
+
+        if(m_shouldRemoveList)
+        {
+            // Add list to room placer and manager
+            roomPlacer.RemoveLastList();
+            RoomPlacerSceneManager.RemoveBottomList();
+        }
     }
 
     void InspectorLayout(RoomPlacer roomPlacer)
@@ -63,9 +98,13 @@ public class RoomPlacerEditor : Editor
         roomPlacer.offset = EditorGUILayout.Vector3Field("Offset", roomPlacer.offset);
 
         GUILayout.Space(beginPixelSpace);
-        RoomPairListLayout(roomPlacer);
 
-        ButtonsLayout(roomPlacer);
+        ListsButtonControls();
+
+        for (int i = 0; i < roomPlacer.roomPairsList.Count; i++)
+        {
+            FoldOutList(roomPlacer, roomPlacer.roomPairsList[i], i);
+        }
 
         if (showLayoutOptions)
         {
@@ -74,7 +113,57 @@ public class RoomPlacerEditor : Editor
         }
     }
 
-    void RoomPairLayout(RoomPlacer roomPlacer, RoomPlacer.RoomPair roomPair)
+    void ListsButtonControls()
+    {
+        if(m_isEditing)
+        {
+            GUILayout.Space(2);
+        }
+
+        EditorGUILayout.BeginHorizontal();
+        m_shouldAddList = GUILayout.Button("Add New List");
+        m_shouldRemoveList = GUILayout.Button("Remove Bottom List");
+
+        string settingsButtonText = "Show Settings";
+        if(m_showListSettings)
+        {
+            settingsButtonText = "Hide Settings";
+        }
+
+        if(GUILayout.Button(settingsButtonText))
+        {
+            m_showListSettings = !m_showListSettings;
+        }
+        EditorGUILayout.EndHorizontal();
+    }
+
+    void FoldOutList(RoomPlacer roomPlacer, RoomPlacer.GameObjectPairList list, int listIndex)
+    {
+        FoldOutGameObjectPairs(ref list.shouldShow, roomPlacer, list.listName, listIndex);
+    }
+
+    void FoldOutGameObjectPairs(ref bool foldOut, RoomPlacer roomPlacer, string title, int listIndex)
+    {
+        if(!m_showListSettings)
+        {
+            foldOut = EditorGUILayout.Foldout(foldOut, title, true, EditorStyles.foldoutHeader);
+        }
+        else
+        {
+            var list = roomPlacer.roomPairsList[listIndex];
+            list.listName = EditorGUILayout.TextField(list.listName);
+            GUILayout.Space(-1);
+        }
+
+        if (foldOut)
+        {
+            RoomPairListLayout(roomPlacer, listIndex);
+
+            ButtonsLayout(roomPlacer, listIndex);
+        }
+    }
+
+    void RoomPairLayout(RoomPlacer.GameObjectPairList list, RoomPlacer.GameObjectPair roomPair, int listIndex)
     {
         if(!m_isEditing)
         {
@@ -82,36 +171,72 @@ public class RoomPlacerEditor : Editor
         }
         else
         {
+            GUILayout.Space(-2);
+            EditorGUILayout.BeginHorizontal();
             roomPair.roomName = EditorGUILayout.TextField(roomPair.roomName);
-            GUILayout.Space(-1);
-        }
-        roomPair.pastRoom = EditorGUILayout.ObjectField("Past Room", roomPair.pastRoom, typeof(GameObject), true) as GameObject;
-        roomPair.futureRoom = EditorGUILayout.ObjectField("Future Room", roomPair.futureRoom, typeof(GameObject), true) as GameObject;
 
-        if(m_isEditing)
-        {
-            EditorGUILayout.BeginVertical();
-            if(GUILayout.Button("Remove"))
+            if (GUILayout.Button("Remove"))
             {
-                RoomPlacerSceneManager.RemoveRoomPairData(roomPair);
-                roomPlacer.roomPairs.Remove(roomPair);
+                RoomPlacerSceneManager.RemoveRoomPairData(roomPair, listIndex);
+                list.roomPairs.Remove(roomPair);
             }
-            EditorGUILayout.EndVertical();
 
-            GUILayout.Space(_elementPixelSpace - 23);
+            EditorGUILayout.EndHorizontal();
+            GUILayout.Space(-2);
+        }
+
+        bool pastHasChanged;
+        bool futureHasChanged;
+
+        if (list.isRoomItemList)
+        {
+            roomPair.pastRoom = TryLayoutObjectField(roomElementName, roomPair.pastRoom, out pastHasChanged);
+            roomPair.futureRoom = TryLayoutObjectField(itemElementName, roomPair.futureRoom, out futureHasChanged);
         }
         else
         {
-            GUILayout.Space(_elementPixelSpace);
+            roomPair.pastRoom = TryLayoutObjectField(pastElementName, roomPair.pastRoom, out pastHasChanged);
+            roomPair.futureRoom = TryLayoutObjectField(futureElementName, roomPair.futureRoom, out futureHasChanged);
         }
+
+        if(pastHasChanged || futureHasChanged)
+        {
+            RoomPlacerSceneManager.TrySetTrackersRoomPairList(listIndex);
+            RoomPlacerSceneManager.MarkDirty();
+        }
+
+        if(m_isEditing)
+        {
+            GUILayout.Space(-1);
+        }
+        GUILayout.Space(_elementPixelSpace);
     }
 
-    void RoomPairListLayout(RoomPlacer roomPlacer)
+    bool DetectGameObjectChange(GameObject previous, GameObject potentialChange)
     {
-        for (int i = 0; i < roomPlacer.roomPairs.Count; i++)
+        return previous != potentialChange;
+    }
+
+    GameObject TryLayoutObjectField(string label, GameObject gameObject, out bool hasChanged)
+    {
+        var before = gameObject;
+        var after = EditorGUILayout.ObjectField(label, gameObject, typeof(GameObject), true) as GameObject;
+        hasChanged = DetectGameObjectChange(before, after);
+        return after;
+    }
+
+    void RoomPairListLayout(RoomPlacer roomPlacer, int listIndex)
+    {
+        var list = roomPlacer.roomPairsList[listIndex];
+        if(m_showListSettings)
         {
-            var roomPair = roomPlacer.roomPairs[i];
-            RoomPairLayout(roomPlacer, roomPair);
+            ShowListSettings(list, listIndex);
+        }
+        var roomPairs = list.roomPairs;
+        for (int i = 0; i < roomPairs.Count; i++)
+        {
+            var roomPair = roomPairs[i];
+            RoomPairLayout(list, roomPair, listIndex);
         }
         if(m_isEditing)
         {
@@ -123,19 +248,39 @@ public class RoomPlacerEditor : Editor
         }
     }
 
-    void ButtonsLayout(RoomPlacer roomPlacer)
+    void ShowListSettings(RoomPlacer.GameObjectPairList list, int listIndex)
     {
-        if (GUILayout.Button("Add New"))
+        EditorGUILayout.BeginHorizontal();
+        GUILayout.Label("Settings: ");
+        bool prevToggle = list.isRoomItemList;
+        list.isRoomItemList = GUILayout.Toggle(list.isRoomItemList, "Room Items");
+        bool afterToggle = list.isRoomItemList;
+        if(prevToggle != afterToggle)
         {
-            var newRoom = new RoomPlacer.RoomPair();
-            roomPlacer.roomPairs.Add(newRoom);
-            RoomPlacerSceneManager.AddRoomPairData(newRoom);
+            Debug.Log("Toggled");
+            RoomPlacerSceneManager.SwitchValidators(listIndex, afterToggle);
+            RoomPlacerSceneManager.MarkDirty();
+        }
+
+        EditorGUILayout.EndHorizontal();
+    }
+
+    void ButtonsLayout(RoomPlacer roomPlacer, int listIndex)
+    {
+        EditorGUILayout.BeginHorizontal();
+        if (GUILayout.Button("Add New to " + roomPlacer.roomPairsList[listIndex].listName))
+        {
+            var newRoom = new RoomPlacer.GameObjectPair();
+            var list = roomPlacer.roomPairsList[listIndex];
+            list.roomPairs.Add(newRoom);
+            RoomPlacerSceneManager.AddRoomPairData(newRoom, listIndex, list.isRoomItemList);
 
         }
-        if (GUILayout.Button("Edit Room Pair"))
+        if (GUILayout.Button("Edit Room Pairs"))
         {
             m_isEditing = !m_isEditing;
         }
+        EditorGUILayout.EndHorizontal();
     }
 
     public static void ExtraOptionsLayout()
