@@ -10,10 +10,16 @@ public class RoomBounds : MonoBehaviour
 
     public float exitExpansion = 5.0f;
 
-    public RoomBounds[] neighbours;
+    public RoomBounds timePartner;
+    public List<RoomBounds> neighbours;
 
     public UnityEvent enterRoom;
     public UnityEvent exitRoom;
+
+    public Vector3 safeSpawnOffset = Vector3.zero;
+
+    // Initialisation variables
+    public HashSet<SpawnLocation> spawnLocations = new HashSet<SpawnLocation>();
 
     void Awake()
     {
@@ -137,6 +143,11 @@ public class RoomBounds : MonoBehaviour
     public bool ExitContainsPoint(Vector3 point)
     {
         return exitBounds.Contains(point);
+    }
+
+    public Vector3 GetSafeSpawnPosition()
+    {
+        return entryBounds.center + safeSpawnOffset;
     }
 
     private void OnDrawGizmos()
