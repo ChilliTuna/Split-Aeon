@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 2959617678071810524}
   - component: {fileID: 2959617678071810527}
   - component: {fileID: 2959617678071810526}
+  - component: {fileID: 3665302298566855989}
   m_Layer: 0
   m_Name: BreakableBottle_Tall_01
   m_TagString: Untagged
@@ -68,6 +69,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   maxHealth: 1
   health: 0
+  enableHealing: 0
+  timeBeforeHeal: 0
+  healAmount: 0
+  healTick: 0
   onHitEvents:
     m_PersistentCalls:
       m_Calls:
@@ -183,6 +188,36 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!114 &3665302298566855989
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2959617678071810521}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9a6610d2e704f1648819acc8d7460285, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  CollisionTag: 
+  EventReference:
+    Guid:
+      Data1: 330140978
+      Data2: 1333318661
+      Data3: 1690282171
+      Data4: 227026635
+    Path: event:/SFX/Objects/Glass_Smash
+  Event: 
+  PlayEvent: 0
+  StopEvent: 0
+  AllowFadeout: 1
+  TriggerOnce: 0
+  Preload: 0
+  Params: []
+  OverrideAttenuation: 0
+  OverrideMinDistance: 1
+  OverrideMaxDistance: 20
 --- !u!1 &3738243784855491828
 GameObject:
   m_ObjectHideFlags: 0
