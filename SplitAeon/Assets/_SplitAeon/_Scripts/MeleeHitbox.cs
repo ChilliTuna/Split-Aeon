@@ -22,7 +22,7 @@ public class MeleeHitbox : MonoBehaviour
 
                 if (health)
                 {
-                    health.Hit(weapon.damage);
+                    health.Hit(weapon.damage, other);
                     Debug.Log("Hit " + other.name);
                     DisableDamage();
                 }
