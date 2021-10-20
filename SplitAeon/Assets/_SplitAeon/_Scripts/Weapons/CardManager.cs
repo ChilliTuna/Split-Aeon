@@ -82,6 +82,7 @@ public class CardManager : MonoBehaviour
 
     private void OnEnable()
     {
+        userActions.PlayerMap.ThrowCard.LoadBinding(InputActions.ThrowCard);
         userActions.PlayerMap.ThrowCard.performed += ctx => ThrowCard();
         userActions.PlayerMap.ThrowCard.Enable();
     }

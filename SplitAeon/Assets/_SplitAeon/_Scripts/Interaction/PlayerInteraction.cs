@@ -23,6 +23,7 @@ public class PlayerInteraction : MonoBehaviour
 
     private void OnEnable()
     {
+        userActions.PlayerMap.Interact.LoadBinding(InputActions.Interact);
         userActions.PlayerMap.Interact.performed += ctx => HandleInteraction(currentInteractable);
         userActions.PlayerMap.Interact.Enable();
     }

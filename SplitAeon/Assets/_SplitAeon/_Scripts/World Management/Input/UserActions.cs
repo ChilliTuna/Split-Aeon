@@ -127,15 +127,6 @@ public partial class @UserActions : IInputActionCollection2, IDisposable
                     ""initialStateCheck"": false
                 },
                 {
-                    ""name"": ""ObjectiveList"",
-                    ""type"": ""Button"",
-                    ""id"": ""f2f90e7f-8d43-40cf-bcbb-40cfe9b762ca"",
-                    ""expectedControlType"": ""Button"",
-                    ""processors"": """",
-                    ""interactions"": """",
-                    ""initialStateCheck"": false
-                },
-                {
                     ""name"": ""WeaponWheel"",
                     ""type"": ""Button"",
                     ""id"": ""a48da3a6-aaac-4f39-81e4-27960de70335"",
@@ -157,15 +148,6 @@ public partial class @UserActions : IInputActionCollection2, IDisposable
                     ""name"": ""Sprint"",
                     ""type"": ""Button"",
                     ""id"": ""08624768-7734-432a-b26c-36232e56d50c"",
-                    ""expectedControlType"": ""Button"",
-                    ""processors"": """",
-                    ""interactions"": """",
-                    ""initialStateCheck"": false
-                },
-                {
-                    ""name"": ""Pause"",
-                    ""type"": ""Button"",
-                    ""id"": ""de0479c7-9a42-433c-82ed-e3ae49628490"",
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": """",
@@ -340,17 +322,6 @@ public partial class @UserActions : IInputActionCollection2, IDisposable
                 },
                 {
                     ""name"": """",
-                    ""id"": ""1136f22c-94b2-4a2d-befe-e25e7a0e808f"",
-                    ""path"": ""<Keyboard>/tab"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""ObjectiveList"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
                     ""id"": ""3c3f7dc0-065a-490a-bf67-429efde67a56"",
                     ""path"": ""<Keyboard>/leftAlt"",
                     ""interactions"": """",
@@ -372,74 +343,13 @@ public partial class @UserActions : IInputActionCollection2, IDisposable
                     ""isPartOfComposite"": false
                 },
                 {
-                    ""name"": ""Sprint"",
-                    ""id"": ""23a6d787-b134-4e13-b472-6b7610311c68"",
-                    ""path"": ""OneModifier"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Sprint"",
-                    ""isComposite"": true,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": ""modifier"",
-                    ""id"": ""66cb42b8-590a-4057-8dd2-547f97c09783"",
-                    ""path"": ""<Keyboard>/w"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Sprint"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": true
-                },
-                {
-                    ""name"": ""binding"",
-                    ""id"": ""6025984c-b1e7-4003-be66-9d79e075e52e"",
+                    ""name"": """",
+                    ""id"": ""cba1f28e-a09d-4cb9-9d90-6b38a57e349c"",
                     ""path"": ""<Keyboard>/shift"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
                     ""action"": ""Sprint"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": true
-                },
-                {
-                    ""name"": """",
-                    ""id"": ""376f0194-375a-47f0-95fa-265565341706"",
-                    ""path"": ""<Keyboard>/escape"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Pause"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                }
-            ]
-        },
-        {
-            ""name"": ""UIMap"",
-            ""id"": ""32cffbf6-86d1-4810-afa7-f201b339bfd3"",
-            ""actions"": [
-                {
-                    ""name"": ""Click"",
-                    ""type"": ""Button"",
-                    ""id"": ""2f7dd2a8-c769-4860-b344-60e8c43928e5"",
-                    ""expectedControlType"": ""Button"",
-                    ""processors"": """",
-                    ""interactions"": """",
-                    ""initialStateCheck"": false
-                }
-            ],
-            ""bindings"": [
-                {
-                    ""name"": """",
-                    ""id"": ""fac343d1-f5ec-452a-a59c-3f6961fec334"",
-                    ""path"": ""<Mouse>/leftButton"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Click"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -461,14 +371,9 @@ public partial class @UserActions : IInputActionCollection2, IDisposable
         m_PlayerMap_ChangeToThompson = m_PlayerMap.FindAction("ChangeToThompson", throwIfNotFound: true);
         m_PlayerMap_ChangeToShotgun = m_PlayerMap.FindAction("ChangeToShotgun", throwIfNotFound: true);
         m_PlayerMap_ChangeToMelee = m_PlayerMap.FindAction("ChangeToMelee", throwIfNotFound: true);
-        m_PlayerMap_ObjectiveList = m_PlayerMap.FindAction("ObjectiveList", throwIfNotFound: true);
         m_PlayerMap_WeaponWheel = m_PlayerMap.FindAction("WeaponWheel", throwIfNotFound: true);
         m_PlayerMap_Reload = m_PlayerMap.FindAction("Reload", throwIfNotFound: true);
         m_PlayerMap_Sprint = m_PlayerMap.FindAction("Sprint", throwIfNotFound: true);
-        m_PlayerMap_Pause = m_PlayerMap.FindAction("Pause", throwIfNotFound: true);
-        // UIMap
-        m_UIMap = asset.FindActionMap("UIMap", throwIfNotFound: true);
-        m_UIMap_Click = m_UIMap.FindAction("Click", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -539,11 +444,9 @@ public partial class @UserActions : IInputActionCollection2, IDisposable
     private readonly InputAction m_PlayerMap_ChangeToThompson;
     private readonly InputAction m_PlayerMap_ChangeToShotgun;
     private readonly InputAction m_PlayerMap_ChangeToMelee;
-    private readonly InputAction m_PlayerMap_ObjectiveList;
     private readonly InputAction m_PlayerMap_WeaponWheel;
     private readonly InputAction m_PlayerMap_Reload;
     private readonly InputAction m_PlayerMap_Sprint;
-    private readonly InputAction m_PlayerMap_Pause;
     public struct PlayerMapActions
     {
         private @UserActions m_Wrapper;
@@ -559,11 +462,9 @@ public partial class @UserActions : IInputActionCollection2, IDisposable
         public InputAction @ChangeToThompson => m_Wrapper.m_PlayerMap_ChangeToThompson;
         public InputAction @ChangeToShotgun => m_Wrapper.m_PlayerMap_ChangeToShotgun;
         public InputAction @ChangeToMelee => m_Wrapper.m_PlayerMap_ChangeToMelee;
-        public InputAction @ObjectiveList => m_Wrapper.m_PlayerMap_ObjectiveList;
         public InputAction @WeaponWheel => m_Wrapper.m_PlayerMap_WeaponWheel;
         public InputAction @Reload => m_Wrapper.m_PlayerMap_Reload;
         public InputAction @Sprint => m_Wrapper.m_PlayerMap_Sprint;
-        public InputAction @Pause => m_Wrapper.m_PlayerMap_Pause;
         public InputActionMap Get() { return m_Wrapper.m_PlayerMap; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -606,9 +507,6 @@ public partial class @UserActions : IInputActionCollection2, IDisposable
                 @ChangeToMelee.started -= m_Wrapper.m_PlayerMapActionsCallbackInterface.OnChangeToMelee;
                 @ChangeToMelee.performed -= m_Wrapper.m_PlayerMapActionsCallbackInterface.OnChangeToMelee;
                 @ChangeToMelee.canceled -= m_Wrapper.m_PlayerMapActionsCallbackInterface.OnChangeToMelee;
-                @ObjectiveList.started -= m_Wrapper.m_PlayerMapActionsCallbackInterface.OnObjectiveList;
-                @ObjectiveList.performed -= m_Wrapper.m_PlayerMapActionsCallbackInterface.OnObjectiveList;
-                @ObjectiveList.canceled -= m_Wrapper.m_PlayerMapActionsCallbackInterface.OnObjectiveList;
                 @WeaponWheel.started -= m_Wrapper.m_PlayerMapActionsCallbackInterface.OnWeaponWheel;
                 @WeaponWheel.performed -= m_Wrapper.m_PlayerMapActionsCallbackInterface.OnWeaponWheel;
                 @WeaponWheel.canceled -= m_Wrapper.m_PlayerMapActionsCallbackInterface.OnWeaponWheel;
@@ -618,9 +516,6 @@ public partial class @UserActions : IInputActionCollection2, IDisposable
                 @Sprint.started -= m_Wrapper.m_PlayerMapActionsCallbackInterface.OnSprint;
                 @Sprint.performed -= m_Wrapper.m_PlayerMapActionsCallbackInterface.OnSprint;
                 @Sprint.canceled -= m_Wrapper.m_PlayerMapActionsCallbackInterface.OnSprint;
-                @Pause.started -= m_Wrapper.m_PlayerMapActionsCallbackInterface.OnPause;
-                @Pause.performed -= m_Wrapper.m_PlayerMapActionsCallbackInterface.OnPause;
-                @Pause.canceled -= m_Wrapper.m_PlayerMapActionsCallbackInterface.OnPause;
             }
             m_Wrapper.m_PlayerMapActionsCallbackInterface = instance;
             if (instance != null)
@@ -658,9 +553,6 @@ public partial class @UserActions : IInputActionCollection2, IDisposable
                 @ChangeToMelee.started += instance.OnChangeToMelee;
                 @ChangeToMelee.performed += instance.OnChangeToMelee;
                 @ChangeToMelee.canceled += instance.OnChangeToMelee;
-                @ObjectiveList.started += instance.OnObjectiveList;
-                @ObjectiveList.performed += instance.OnObjectiveList;
-                @ObjectiveList.canceled += instance.OnObjectiveList;
                 @WeaponWheel.started += instance.OnWeaponWheel;
                 @WeaponWheel.performed += instance.OnWeaponWheel;
                 @WeaponWheel.canceled += instance.OnWeaponWheel;
@@ -670,46 +562,10 @@ public partial class @UserActions : IInputActionCollection2, IDisposable
                 @Sprint.started += instance.OnSprint;
                 @Sprint.performed += instance.OnSprint;
                 @Sprint.canceled += instance.OnSprint;
-                @Pause.started += instance.OnPause;
-                @Pause.performed += instance.OnPause;
-                @Pause.canceled += instance.OnPause;
             }
         }
     }
     public PlayerMapActions @PlayerMap => new PlayerMapActions(this);
-
-    // UIMap
-    private readonly InputActionMap m_UIMap;
-    private IUIMapActions m_UIMapActionsCallbackInterface;
-    private readonly InputAction m_UIMap_Click;
-    public struct UIMapActions
-    {
-        private @UserActions m_Wrapper;
-        public UIMapActions(@UserActions wrapper) { m_Wrapper = wrapper; }
-        public InputAction @Click => m_Wrapper.m_UIMap_Click;
-        public InputActionMap Get() { return m_Wrapper.m_UIMap; }
-        public void Enable() { Get().Enable(); }
-        public void Disable() { Get().Disable(); }
-        public bool enabled => Get().enabled;
-        public static implicit operator InputActionMap(UIMapActions set) { return set.Get(); }
-        public void SetCallbacks(IUIMapActions instance)
-        {
-            if (m_Wrapper.m_UIMapActionsCallbackInterface != null)
-            {
-                @Click.started -= m_Wrapper.m_UIMapActionsCallbackInterface.OnClick;
-                @Click.performed -= m_Wrapper.m_UIMapActionsCallbackInterface.OnClick;
-                @Click.canceled -= m_Wrapper.m_UIMapActionsCallbackInterface.OnClick;
-            }
-            m_Wrapper.m_UIMapActionsCallbackInterface = instance;
-            if (instance != null)
-            {
-                @Click.started += instance.OnClick;
-                @Click.performed += instance.OnClick;
-                @Click.canceled += instance.OnClick;
-            }
-        }
-    }
-    public UIMapActions @UIMap => new UIMapActions(this);
     public interface IPlayerMapActions
     {
         void OnMoveForward(InputAction.CallbackContext context);
@@ -723,14 +579,8 @@ public partial class @UserActions : IInputActionCollection2, IDisposable
         void OnChangeToThompson(InputAction.CallbackContext context);
         void OnChangeToShotgun(InputAction.CallbackContext context);
         void OnChangeToMelee(InputAction.CallbackContext context);
-        void OnObjectiveList(InputAction.CallbackContext context);
         void OnWeaponWheel(InputAction.CallbackContext context);
         void OnReload(InputAction.CallbackContext context);
         void OnSprint(InputAction.CallbackContext context);
-        void OnPause(InputAction.CallbackContext context);
-    }
-    public interface IUIMapActions
-    {
-        void OnClick(InputAction.CallbackContext context);
     }
 }
