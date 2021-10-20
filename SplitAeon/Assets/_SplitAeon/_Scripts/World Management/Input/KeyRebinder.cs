@@ -18,8 +18,7 @@ public enum InputActions
     ChangeToMelee,
     WeaponWheel,
     Reload,
-    Sprint,
-    Pause
+    Sprint
 }
 
 public class KeyRebinder : MonoBehaviour
@@ -105,7 +104,6 @@ public class KeyRebinder : MonoBehaviour
         dictionary.Add(InputActions.WeaponWheel, userActions.PlayerMap.WeaponWheel);
         dictionary.Add(InputActions.Reload, userActions.PlayerMap.Reload);
         dictionary.Add(InputActions.Sprint, userActions.PlayerMap.Sprint);
-        dictionary.Add(InputActions.Pause, userActions.PlayerMap.Pause);
     }
 
     private void FinaliseRebind()

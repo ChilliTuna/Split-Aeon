@@ -11,8 +11,6 @@ public class WeaponWheelController : MonoBehaviour
 
     Player player;
 
-    public KeyCode weaponWheelButton;
-
     private void Awake()
     {
         userActions = new UserActions();
@@ -20,6 +18,7 @@ public class WeaponWheelController : MonoBehaviour
 
     private void OnEnable()
     {
+        userActions.PlayerMap.WeaponWheel.LoadBinding(InputActions.WeaponWheel);
         userActions.PlayerMap.WeaponWheel.performed += ctx => ToggleWeaponWheel();
         userActions.PlayerMap.WeaponWheel.Enable();
     }

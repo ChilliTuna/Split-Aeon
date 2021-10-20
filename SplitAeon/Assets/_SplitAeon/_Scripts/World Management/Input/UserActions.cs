@@ -152,15 +152,6 @@ public partial class @UserActions : IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
-                },
-                {
-                    ""name"": ""Pause"",
-                    ""type"": ""Button"",
-                    ""id"": ""de0479c7-9a42-433c-82ed-e3ae49628490"",
-                    ""expectedControlType"": ""Button"",
-                    ""processors"": """",
-                    ""interactions"": """",
-                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -353,17 +344,6 @@ public partial class @UserActions : IInputActionCollection2, IDisposable
                 },
                 {
                     ""name"": """",
-                    ""id"": ""376f0194-375a-47f0-95fa-265565341706"",
-                    ""path"": ""<Keyboard>/escape"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Pause"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
                     ""id"": ""cba1f28e-a09d-4cb9-9d90-6b38a57e349c"",
                     ""path"": ""<Keyboard>/shift"",
                     ""interactions"": """",
@@ -394,7 +374,6 @@ public partial class @UserActions : IInputActionCollection2, IDisposable
         m_PlayerMap_WeaponWheel = m_PlayerMap.FindAction("WeaponWheel", throwIfNotFound: true);
         m_PlayerMap_Reload = m_PlayerMap.FindAction("Reload", throwIfNotFound: true);
         m_PlayerMap_Sprint = m_PlayerMap.FindAction("Sprint", throwIfNotFound: true);
-        m_PlayerMap_Pause = m_PlayerMap.FindAction("Pause", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -468,7 +447,6 @@ public partial class @UserActions : IInputActionCollection2, IDisposable
     private readonly InputAction m_PlayerMap_WeaponWheel;
     private readonly InputAction m_PlayerMap_Reload;
     private readonly InputAction m_PlayerMap_Sprint;
-    private readonly InputAction m_PlayerMap_Pause;
     public struct PlayerMapActions
     {
         private @UserActions m_Wrapper;
@@ -487,7 +465,6 @@ public partial class @UserActions : IInputActionCollection2, IDisposable
         public InputAction @WeaponWheel => m_Wrapper.m_PlayerMap_WeaponWheel;
         public InputAction @Reload => m_Wrapper.m_PlayerMap_Reload;
         public InputAction @Sprint => m_Wrapper.m_PlayerMap_Sprint;
-        public InputAction @Pause => m_Wrapper.m_PlayerMap_Pause;
         public InputActionMap Get() { return m_Wrapper.m_PlayerMap; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -539,9 +516,6 @@ public partial class @UserActions : IInputActionCollection2, IDisposable
                 @Sprint.started -= m_Wrapper.m_PlayerMapActionsCallbackInterface.OnSprint;
                 @Sprint.performed -= m_Wrapper.m_PlayerMapActionsCallbackInterface.OnSprint;
                 @Sprint.canceled -= m_Wrapper.m_PlayerMapActionsCallbackInterface.OnSprint;
-                @Pause.started -= m_Wrapper.m_PlayerMapActionsCallbackInterface.OnPause;
-                @Pause.performed -= m_Wrapper.m_PlayerMapActionsCallbackInterface.OnPause;
-                @Pause.canceled -= m_Wrapper.m_PlayerMapActionsCallbackInterface.OnPause;
             }
             m_Wrapper.m_PlayerMapActionsCallbackInterface = instance;
             if (instance != null)
@@ -588,9 +562,6 @@ public partial class @UserActions : IInputActionCollection2, IDisposable
                 @Sprint.started += instance.OnSprint;
                 @Sprint.performed += instance.OnSprint;
                 @Sprint.canceled += instance.OnSprint;
-                @Pause.started += instance.OnPause;
-                @Pause.performed += instance.OnPause;
-                @Pause.canceled += instance.OnPause;
             }
         }
     }
@@ -611,6 +582,5 @@ public partial class @UserActions : IInputActionCollection2, IDisposable
         void OnWeaponWheel(InputAction.CallbackContext context);
         void OnReload(InputAction.CallbackContext context);
         void OnSprint(InputAction.CallbackContext context);
-        void OnPause(InputAction.CallbackContext context);
     }
 }
