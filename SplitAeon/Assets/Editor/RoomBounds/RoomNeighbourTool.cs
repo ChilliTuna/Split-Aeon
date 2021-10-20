@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
+using UnityEditor.SceneManagement;
 
 public class RoomNeighbourTool : EditorWindow
 {
@@ -17,19 +18,24 @@ public class RoomNeighbourTool : EditorWindow
 
     private void OnGUI()
     {
-        m_first = RoomBoundsField(m_first, "First");
-        m_second = RoomBoundsField(m_second, "Second");
+        GetObjects();
 
         if (GUILayout.Button("Connect as Neighbours"))
         {
             m_first.neighbours.Add(m_second);
             m_second.neighbours.Add(m_first);
+
+            MarkRoomDirty(m_first);
+            MarkRoomDirty(m_second);
         }
 
         if (GUILayout.Button("Connect as TimePartners"))
         {
             m_first.timePartner = m_second;
             m_second.timePartner = m_first;
+
+            MarkRoomDirty(m_first);
+            MarkRoomDirty(m_second);
         }
 
         GUILayout.Label("");
@@ -61,6 +67,24 @@ public class RoomNeighbourTool : EditorWindow
                 Debug.LogWarning("Wrong connection detected.");
             }
         }
+    }
+
+    void GetObjects()
+    {
+        if(Selection.gameObjects.Length == 2)
+        {
+            RoomBounds first = Selection.gameObjects[0].GetComponent<RoomBounds>();
+            RoomBounds second = Selection.gameObjects[1].GetComponent<RoomBounds>();
+
+            if(first != null && second != null)
+            {
+                m_first = first;
+                m_second = second;
+            }
+        }
+
+        m_first = RoomBoundsField(m_first, "First");
+        m_second = RoomBoundsField(m_second, "Second");
     }
 
     RoomBounds RoomBoundsField(RoomBounds target, string label)
@@ -120,5 +144,11 @@ public class RoomNeighbourTool : EditorWindow
             return false;
         }
         return true;
+    }
+
+    void MarkRoomDirty(RoomBounds target)
+    {
+        EditorUtility.SetDirty(target);
+        EditorSceneManager.MarkSceneDirty(target.gameObject.scene);
     }
 }
