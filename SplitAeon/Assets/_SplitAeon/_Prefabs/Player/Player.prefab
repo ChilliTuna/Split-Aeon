@@ -30869,6 +30869,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   maxHealth: 100
   health: 0
+  damageMultiplier: 1
   enableHealing: 0
   timeBeforeHeal: 0
   healAmount: 0
@@ -30888,6 +30889,12 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+  beforeDamageEvents:
+    m_PersistentCalls:
+      m_Calls: []
+  afterDamageEvents:
+    m_PersistentCalls:
+      m_Calls: []
   destroyOnDeath: 0
   onDeathEvents:
     m_PersistentCalls:
@@ -41069,7 +41076,7 @@ MonoBehaviour:
     m_PressedTrigger: Pressed
     m_SelectedTrigger: Selected
     m_DisabledTrigger: Disabled
-  m_Interactable: 0
+  m_Interactable: 1
   m_TargetGraphic: {fileID: 5501611409362098622}
   m_OnClick:
     m_PersistentCalls:
@@ -47672,7 +47679,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   anim: {fileID: 4958446822159702914}
   isOpen: 0
-  weaponWheelButton: 301
 --- !u!95 &4958446822159702914
 Animator:
   serializedVersion: 3

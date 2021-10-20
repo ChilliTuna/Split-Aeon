@@ -46,6 +46,7 @@ public class Timewarp : MonoBehaviour
 
     private void OnEnable()
     {
+        userActions.PlayerMap.TimeTravel.LoadBinding(InputActions.TimeTravel);
         userActions.PlayerMap.TimeTravel.performed += ctx => TryWarp();
         userActions.PlayerMap.TimeTravel.Enable();
     }
