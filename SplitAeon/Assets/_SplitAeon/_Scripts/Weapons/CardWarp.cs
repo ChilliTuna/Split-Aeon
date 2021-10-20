@@ -12,6 +12,8 @@ public class CardWarp : MonoBehaviour
 
     private Timewarp tw;
 
+    private Rigidbody rb;
+
     private float timeUntilWarp = 0.1f;
 
     private CustomTimer timer;
@@ -23,6 +25,7 @@ public class CardWarp : MonoBehaviour
         timer.Start();
         velocity = new Vector3();
         tw = FindObjectOfType<Timewarp>();
+        rb = gameObject.GetComponent<Rigidbody>();
         thisCardInPast = Globals.isInPast;
     }
 
@@ -31,7 +34,7 @@ public class CardWarp : MonoBehaviour
     {
         if (hasWarped)
         {
-            if (Globals.isInPast & thisCardInPast)
+            if (Globals.isInPast == thisCardInPast)
             {
                 ResumeCard();
             }
@@ -87,17 +90,26 @@ public class CardWarp : MonoBehaviour
 
     public void WarpToOtherTime()
     {
-        thisCardInPast = !timePlayThisCard;
-        velocity = gameObject.GetComponent<Rigidbody>().velocity;
+        thisCardInPast = !Globals.isInPast;
+        velocity = rb.velocity;
         Vector3 temp = transform.position;
-        temp.y -= tw.offsetAmount;
+        if (Globals.isInPast)
+        {
+            temp.y -= tw.offsetAmount;
+        }
+        else
+        {
+            temp.y += tw.offsetAmount;
+        }
         transform.position = temp;
+        rb.isKinematic = true;
         hasWarped = true;
     }
 
     public void ResumeCard()
     {
+        rb.isKinematic = false;
         timePlayThisCard = true;
-        gameObject.GetComponent<Rigidbody>().velocity = velocity;
+        rb.velocity = velocity;
     }
 }
