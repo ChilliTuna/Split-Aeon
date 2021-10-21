@@ -3,18 +3,17 @@
 public class CardWarp : MonoBehaviour
 {
     private bool thisCardInPast = true;
-    private bool timePlayThisCard = false;
     private bool hasWarped = false;
 
     public int damage;
+
+    public float timeUntilWarp = 0.2f;
 
     private Vector3 velocity;
 
     private Timewarp tw;
 
     private Rigidbody rb;
-
-    private float timeUntilWarp = 0.1f;
 
     private CustomTimer timer;
 
@@ -104,12 +103,13 @@ public class CardWarp : MonoBehaviour
         transform.position = temp;
         rb.isKinematic = true;
         hasWarped = true;
+        gameObject.GetComponent<ObjectDecay>().enabled = false;
     }
 
     public void ResumeCard()
     {
         rb.isKinematic = false;
-        timePlayThisCard = true;
         rb.velocity = velocity;
+        gameObject.GetComponent<ObjectDecay>().enabled = true;
     }
 }
