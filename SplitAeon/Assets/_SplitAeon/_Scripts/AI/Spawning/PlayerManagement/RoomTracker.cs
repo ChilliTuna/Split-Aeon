@@ -78,7 +78,6 @@ public class RoomTracker : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        stateMachine.Update();
         index = stateMachine.currentIndex;
         if(currentRoom != null)
         {
@@ -89,6 +88,7 @@ public class RoomTracker : MonoBehaviour
             roomName = "null";
         }
         prevName = previousRoom.name;
+        stateMachine.Update();
     }
 
     public void SetState(int stateIndex)
