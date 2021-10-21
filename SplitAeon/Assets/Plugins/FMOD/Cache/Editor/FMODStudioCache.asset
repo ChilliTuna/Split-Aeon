@@ -176,7 +176,7 @@ MonoBehaviour:
   Path: Assets/_SplitAeon/_Audio/FMOD/Split_Aeon_Audio/Build/Desktop/Master.strings.bank
   Name: Master.strings
   StudioPath: bank:/Master.strings
-  lastModified: 637703366800000000
+  lastModified: 637703397825280114
   FileSizes:
   - Name: Desktop
     Value: 2060
@@ -496,7 +496,7 @@ MonoBehaviour:
   - {fileID: 7161701244944823664}
   StringsBanks:
   - {fileID: -7245008201947601739}
-  cacheTime: 637703366800000000
+  cacheTime: 637703397825470159
   cacheVersion: 9
 --- !u!114 &20459820397985339
 MonoBehaviour:
@@ -553,6 +553,32 @@ MonoBehaviour:
   MaxDistance: 20
   Length: 452
 --- !u!114 &603682523589338932
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fecb8ef7f94ca804a8ab72049b86782e, type: 3}
+  m_Name: parameter:/Footsteps/Speed Switch
+  m_EditorClassIdentifier: 
+  Name: Speed Switch
+  StudioPath: 
+  Min: 0
+  Max: 1
+  Default: 0
+  ID:
+    data1: 0
+    data2: 0
+  Type: 2
+  IsGlobal: 0
+  Labels:
+  - Walking
+  - Running
+  Exists: 1
+--- !u!114 &993870054099975492
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -659,6 +685,33 @@ MonoBehaviour:
   MinDistance: 1
   MaxDistance: 20
   Length: 500
+--- !u!114 &2733518320263200921
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fecb8ef7f94ca804a8ab72049b86782e, type: 3}
+  m_Name: parameter:/Footsteps/Material
+  m_EditorClassIdentifier: 
+  Name: Material
+  StudioPath: 
+  Min: 0
+  Max: 2
+  Default: 0
+  ID:
+    data1: 0
+    data2: 0
+  Type: 2
+  IsGlobal: 0
+  Labels:
+  - Marble
+  - Wood
+  - Carpet
+  Exists: 1
 --- !u!114 &2736396630888125423
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -898,8 +951,8 @@ MonoBehaviour:
   Is3D: 1
   IsOneShot: 1
   Parameters:
-  - {fileID: -7820668944995073151}
-  - {fileID: -2788303819811892002}
+  - {fileID: 993870054099975492}
+  - {fileID: 2733518320263200921}
   MinDistance: 1
   MaxDistance: 20
   Length: 0
@@ -945,7 +998,7 @@ MonoBehaviour:
   Path: Assets/_SplitAeon/_Audio/FMOD/Split_Aeon_Audio/Build/Desktop/Master.bank
   Name: Master
   StudioPath: bank:/Master
-  lastModified: 637703366800000000
+  lastModified: 637703397825470159
   FileSizes:
   - Name: Desktop
     Value: 1620768
