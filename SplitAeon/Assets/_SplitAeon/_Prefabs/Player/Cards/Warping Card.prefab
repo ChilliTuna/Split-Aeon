@@ -254,9 +254,9 @@ GameObject:
   - component: {fileID: 5895201786854204352}
   - component: {fileID: 4282142421764241805}
   - component: {fileID: 9076597470485516402}
-  - component: {fileID: 231794898293654701}
   - component: {fileID: 7418581079176676119}
   - component: {fileID: 7558053091025739817}
+  - component: {fileID: 5833331842688915105}
   m_Layer: 21
   m_Name: Warping Card
   m_TagString: Untagged
@@ -308,19 +308,6 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 0.137, y: 0.0045, z: 0.245}
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &231794898293654701
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5775641345952198457}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0a94f1f40b4318347aea0a326cc7d8f4, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  damage: 40
 --- !u!114 &7418581079176676119
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -432,6 +419,19 @@ TrailRenderer:
   m_MinVertexDistance: 0.1
   m_Autodestruct: 0
   m_Emitting: 1
+--- !u!114 &5833331842688915105
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5775641345952198457}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5eba9b3ac63f5b7449110b37a770c775, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  damage: 20
 --- !u!1 &7767223480615455962
 GameObject:
   m_ObjectHideFlags: 0
