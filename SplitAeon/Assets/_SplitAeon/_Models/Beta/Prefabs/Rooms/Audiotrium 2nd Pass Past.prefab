@@ -68,8 +68,8 @@ BoxCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 0.01, y: 0.01, z: 0.009999999}
-  m_Center: {x: 0, y: -0.005, z: 0}
+  m_Size: {x: 0.01, y: 0.0075991787, z: 0.009999999}
+  m_Center: {x: 0, y: -0.0037995894, z: 0}
 --- !u!1 &6065442775748488711
 GameObject:
   m_ObjectHideFlags: 0
@@ -1792,6 +1792,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   exitExpansion: 5
+  timePartner: {fileID: 0}
   neighbours: []
   enterRoom:
     m_PersistentCalls:
@@ -1799,6 +1800,7 @@ MonoBehaviour:
   exitRoom:
     m_PersistentCalls:
       m_Calls: []
+  safeSpawnOffset: {x: 0, y: 0, z: 0}
 --- !u!1 &6065442777520806818
 GameObject:
   m_ObjectHideFlags: 0
