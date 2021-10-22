@@ -1,10 +1,9 @@
-﻿using System.Collections;
+﻿using FMODUnity;
+using System.Collections;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.Rendering;
 using UnityEngine.Rendering.HighDefinition;
-
-using FMODUnity;
 
 public class Timewarp : MonoBehaviour
 {
@@ -47,6 +46,7 @@ public class Timewarp : MonoBehaviour
 
     private void OnEnable()
     {
+        userActions.PlayerMap.TimeTravel.LoadBinding(InputActions.TimeTravel);
         userActions.PlayerMap.TimeTravel.performed += ctx => TryWarp();
         userActions.PlayerMap.TimeTravel.Enable();
     }
@@ -139,6 +139,11 @@ public class Timewarp : MonoBehaviour
     {
         player.GetComponent<Player>().viewmodelAnimator.SetTrigger("Warp");
 
+        DoWarp();
+    }
+
+    public void DoWarp()
+    {
         if (isInPast)
         {
             controller.enabled = false;
@@ -152,18 +157,21 @@ public class Timewarp : MonoBehaviour
             controller.enabled = true;
         }
 
-        TriggerTeleportEffect();
-
         ChangeWorldInternal(!isInPast);
 
         timer.Start();
 
         onTimeWarp.Invoke();
+
+        TriggerTeleportEffect();
     }
 
     private void TriggerTeleportEffect()
     {
-        warpSound.Play();
+        if (warpSound)
+        {
+            warpSound.Play();
+        }
         cromAb.intensity.value = 1;
         bloom.intensity.value = 1;
         exposure.compensation.value = 5;

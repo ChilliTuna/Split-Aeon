@@ -13,19 +13,23 @@ MonoBehaviour:
   m_Name: Cultist AI Settings
   m_EditorClassIdentifier: 
   enemyType: 1
-  moveSpeed: 10
-  angularSpeed: 120
-  acceleration: 8
+  moveSpeed: 12
+  angularSpeed: 260
+  acceleration: 18
   health: 100
+  headMultiplier: 3
+  upperTorsoMultipler: 2
+  lowerTorsoMultiplier: 0.5
+  limbMultiplier: 0.8
   maxIdleTime: 2
   minIdleTime: 1
-  stoppingDistance: 0.5
-  aggresionRadius: 5.33
-  orbWalkRadius: 1
-  attackChargeRadius: 3.03
-  attackChargeMax: 1
+  stoppingDistance: 0.4
+  aggresionRadius: 5
+  orbWalkRadius: 0.5
+  attackChargeRadius: 3
+  attackChargeMax: 3
   attackChargeRate: 1
   attackDamage: 10
-  rotationLerpSpeed: 0.05
-  afterAttackLerpSpeed: 0.02
+  rotationLerpSpeed: 1
+  afterAttackLerpSpeed: 1
   bodyDecayTime: 5

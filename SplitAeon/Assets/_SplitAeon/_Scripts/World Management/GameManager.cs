@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections.Generic;
+using UnityEngine.Events;
 
 public class GameManager : MonoBehaviour
 {
@@ -17,6 +18,8 @@ public class GameManager : MonoBehaviour
     public AIManager pastAIManager;
     public AIManager futureAIManager;
 
+    public UnityEvent onStart;
+
     // Start is called before the first frame update
     private void Start()
     {
@@ -26,6 +29,8 @@ public class GameManager : MonoBehaviour
 
         // This must be in start as aiManager must init variables in awake
         futureAIManager.TogglePlayerInsideState();
+
+        onStart.Invoke();
     }
 
     public void WinGame()

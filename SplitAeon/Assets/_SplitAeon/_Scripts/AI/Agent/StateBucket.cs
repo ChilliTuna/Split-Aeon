@@ -269,6 +269,8 @@ namespace AIStates
 
             // Clean up attack type
             agent.attack.AttackExit();
+
+            agent.navAgent.nextPosition = agent.transform.position;
         }
     }
 
