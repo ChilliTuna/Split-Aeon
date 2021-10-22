@@ -63,6 +63,11 @@ public class WeaponManager : MonoBehaviour
         EnableInputs();
     }
 
+    private void OnDisable()
+    {
+        DisableInputs();
+    }
+
     void Start()
     {
         weaponIndex = 3;

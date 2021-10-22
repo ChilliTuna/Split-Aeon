@@ -86,6 +86,11 @@ public static class RoomPlacerSceneManager
 
     public static void MarkDirty()
     {
+        if(Application.isPlaying)
+        {
+            return;
+        }
+
         EditorUtility.SetDirty(m_roomPlacer);
         EditorSceneManager.MarkSceneDirty(m_roomPlacer.gameObject.scene);
     }
@@ -177,23 +182,34 @@ public static class RoomPlacerSceneManager
         m_roomDataListArray[listIndex].TrySetTrackers();
     }
 
-    public static void SmartAlignRooms(int listIndex, RoomPlacer.GameObjectPairList list)
+    public static bool SmartAlignRooms(int listIndex, RoomPlacer.GameObjectPairList list)
     {
+
         var dataList = m_roomDataListArray[listIndex];
         if(list.isRoomItemList)
         {
+            bool hasChanged = false;
             foreach (var pairData in dataList.roomDataList)
             {
                 if(pairData.roomPair.IsFullyAssigned())
                 {
+
                     Vector3 itemPrevOffset = pairData.futureRoomValues.prevPosition - pairData.pastRoomValues.prevPosition;
                     pairData.roomPair.AlignItemToRoom(itemPrevOffset);
+
+                    // detect if there was a change
+                    if(pairData.futureRoomValues.prevValues.DetectChange(pairData.futureRoomValues.m_currentTransform))
+                    {
+                        Debug.Log("HasChanged");
+                        hasChanged = true;
+                    }
                 }
             }
+            return hasChanged;
         }
         else
         {
-            list.AlignAllRoomPairsToPast();
+            return list.AlignAllRoomPairsToPast();
         }
     }
 }

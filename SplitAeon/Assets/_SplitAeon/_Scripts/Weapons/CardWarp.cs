@@ -1,20 +1,29 @@
-﻿using UnityEngine;
+﻿using System.Collections;
+using UnityEngine;
+using UnityEngine.VFX;
 
 public class CardWarp : MonoBehaviour
 {
     private bool thisCardInPast = true;
-    private bool timePlayThisCard = false;
     private bool hasWarped = false;
 
     public int damage;
+
+    public float timeUntilWarp = 0.2f;
+
+    public GameObject particleEffect;
+
+    public float particleSpawnTime = 0.01f;
+
+    private GameObject particleInstance;
+
+    private bool particleHasSpawned = false;
 
     private Vector3 velocity;
 
     private Timewarp tw;
 
     private Rigidbody rb;
-
-    private float timeUntilWarp = 0.1f;
 
     private CustomTimer timer;
 
@@ -27,6 +36,7 @@ public class CardWarp : MonoBehaviour
         tw = FindObjectOfType<Timewarp>();
         rb = gameObject.GetComponent<Rigidbody>();
         thisCardInPast = Globals.isInPast;
+        StartCoroutine(SpawnParticleEffect());
     }
 
     // Update is called once per frame
@@ -47,6 +57,11 @@ public class CardWarp : MonoBehaviour
                 WarpToOtherTime();
             }
         }
+    }
+
+    private void OnDisable()
+    {
+        DestroyParticleEffect();
     }
 
     #region Generic card stuff
@@ -104,12 +119,32 @@ public class CardWarp : MonoBehaviour
         transform.position = temp;
         rb.isKinematic = true;
         hasWarped = true;
+        gameObject.GetComponent<ObjectDecay>().enabled = false;
     }
 
     public void ResumeCard()
     {
         rb.isKinematic = false;
-        timePlayThisCard = true;
         rb.velocity = velocity;
+        gameObject.GetComponent<ObjectDecay>().enabled = true;
+    }
+
+    private IEnumerator SpawnParticleEffect()
+    {
+        yield return new WaitForFixedUpdate();
+        if (!particleHasSpawned)
+        {
+            Vector3 particleSpawnPos = gameObject.transform.position;
+            particleSpawnPos += rb.velocity * timeUntilWarp;
+            particleInstance = Instantiate(particleEffect, particleSpawnPos, Quaternion.identity);
+            particleInstance.GetComponent<VisualEffect>().Play();
+            particleHasSpawned = true;
+        }
+        yield return (0);
+    }
+
+    private void DestroyParticleEffect()
+    {
+        Destroy(particleInstance);
     }
 }

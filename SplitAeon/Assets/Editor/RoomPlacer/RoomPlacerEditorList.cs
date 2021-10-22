@@ -88,8 +88,8 @@ public class RoomPlacerEditorList<PairDataType> where PairDataType : TransformPa
 
 public class TransformTracker
 {
-    Transform m_currentTransform;
-    TransformValues prevValues;
+    public Transform m_currentTransform;
+    public TransformValues prevValues;
 
     public Vector3 prevPosition { get { return prevValues.position; } }
     public Quaternion prevRotation { get { return prevValues.rotation; } }
@@ -353,28 +353,5 @@ public class IValidateRoomItemPair : IValidateTransformPairBase<RoomPairData>
     protected override void SetInitalTransform(RoomPlacer roomPlacer)
     {
         
-    }
-}
-
-struct TransformValues
-{
-    public Vector3 position;
-    public Quaternion rotation;
-    public Vector3 scale;
-
-    public TransformValues(Transform transform)
-    {
-        if (transform != null)
-        {
-            position = transform.position;
-            rotation = transform.rotation;
-            scale = transform.localScale;
-        }
-        else
-        {
-            position = Vector3.zero;
-            rotation = Quaternion.identity;
-            scale = Vector3.zero;
-        }
     }
 }
