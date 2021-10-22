@@ -57,11 +57,18 @@ public class RoomPlacerEditor : Editor
     {
         if (m_prevOffset != roomPlacer.offset)
         {
+            bool haschanged = false;
             for(int i = 0; i < roomPlacer.roomPairsList.Count; i++)
             {
-                RoomPlacerSceneManager.SmartAlignRooms(i, roomPlacer.roomPairsList[i]);
+                if(RoomPlacerSceneManager.SmartAlignRooms(i, roomPlacer.roomPairsList[i]))
+                {
+                    haschanged = true;
+                }
             }
-            RoomPlacerSceneManager.MarkDirty();
+            if(haschanged)
+            {
+                RoomPlacerSceneManager.MarkDirty();
+            }
         }
         m_prevOffset = roomPlacer.offset;
     }
@@ -73,6 +80,7 @@ public class RoomPlacerEditor : Editor
             // Add list to room placer and manager
             roomPlacer.CreateNewList();
             RoomPlacerSceneManager.AddNewList(roomPlacer);
+            RoomPlacerSceneManager.MarkDirty();
         }
 
         if(m_shouldRemoveList)
@@ -80,6 +88,7 @@ public class RoomPlacerEditor : Editor
             // Add list to room placer and manager
             roomPlacer.RemoveLastList();
             RoomPlacerSceneManager.RemoveBottomList();
+            RoomPlacerSceneManager.MarkDirty();
         }
     }
 
@@ -179,6 +188,7 @@ public class RoomPlacerEditor : Editor
             {
                 RoomPlacerSceneManager.RemoveRoomPairData(roomPair, listIndex);
                 list.roomPairs.Remove(roomPair);
+                RoomPlacerSceneManager.MarkDirty();
             }
 
             EditorGUILayout.EndHorizontal();
@@ -274,7 +284,7 @@ public class RoomPlacerEditor : Editor
             var list = roomPlacer.roomPairsList[listIndex];
             list.roomPairs.Add(newRoom);
             RoomPlacerSceneManager.AddRoomPairData(newRoom, listIndex, list.isRoomItemList);
-
+            RoomPlacerSceneManager.MarkDirty();
         }
         if (GUILayout.Button("Edit Room Pairs"))
         {

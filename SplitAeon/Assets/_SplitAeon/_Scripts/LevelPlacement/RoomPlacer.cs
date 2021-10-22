@@ -24,41 +24,22 @@ public class RoomPlacer : MonoBehaviour
             roomPairs = new List<GameObjectPair>();
         }
 
-        public void SmartAlignAllRooms()
+        public bool AlignAllRoomPairsToPast()
         {
-            if(!isRoomItemList)
+            bool hasChanged = false;
+            foreach (GameObjectPair roomPair in roomPairs)
             {
-                foreach (GameObjectPair roomPair in roomPairs)
+                if(AlignRoomPairToPast(roomPair))
                 {
-                    AlignRoomPairToPast(roomPair);
+                    hasChanged = true;
                 }
             }
+            return hasChanged;
         }
 
-        public void AlignAllRoomPairsToPast()
+        public bool AlignRoomPairToPast(GameObjectPair roomPair)
         {
-            foreach (GameObjectPair roomPair in roomPairs)
-            {
-                AlignRoomPairToPast(roomPair);
-            }
-        }
-
-        public void AlignAllRoomPairsToFuture()
-        {
-            foreach (GameObjectPair roomPair in roomPairs)
-            {
-                AlignRoomPairToFuture(roomPair);
-            }
-        }
-
-        public void AlignRoomPairToPast(GameObjectPair roomPair)
-        {
-            roomPair.AlignToPast(owner.offset);
-        }
-
-        public void AlignRoomPairToFuture(GameObjectPair roomPair)
-        {
-            roomPair.AlignToFuture(owner.offset);
+            return roomPair.AlignToPast(owner.offset);
         }
     }
 
@@ -69,23 +50,35 @@ public class RoomPlacer : MonoBehaviour
         public GameObject pastRoom;
         public GameObject futureRoom;
 
-        public void AlignToPast(Vector3 offset)
+        public bool AlignToPast(Vector3 offset)
         {
             if(IsFullyAssigned())
             {
-                AlignTransforms(pastRoom.transform, futureRoom.transform, offset);
+                return AlignTransforms(pastRoom.transform, futureRoom.transform, offset);
+            }
+            else
+            {
+                return false;
             }
         }
 
-        public void AlignItemToRoom(Vector3 roomOffset)
+        public bool AlignItemToRoom(Vector3 roomOffset)
         {
             if(IsFullyAssigned())
             {
                 Transform item = futureRoom.transform;
                 Transform room = pastRoom.transform;
 
+                var prevItem = TransformValues.CreateNew(item);
+
                 item.transform.position = room.transform.position + roomOffset;
                 item.transform.rotation = room.transform.rotation;
+
+                return prevItem.DetectChange(item);
+            }
+            else
+            {
+                return false;
             }
         }
 
@@ -97,11 +90,15 @@ public class RoomPlacer : MonoBehaviour
             }
         }
 
-        static void AlignTransforms(Transform origin, Transform target, Vector3 offset)
+        static bool AlignTransforms(Transform origin, Transform target, Vector3 offset)
         {
+            var prevTarget = TransformValues.CreateNew(target);
+
             target.transform.position = origin.transform.position + offset;
             target.transform.rotation = origin.transform.rotation;
             target.transform.localScale = origin.transform.localScale;
+
+            return prevTarget.DetectChange(target);
         }
 
         public bool IsFullyAssigned()
@@ -126,5 +123,65 @@ public class RoomPlacer : MonoBehaviour
         {
             Destroy(this);
         }
+    }
+}
+
+public struct TransformValues
+{
+    public Vector3 position;
+    public Quaternion rotation;
+    public Vector3 scale;
+
+    static TransformValues _identity;
+    public static TransformValues identity { get { return _identity; } }
+
+    public TransformValues(Transform transform)
+    {
+        if (transform != null)
+        {
+            position = transform.position;
+            rotation = transform.rotation;
+            scale = transform.localScale;
+        }
+        else
+        {
+            position = Vector3.zero;
+            rotation = Quaternion.identity;
+            scale = Vector3.zero;
+        }
+    }
+
+    static TransformValues()
+    {
+        _identity = new TransformValues();
+    }
+
+    public bool DetectChange(TransformValues target)
+    {
+        return DetectChange(this, target);
+    }
+
+    public bool DetectChange(Transform target)
+    {
+        return DetectChange(this, CreateNew(target));
+    }
+
+    public static TransformValues CreateNew(Vector3 position, Quaternion rotation, Vector3 scale)
+    {
+        TransformValues result = TransformValues._identity;
+        result.position = position;
+        result.rotation = rotation;
+        result.scale = scale;
+        return result;
+    }
+
+    public static TransformValues CreateNew(Transform target)
+    {
+        return CreateNew(target.position, target.rotation, target.lossyScale);
+    }
+
+    public static bool DetectChange(TransformValues lhs, TransformValues rhs)
+    {
+        return lhs.position != rhs.position || lhs.rotation != rhs.rotation || lhs.scale != rhs.scale;
     }
 }
