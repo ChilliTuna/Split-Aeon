@@ -30,14 +30,13 @@ public class MenuTools : MonoBehaviour
         }
         else
         {
-            SetIsPaused(false);
             pauseMenu.GetComponent<PauseMenuManager>().ClosePauseMenu();
         }
     }
 
     public static void SetIsPaused(bool shouldBePaused)
     {
-        Globals.isGamePaused = !shouldBePaused;
+        Globals.isGamePaused = shouldBePaused;
         if (shouldBePaused)
         {
             Cursor.lockState = CursorLockMode.None;
