@@ -36,8 +36,10 @@ public class WarpChecker : MonoBehaviour
 
     public bool DoWarpCheck()
     {
+        CheckForNullReferences();
         if (hasSecondary)
         {
+            secondaryChecker.CheckForNullReferences();
             if (secondaryChecker.collisionCount <= 0)
             {
                 return (secondaryChecker.collisionCount <= 1);
@@ -60,6 +62,22 @@ public class WarpChecker : MonoBehaviour
         if (hasSecondary)
         {
             secondaryChecker.GetComponent<CapsuleCollider>().enabled = true;
+        }
+    }
+
+    void CheckForNullReferences()
+    {
+        if (collisionCount > 0)
+        {
+            for (int i = 0; i < collidingObjects.Count; i++)
+            {
+                if (collidingObjects[i] == null)
+                {
+                    collidingObjects.RemoveAt(i);
+                    collisionCount--;
+                    i--;
+                }
+            }
         }
     }
 }
