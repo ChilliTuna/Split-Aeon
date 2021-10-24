@@ -54,7 +54,18 @@ public class WeaponManager : MonoBehaviour
 
     private void OnEnable()
     {
+        userActions.PlayerMap.Shoot.LoadBinding(InputActions.Shoot);
+        userActions.PlayerMap.ChangeToMelee.LoadBinding(InputActions.ChangeToMelee);
+        userActions.PlayerMap.ChangeToRevolver.LoadBinding(InputActions.ChangeToRevolver);
+        userActions.PlayerMap.ChangeToThompson.LoadBinding(InputActions.ChangeToThompson);
+        userActions.PlayerMap.ChangeToShotgun.LoadBinding(InputActions.ChangeToShotgun);
+        userActions.PlayerMap.Reload.LoadBinding(InputActions.Reload);
         EnableInputs();
+    }
+
+    private void OnDisable()
+    {
+        DisableInputs();
     }
 
     void Start()

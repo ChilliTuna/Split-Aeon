@@ -345,8 +345,26 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a06ca688de3f6574e897da72dcedaeb7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  isInDebug: 0
   presentZoneManager: {fileID: 7154132034173345725}
   pastZoneManager: {fileID: 7154132034666967276}
+  pastAIManager: {fileID: 0}
+  futureAIManager: {fileID: 0}
+  onStart:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 0}
+        m_TargetAssemblyTypeName: 
+        m_MethodName: 
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: 
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &7154132034257091902
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -360,17 +378,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   volume: {fileID: 7393722739517978096}
-  controller: {fileID: 0}
   player: {fileID: 0}
-  clips:
-  - {fileID: 8300000, guid: a8d39433212f0b94a8abdf290c568ce5, type: 3}
-  - {fileID: 8300000, guid: ac8759647911997488ba6deb04d82489, type: 3}
-  - {fileID: 8300000, guid: 44a933cb4f3f95e43883ad92694e20e6, type: 3}
-  source: {fileID: 0}
+  warpSound: {fileID: 0}
   offsetAmount: 100
   shouldDoWarpChecking: 1
   warpingBlockedText: {fileID: 4697747538201120285}
   warpWarningImage: {fileID: 6591957971937609561}
+  warpDelay: 1
   onTimeWarp:
     m_PersistentCalls:
       m_Calls:
@@ -411,7 +425,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isGlobal: 1
-  priority: 2
+  priority: 5
   blendDistance: 0
   weight: 1
   sharedProfile: {fileID: 11400000, guid: 96862928f8b68f84c896b21d4e90a94d, type: 2}
@@ -427,7 +441,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 51e2a80c8e375344b9ea7615ef707d7d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  aiManager: {fileID: 0}
   defaultSilhouette: {fileID: 1420187762586455130, guid: f8628b41fa3230343bbeced7bf504d24, type: 3}
 --- !u!1 &7154132034666967275
 GameObject:
