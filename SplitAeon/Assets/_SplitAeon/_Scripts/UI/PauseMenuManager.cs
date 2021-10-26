@@ -9,8 +9,7 @@ public class PauseMenuManager : MonoBehaviour
 
     public void ClosePauseMenu()
     {
-        Time.timeScale = 1;
-        Cursor.lockState = CursorLockMode.Locked;
+        MenuTools.SetIsPaused(false);
         if (optionsMenu.activeInHierarchy)
         {
             mainPauseMenu.SetActive(true);
