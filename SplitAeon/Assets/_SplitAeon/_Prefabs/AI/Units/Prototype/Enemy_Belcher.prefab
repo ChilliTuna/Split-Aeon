@@ -2227,6 +2227,7 @@ GameObject:
   - component: {fileID: 8920362174382616852}
   - component: {fileID: -5281531638128700853}
   - component: {fileID: 8920362174382616846}
+  - component: {fileID: 2420130184478935471}
   m_Layer: 25
   m_Name: Enemy_Belcher
   m_TagString: Enemy
@@ -2326,6 +2327,8 @@ MonoBehaviour:
   upperTorsoColliders: []
   lowerTorsoColliders: []
   limbColliders: []
+  postVaultState: 0
+  vaultSpeed: 0
   debugCurrentState: 0
   debugNeighbourCount: 0
   patrolNodes: []
@@ -2370,6 +2373,10 @@ MonoBehaviour:
   maxHealth: 30
   health: 0
   damageMultiplier: 1
+  enableHealing: 0
+  timeBeforeHeal: 0
+  healAmount: 0
+  healTick: 0
   onHitEvents:
     m_PersistentCalls:
       m_Calls: []
@@ -2421,6 +2428,21 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   projectilePrefab: {fileID: 1784283211449068260, guid: 03109e6719265be41a153ffa952dfa88, type: 3}
   projectileOrigin: {fileID: 3039179505967673353}
+--- !u!114 &2420130184478935471
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8577694772799273008}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4d11614345353324e95476c4e0879381, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  player: {fileID: 0}
+  pushStrength: 5
+  pushSmoothTime: 0.1
 --- !u!1 &8778743112063813415
 GameObject:
   m_ObjectHideFlags: 0

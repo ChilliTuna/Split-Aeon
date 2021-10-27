@@ -15,6 +15,10 @@ public class Player : MonoBehaviour
     public float walkSpeed;
     public float sprintSpeed;
 
+    public float smoothMovetime = 0.1f;
+    Vector3 m_playerCurrentMoveVelocity = Vector3.zero;
+    Vector3 m_smoothMove = Vector3.zero;
+
     #endregion Movement
 
     #region Jumping
@@ -178,11 +182,14 @@ public class Player : MonoBehaviour
             move /= move.magnitude;
         }
 
-        controller.Move(move * movementSpeed * Time.deltaTime);
-
         playerVelocity.y += gravity * Time.deltaTime;
+        Vector3 moveDelta = move * movementSpeed * Time.deltaTime;
 
-        controller.Move(playerVelocity * Time.deltaTime);
+        m_playerCurrentMoveVelocity = Vector3.SmoothDamp(m_playerCurrentMoveVelocity, moveDelta, ref m_smoothMove, smoothMovetime);
+
+        Vector3 finalMoveDelta = m_playerCurrentMoveVelocity + playerVelocity * Time.deltaTime;
+
+        controller.Move(finalMoveDelta);
 
         #endregion Player Movement
 
@@ -352,4 +359,9 @@ public class Player : MonoBehaviour
     }
 
     #endregion Input Functions
+
+    public void PushPlayer(Vector3 vector, float pushSmoothTime)
+    {
+        m_playerCurrentMoveVelocity = Vector3.SmoothDamp(m_playerCurrentMoveVelocity, vector, ref m_smoothMove, pushSmoothTime);
+    }
 }
