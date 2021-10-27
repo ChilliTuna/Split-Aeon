@@ -16,11 +16,15 @@ public class AIAgent : MonoBehaviour
 
     bool m_isInitialised = false;
     StateMachine<AIAgent> m_stateMachine;
+    StateIndex m_previousState;
+
     NavMeshAgent m_navAgent;
     Ragdoll m_ragdoll;
     Health m_health;
 
     float m_distToPlayerSquared;
+    float m_currentSpeed = 0.0f;
+    float m_previousSpeed = 0.0f;
 
     List<Neighbour> m_neighbours = new List<Neighbour>();
 
@@ -36,7 +40,12 @@ public class AIAgent : MonoBehaviour
     public Health health { get { return m_health; } }
     public List<Neighbour> neighbours { get { return m_neighbours; } }
 
-    public float currentSpeed { get { return m_navAgent.velocity.magnitude; } }
+    public float currentSpeed { get { return m_currentSpeed; } }
+    public float previousSpeed { get { return m_previousSpeed; } }
+
+    public StateIndex previousState { get { return m_previousState; } }
+    public StateIndex postVaultState;
+    public float vaultSpeed = 0.0f;
 
     // Debug
     [Header("Debugging")]
@@ -47,7 +56,6 @@ public class AIAgent : MonoBehaviour
     
     public List<Transform> patrolNodes;
     public int currentPatrolIndex = 0;
-
 
     // Start is called before the first frame update
     void Start()
@@ -60,7 +68,9 @@ public class AIAgent : MonoBehaviour
     {
         m_stateMachine.Update();
 
-        anim.SetFloat("moveSpeed", currentSpeed / navAgent.speed);
+        m_currentSpeed = m_navAgent.velocity.magnitude;
+        m_previousSpeed = m_currentSpeed;
+        anim.SetFloat("moveSpeed", m_currentSpeed / navAgent.speed);
 
         // Debugging
         debugCurrentState = (StateIndex)m_stateMachine.currentIndex;
@@ -82,6 +92,8 @@ public class AIAgent : MonoBehaviour
         m_isInitialised = true;
 
         m_navAgent = GetComponent<NavMeshAgent>();
+        m_navAgent.autoTraverseOffMeshLink = false;
+
         m_ragdoll = GetComponent<Ragdoll>();
         m_health = GetComponent<Health>();
 
@@ -92,6 +104,7 @@ public class AIAgent : MonoBehaviour
         StateBucket.SetUpStateMachine(m_stateMachine);
 
         m_stateMachine.Init();
+        m_previousState = (StateIndex)m_stateMachine.currentIndex;
 
         m_distToPlayerSquared = (playerTransform.position - transform.position).sqrMagnitude;
 
@@ -102,6 +115,7 @@ public class AIAgent : MonoBehaviour
     public void ChangeState(int stateIndex)
     {
         m_stateMachine.ChangeState(stateIndex);
+        m_previousState = (StateIndex)m_stateMachine.currentIndex;
     }
 
     public void ChangeState(StateIndex stateIndex)
@@ -179,6 +193,32 @@ public class AIAgent : MonoBehaviour
     public void DisablePoolObject()
     {
         attachedPoolObject.Disable();
+    }
+
+    public void CompleteVault()
+    {
+        ChangeState(StateIndex.endVault);
+    }
+
+    public bool VaultGroundCheck(float verticalVelocity)
+    {
+        Vector3 rayStart = transform.position;
+        rayStart.y += settings.vaultgroundCheckOffset;
+
+        if (Physics.Raycast(rayStart, Vector3.down, out RaycastHit hitinfo, verticalVelocity + settings.vaultgroundCheckOffset, settings.groundCheckLayer, QueryTriggerInteraction.Ignore))
+        {
+            // hit something
+            return true;
+        }
+
+        return false;
+    }
+
+    public void CompleteOffMeshLink(string animTrigger)
+    {
+        navAgent.CompleteOffMeshLink();
+        ChangeState(postVaultState);
+        anim.SetTrigger(animTrigger);
     }
 
     public void Seek()

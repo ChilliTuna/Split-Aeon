@@ -13,7 +13,7 @@ public class Timewarp : MonoBehaviour
     private Bloom bloom;
     private Exposure exposure;
 
-    private bool isInPast = true;
+    
 
     private CharacterController controller;
     public GameObject player;
@@ -92,7 +92,7 @@ public class Timewarp : MonoBehaviour
             bloom.intensity.value -= 2 * Time.deltaTime;
         }
 
-        if (isInPast)
+        if (Globals.isInPast)
         {
             ToggleWarpWarning(!toFutureWarpChecker.DoWarpCheck());
         }
@@ -115,7 +115,7 @@ public class Timewarp : MonoBehaviour
         }
         if (shouldDoWarpChecking)
         {
-            if (isInPast)
+            if (Globals.isInPast)
             {
                 if (!toFutureWarpChecker.DoWarpCheck())
                 {
@@ -144,7 +144,7 @@ public class Timewarp : MonoBehaviour
 
     public void DoWarp()
     {
-        if (isInPast)
+        if (Globals.isInPast)
         {
             controller.enabled = false;
             player.transform.position = new Vector3(player.transform.position.x, player.transform.position.y - offsetAmount, player.transform.position.z);
@@ -157,7 +157,7 @@ public class Timewarp : MonoBehaviour
             controller.enabled = true;
         }
 
-        ChangeWorldInternal(!isInPast);
+        ChangeWorldInternal(!Globals.isInPast);
 
         timer.Start();
 
@@ -177,10 +177,10 @@ public class Timewarp : MonoBehaviour
         exposure.compensation.value = 5;
     }
 
-    private void ChangeWorldInternal(bool newIsInPresent)
+    private void ChangeWorldInternal(bool newIsInPast)
     {
-        isInPast = newIsInPresent;
-        Globals.isInPast = newIsInPresent;
+       
+        Globals.isInPast = newIsInPast;
     }
 
     public IEnumerator ToggleGameObjectForTime(GameObject gameObject, float period)

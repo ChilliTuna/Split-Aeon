@@ -42,11 +42,11 @@ public class CheckpointManager : MonoBehaviour
     {
         if (Globals.isInDebug)
         {
-            if (Input.GetKeyDown(KeyCode.End))
+            if (Input.GetKeyDown(KeyCode.Y))
             {
                 Respawn();
             }
-            else if (Input.GetKeyDown(KeyCode.Home))
+            else if (Input.GetKeyDown(KeyCode.U))
             {
                 SetCheckpoint();
             }
