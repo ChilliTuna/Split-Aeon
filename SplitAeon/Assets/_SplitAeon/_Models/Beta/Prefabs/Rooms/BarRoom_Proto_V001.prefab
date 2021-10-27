@@ -193,6 +193,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   exitExpansion: 5
+  timePartner: {fileID: 0}
   neighbours: []
   enterRoom:
     m_PersistentCalls:
@@ -200,6 +201,7 @@ MonoBehaviour:
   exitRoom:
     m_PersistentCalls:
       m_Calls: []
+  safeSpawnOffset: {x: 0, y: 0, z: 0}
 --- !u!1 &3925101749323358913
 GameObject:
   m_ObjectHideFlags: 0
@@ -718,7 +720,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5474971779715588868}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 6.750001, y: 2.5, z: 1.000001}
+  m_LocalPosition: {x: 6.7500024, y: 2.5, z: 1.0000043}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 5057387768049882331}
@@ -1163,8 +1165,8 @@ Light:
   m_Type: 2
   m_Shape: 0
   m_Color: {r: 1, g: 0.89505595, b: 0.8537736, a: 1}
-  m_Intensity: 0.0010435858
-  m_Range: 4.6
+  m_Intensity: 0.05217929
+  m_Range: 6.738613
   m_SpotAngle: 30
   m_InnerSpotAngle: 21.80208
   m_CookieSize: 10
@@ -1202,7 +1204,7 @@ Light:
     serializedVersion: 2
     m_Bits: 4294967295
   m_RenderingLayerMask: 1
-  m_Lightmapping: 4
+  m_Lightmapping: 2
   m_LightShadowCasterMode: 2
   m_AreaSize: {x: 15.281478, y: 19.959818}
   m_BounceIntensity: 1
@@ -1232,7 +1234,7 @@ MonoBehaviour:
   m_PointlightHDType: 1
   m_SpotLightShape: 0
   m_AreaLightShape: 0
-  m_Intensity: 1
+  m_Intensity: 50
   m_EnableSpotReflector: 0
   m_LuxAtDistance: 1
   m_InnerSpotPercent: 0
@@ -1349,7 +1351,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7871588044502632135}
   m_LocalRotation: {x: 0.7071057, y: -0, z: -0, w: 0.707108}
-  m_LocalPosition: {x: 6.86, y: 4.331, z: 1}
+  m_LocalPosition: {x: 6.86, y: 4.36, z: 1}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 2276596667044335480}
@@ -1367,7 +1369,7 @@ Light:
   m_Type: 2
   m_Shape: 0
   m_Color: {r: 1, g: 0.89505595, b: 0.8537736, a: 1}
-  m_Intensity: 0.004335535
+  m_Intensity: 0.21677676
   m_Range: 4.6
   m_SpotAngle: 30
   m_InnerSpotAngle: 21.80208
@@ -1406,7 +1408,7 @@ Light:
     serializedVersion: 2
     m_Bits: 4294967295
   m_RenderingLayerMask: 1
-  m_Lightmapping: 4
+  m_Lightmapping: 2
   m_LightShadowCasterMode: 2
   m_AreaSize: {x: 3.6783311, y: 19.959818}
   m_BounceIntensity: 1
@@ -1436,7 +1438,7 @@ MonoBehaviour:
   m_PointlightHDType: 1
   m_SpotLightShape: 0
   m_AreaLightShape: 0
-  m_Intensity: 1
+  m_Intensity: 50
   m_EnableSpotReflector: 0
   m_LuxAtDistance: 1
   m_InnerSpotPercent: 0
@@ -1585,7 +1587,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8639193719769306627}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -3.2500005, y: 2.5, z: 0.9999995}
+  m_LocalPosition: {x: -3.2500029, y: 2.5, z: 0.99999714}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 5057387768049882331}
