@@ -110,7 +110,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 984448210937666417}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -23.834549, y: 24.7, z: 22.931244}
+  m_LocalPosition: {x: -35.33455, y: 17.2, z: 22.431244}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 984448211215050398}
@@ -135,8 +135,8 @@ BoxCollider:
   m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 1.8221512, y: 1, z: 1.9973373}
-  m_Center: {x: -0.044929504, y: 0, z: 0.16926956}
+  m_Size: {x: 0.34143066, y: 2.5332441, z: 1.9973373}
+  m_Center: {x: -0.30456543, y: 0.23337793, z: 0.16926956}
 --- !u!114 &984448210937666415
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -334,7 +334,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &984448211038094718
 Transform:
   m_ObjectHideFlags: 0
@@ -342,13 +342,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 984448211038094660}
-  m_LocalRotation: {x: -0.6673645, y: -0.7142732, z: 0.15366884, w: 0.14430666}
-  m_LocalPosition: {x: -18.58455, y: 16.74, z: -16.446}
-  m_LocalScale: {x: 1.4433, y: 1.4433, z: 1.4433}
+  m_LocalRotation: {x: -0.59557384, y: -0.6432015, z: 0.33805484, w: 0.34249458}
+  m_LocalPosition: {x: -6.781, y: 12.249, z: -41.92}
+  m_LocalScale: {x: 2.5, y: 2.5, z: 2.5}
   m_Children: []
   m_Father: {fileID: 984448211215050398}
   m_RootOrder: 2
-  m_LocalEulerAnglesHint: {x: 1.542, y: -155.707, z: 86.443}
+  m_LocalEulerAnglesHint: {x: 1.542, y: -122.482, z: 86.443}
 --- !u!33 &984448211038094719
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -376,7 +376,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 73c176f402d2c2f4d929aa5da7585d17, type: 2}
+  - {fileID: 2100000, guid: f94fec10c3fd9674cbe62af315236512, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -409,8 +409,8 @@ BoxCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 1, y: 1, z: 1}
-  m_Center: {x: 0, y: 0, z: 0}
+  m_Size: {x: 0.15471794, y: 0.31645072, z: 0.34890434}
+  m_Center: {x: -0.0010338901, y: 0.0003424586, z: 0.11442208}
 --- !u!114 &984448211038094659
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -776,30 +776,6 @@ MonoBehaviour:
             m_StringArgument: 
             m_BoolArgument: 0
           m_CallState: 2
-        - m_Target: {fileID: 0}
-          m_TargetAssemblyTypeName: ObjectiveAsset, Assembly-CSharp
-          m_MethodName: DisableAsset
-          m_Mode: 1
-          m_Arguments:
-            m_ObjectArgument: {fileID: 0}
-            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-            m_IntArgument: 0
-            m_FloatArgument: 0
-            m_StringArgument: 
-            m_BoolArgument: 0
-          m_CallState: 2
-        - m_Target: {fileID: 0}
-          m_TargetAssemblyTypeName: ObjectiveAsset, Assembly-CSharp
-          m_MethodName: EnableAsset
-          m_Mode: 1
-          m_Arguments:
-            m_ObjectArgument: {fileID: 0}
-            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-            m_IntArgument: 0
-            m_FloatArgument: 0
-            m_StringArgument: 
-            m_BoolArgument: 0
-          m_CallState: 2
   - name: Investigate Bar Room
     description: Investigate the Bar Room
     objectiveLocation: {fileID: 984448210937666416}
@@ -841,31 +817,7 @@ MonoBehaviour:
           m_CallState: 2
     onCompleteObjective:
       m_PersistentCalls:
-        m_Calls:
-        - m_Target: {fileID: 0}
-          m_TargetAssemblyTypeName: ObjectiveAsset, Assembly-CSharp
-          m_MethodName: DisableAsset
-          m_Mode: 1
-          m_Arguments:
-            m_ObjectArgument: {fileID: 0}
-            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-            m_IntArgument: 0
-            m_FloatArgument: 0
-            m_StringArgument: 
-            m_BoolArgument: 0
-          m_CallState: 2
-        - m_Target: {fileID: 0}
-          m_TargetAssemblyTypeName: ObjectiveAsset, Assembly-CSharp
-          m_MethodName: EnableAsset
-          m_Mode: 1
-          m_Arguments:
-            m_ObjectArgument: {fileID: 0}
-            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-            m_IntArgument: 0
-            m_FloatArgument: 0
-            m_StringArgument: 
-            m_BoolArgument: 0
-          m_CallState: 2
+        m_Calls: []
   - name: Pick up the Tommy Gun
     description: Find and Pick up the Tommy Gun
     objectiveLocation: {fileID: 984448212628152894}
@@ -873,30 +825,6 @@ MonoBehaviour:
       m_PersistentCalls:
         m_Calls:
         - m_Target: {fileID: 984448212628152835}
-          m_TargetAssemblyTypeName: ObjectiveAsset, Assembly-CSharp
-          m_MethodName: EnableAsset
-          m_Mode: 1
-          m_Arguments:
-            m_ObjectArgument: {fileID: 0}
-            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-            m_IntArgument: 0
-            m_FloatArgument: 0
-            m_StringArgument: 
-            m_BoolArgument: 0
-          m_CallState: 2
-        - m_Target: {fileID: 0}
-          m_TargetAssemblyTypeName: ObjectiveAsset, Assembly-CSharp
-          m_MethodName: EnableAsset
-          m_Mode: 1
-          m_Arguments:
-            m_ObjectArgument: {fileID: 0}
-            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-            m_IntArgument: 0
-            m_FloatArgument: 0
-            m_StringArgument: 
-            m_BoolArgument: 0
-          m_CallState: 2
-        - m_Target: {fileID: 0}
           m_TargetAssemblyTypeName: ObjectiveAsset, Assembly-CSharp
           m_MethodName: EnableAsset
           m_Mode: 1
@@ -1054,7 +982,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 984448211601823715}
   m_LocalRotation: {x: 0.2705972, y: 0.27059796, z: 0.65328074, w: 0.65328264}
-  m_LocalPosition: {x: -32.884, y: 25.471, z: 29.802}
+  m_LocalPosition: {x: -41.634, y: 17.439, z: 28.954}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 984448211215050398}
@@ -1227,13 +1155,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 984448211661079194}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 85.91545, y: 17.7, z: 22.681244}
+  m_LocalRotation: {x: 0, y: -0.13052624, z: 0, w: 0.9914449}
+  m_LocalPosition: {x: 87.41545, y: 17.7, z: 31.181244}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 984448211215050398}
   m_RootOrder: 3
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: -15, z: 0}
 --- !u!33 &984448211661079189
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -1249,7 +1177,7 @@ MeshRenderer:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 984448211661079194}
-  m_Enabled: 1
+  m_Enabled: 0
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
@@ -1444,7 +1372,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &984448211789010986
 Transform:
   m_ObjectHideFlags: 0
@@ -1452,13 +1380,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 984448211789010992}
-  m_LocalRotation: {x: 0.13739635, y: 0.8036826, z: 0.57069904, w: -0.097566664}
-  m_LocalPosition: {x: 18.465, y: 12.65, z: -36.7458}
-  m_LocalScale: {x: 2, y: 2, z: 2}
+  m_LocalRotation: {x: -0.000002078712, y: 0.707108, z: 0.70710564, w: 0.000002130866}
+  m_LocalPosition: {x: 18.415451, y: 12.574, z: -27.937}
+  m_LocalScale: {x: 3, y: 3, z: 3}
   m_Children: []
   m_Father: {fileID: 984448211215050398}
   m_RootOrder: 1
-  m_LocalEulerAnglesHint: {x: -109.242, y: 0, z: 199.403}
+  m_LocalEulerAnglesHint: {x: -90, y: 0, z: 180}
 --- !u!33 &984448211789010987
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -1486,7 +1414,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 73c176f402d2c2f4d929aa5da7585d17, type: 2}
+  - {fileID: 2100000, guid: 1e737845a3e4cea4b8c95a2e033e180e, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -1519,8 +1447,8 @@ BoxCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 1, y: 1, z: 1}
-  m_Center: {x: 0, y: 0, z: 0}
+  m_Size: {x: 0.5881374, y: 0.55182904, z: 1}
+  m_Center: {x: 0.00066941977, y: 0.22408554, z: 3.107413e-14}
 --- !u!114 &984448211789010990
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1557,6 +1485,18 @@ MonoBehaviour:
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: Timewarp, Assembly-CSharp
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 0}
+        m_TargetAssemblyTypeName: WatchDiscovery, Assembly-CSharp
+        m_MethodName: Discover
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: 
@@ -1636,7 +1576,7 @@ MeshRenderer:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 984448211998862179}
-  m_Enabled: 1
+  m_Enabled: 0
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
@@ -1752,13 +1692,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 984448212628152836}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -34.58455, y: 8.92, z: 78.181244}
+  m_LocalRotation: {x: 0.6807903, y: 0.61652726, z: 0.3462588, w: 0.19111142}
+  m_LocalPosition: {x: -31.267, y: 8.986, z: 87.888}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 984448211215050398}
   m_RootOrder: 7
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: -9.598, y: 134.18, z: 99.736}
 --- !u!33 &984448212628152895
 MeshFilter:
   m_ObjectHideFlags: 0

@@ -10,7 +10,10 @@ namespace AIStates
         wander,
         chasePlayer,
         attackPlayer,
-        dead
+        dead,
+        beginVault,
+        endVault,
+        falling
     }
 
     public static class StateBucket
@@ -22,6 +25,9 @@ namespace AIStates
             target.AddState(new ChasePlayer());
             target.AddState(new AttackPlayer());
             target.AddState(new Dead());
+            target.AddState(new BeginVault());
+            target.AddState(new EndVault());
+            target.AddState(new Falling());
         }
     }
 
@@ -56,7 +62,15 @@ namespace AIStates
 
         void IState<AIAgent>.Update(AIAgent agent)
         {
-            agent.Seek();
+            if (agent.navAgent.isOnOffMeshLink)
+            {
+                if(agent.navAgent.currentOffMeshLinkData.offMeshLink.area == 3)
+                {
+                    // begin vault
+                    agent.ChangeState(StateIndex.beginVault);
+                }
+                
+            }
 
             Update(agent);
         }
@@ -117,7 +131,7 @@ namespace AIStates
         }
     }
 
-    public class Patrol : AgentState
+    public class Patrol : MovementState
     {
         Vector3 m_patrolTarget = Vector3.zero;
 
@@ -165,7 +179,7 @@ namespace AIStates
         }
     }
 
-    public class ChasePlayer : AgentState
+    public class ChasePlayer : MovementState
     {
         Transform m_playerTransform;
         float attackCharge = 0.0f;
@@ -303,6 +317,180 @@ namespace AIStates
             // clean up state Values
             agent.ragdoll.RagdollOn = false;
             agent.charCollider.enabled = true;
+        }
+    }
+
+    public class BeginVault : AgentState
+    {
+        Vector3 m_vaultPosition;
+        Vector3 m_vaultEnd;
+
+        Vector3 beginPos;
+
+        Vector3 beginForward;
+        Vector3 endForward;
+
+        bool m_startedVault = false;
+
+        float approachSpeed = 0.0f;
+        float t = 0.0f;
+
+        public override void Enter(AIAgent agent)
+        {
+            // set up state values
+            m_vaultPosition = agent.navAgent.currentOffMeshLinkData.startPos;
+            m_vaultEnd = agent.navAgent.currentOffMeshLinkData.endPos;
+
+            beginPos = agent.transform.position;
+
+            beginForward = agent.transform.forward;
+            endForward = (m_vaultEnd - m_vaultPosition);
+            endForward.y = 0;
+            endForward = endForward.normalized;
+
+            m_startedVault = false;
+
+            t = 0.0f;
+            approachSpeed = agent.previousSpeed;
+            agent.vaultSpeed = approachSpeed;
+
+            agent.postVaultState = agent.previousState;
+        }
+
+        public override void Update(AIAgent agent)
+        {
+            if(m_startedVault)
+            {
+                
+                return;
+            }
+
+            t += Time.deltaTime * agent.settings.vaultSensitivity * approachSpeed;
+
+            if(t < 1.0f)
+            {
+                var current = Vector3.Lerp(beginPos, m_vaultPosition, t);
+
+                agent.transform.position = current;
+            }
+
+            if(t < 1.0f)
+            {
+                agent.transform.forward = Vector3.Slerp(beginForward, endForward, t);
+            }
+
+            if(t >= 1.0f)
+            {
+                m_startedVault = true;
+                agent.anim.SetTrigger("Vault");
+            }
+
+        }
+
+        public override void Exit(AIAgent agent)
+        {
+            
+        }
+    }
+
+    public class EndVault : AgentState
+    {
+        Vector3 m_vaultEnd;
+
+        Vector3 beginPos;
+
+        Vector3 beginForward;
+        Vector3 endForward;
+
+        float approachSpeed = 0.0f;
+        float t = 0.0f;
+
+        public override void Enter(AIAgent agent)
+        {
+            // set up state values
+            Vector3 vaultPosition = agent.navAgent.currentOffMeshLinkData.startPos;
+            m_vaultEnd = agent.navAgent.currentOffMeshLinkData.endPos;
+
+            beginPos = agent.transform.position;
+
+            beginForward = agent.transform.forward;
+            endForward = m_vaultEnd - vaultPosition;
+            endForward.y = 0;
+            endForward = endForward.normalized;
+
+            m_vaultEnd.y = vaultPosition.y;
+            m_vaultEnd += endForward * agent.navAgent.radius;
+
+            t = 0.0f;
+            approachSpeed = agent.vaultSpeed;
+        }
+
+        public override void Update(AIAgent agent)
+        {
+            t += Time.deltaTime * agent.settings.vaultSensitivity * approachSpeed;
+
+            if (t < 1.0f)
+            {
+                var current = Vector3.Lerp(beginPos, m_vaultEnd, t);
+
+                agent.transform.position = current;
+            }
+
+            if (t < 1.0f)
+            {
+                agent.transform.forward = Vector3.Slerp(beginForward, endForward, t);
+            }
+
+            if (t >= 1.0f)
+            {
+                if(agent.VaultGroundCheck(agent.settings.vaultMinDistanceCheck))
+                {
+                    agent.CompleteOffMeshLink("IdleTrigger");
+                    agent.navAgent.velocity = Vector3.zero;
+                }
+                else
+                {
+                    agent.anim.SetTrigger("Fall");
+                    agent.ChangeState(StateIndex.falling);
+                }
+            }
+
+        }
+
+        public override void Exit(AIAgent agent)
+        {
+
+        }
+    }
+
+    public class Falling : AgentState
+    {
+        float m_verticalVelocity = 0.0f;
+
+        public override void Enter(AIAgent agent)
+        {
+            m_verticalVelocity = 0.0f;
+        }
+
+        public override void Update(AIAgent agent)
+        {
+            m_verticalVelocity += Physics.gravity.y * Time.deltaTime * Time.deltaTime;
+
+            Vector3 move = Vector3.up * m_verticalVelocity;
+
+            if(agent.VaultGroundCheck(-m_verticalVelocity))
+            {
+                agent.CompleteOffMeshLink("Land");
+                agent.navAgent.velocity = Vector3.zero;
+                return;
+            }
+
+            agent.transform.position += move;
+        }
+
+        public override void Exit(AIAgent agent)
+        {
+            
         }
     }
 }
