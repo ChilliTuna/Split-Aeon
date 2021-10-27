@@ -42,6 +42,12 @@ public class AISettings : ScriptableObject
     [Header("Death")]
     public float bodyDecayTime = 5.0f;
 
+    [Header("Vaulting")]
+    public float vaultMinDistanceCheck = 0.5f;
+    public float vaultgroundCheckOffset = 0.1f;
+    public float vaultSensitivity = 1.0f;
+    public LayerMask groundCheckLayer = ~0;
+
     private void OnValidate()
     {
         if(Application.isPlaying)
