@@ -42,6 +42,9 @@ public class AISettings : ScriptableObject
     [Header("Death")]
     public float bodyDecayTime = 5.0f;
 
+    [Header("Animation")]
+    public AnimationCurve moveAnimSpeed;
+
     [Header("Vaulting")]
     public float vaultMinDistanceCheck = 0.5f;
     public float vaultgroundCheckOffset = 0.1f;
