@@ -70,7 +70,8 @@ public class AIAgent : MonoBehaviour
 
         m_currentSpeed = m_navAgent.velocity.magnitude;
         m_previousSpeed = m_currentSpeed;
-        anim.SetFloat("moveSpeed", m_currentSpeed / navAgent.speed);
+        anim.SetFloat("moveSpeed", settings.moveAnimSpeed.Evaluate(m_currentSpeed / navAgent.speed));
+        //anim.SetFloat("moveSpeed", m_currentSpeed / navAgent.speed);
 
         // Debugging
         debugCurrentState = (StateIndex)m_stateMachine.currentIndex;
@@ -107,6 +108,8 @@ public class AIAgent : MonoBehaviour
         m_previousState = (StateIndex)m_stateMachine.currentIndex;
 
         m_distToPlayerSquared = (playerTransform.position - transform.position).sqrMagnitude;
+
+        GetComponent<PlayerPush>().player = aiManager.playerTransform.GetComponent<Player>();// This is disgusting line but I'm lazy
 
         StabiliseSettings();
         ResetHealth();

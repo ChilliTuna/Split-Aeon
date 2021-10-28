@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 0cf1dab834d4ec34195b920ea7bbf9ec, type: 3}
-  m_Name: HDRenderPipelineAsset
+  m_Name: SplitAeonHDRP
   m_EditorClassIdentifier: 
   m_Version: 15
   m_ObsoleteFrameSettings:
@@ -241,7 +241,7 @@ MonoBehaviour:
       maxDecalsOnScreen: 512
       maxPlanarReflectionOnScreen: 16
     hdShadowInitParams:
-      maxShadowRequests: 128
+      maxShadowRequests: 2048
       directionalShadowsDepthBits: 16
       shadowFilteringQuality: 1
       punctualLightShadowAtlas:
@@ -306,7 +306,7 @@ MonoBehaviour:
       - 5
       - 8
       - 13
-      DoFResolution: 040000000200000001000000
+      DoFResolution: 040000000200000002000000
       DoFHighQualityFiltering: 000101
       MotionBlurSampleCount: 04000000080000000c000000
       BloomRes: 040000000200000002000000
