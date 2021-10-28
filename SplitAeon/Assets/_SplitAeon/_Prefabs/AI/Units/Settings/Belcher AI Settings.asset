@@ -33,3 +33,33 @@ MonoBehaviour:
   rotationLerpSpeed: 0.05
   afterAttackLerpSpeed: 0.02
   bodyDecayTime: 5
+  moveAnimSpeed:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 1
+      outSlope: 1
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 1
+      value: 1
+      inSlope: 1
+      outSlope: 1
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  vaultMinDistanceCheck: 0.5
+  vaultgroundCheckOffset: 0.1
+  vaultSensitivity: 1
+  groundCheckLayer:
+    serializedVersion: 2
+    m_Bits: 4294967295

@@ -70,7 +70,8 @@ public class AIAgent : MonoBehaviour
 
         m_currentSpeed = m_navAgent.velocity.magnitude;
         m_previousSpeed = m_currentSpeed;
-        anim.SetFloat("moveSpeed", m_currentSpeed / navAgent.speed);
+        anim.SetFloat("moveSpeed", settings.moveAnimSpeed.Evaluate(m_currentSpeed / navAgent.speed));
+        //anim.SetFloat("moveSpeed", m_currentSpeed / navAgent.speed);
 
         // Debugging
         debugCurrentState = (StateIndex)m_stateMachine.currentIndex;
