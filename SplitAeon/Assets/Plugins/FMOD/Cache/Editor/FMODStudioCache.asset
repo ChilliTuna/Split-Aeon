@@ -149,7 +149,7 @@ MonoBehaviour:
   Path: Assets/_SplitAeon/_Audio/FMOD/Split_Aeon_Audio/Build/Desktop/Master.bank
   Name: Master
   StudioPath: bank:/Master
-  lastModified: 637703403437541954
+  lastModified: 637698996177035816
   FileSizes:
   - Name: Desktop
     Value: 1620768
@@ -207,6 +207,32 @@ MonoBehaviour:
   - Marble
   - Wood
   - Carpet
+  Exists: 1
+--- !u!114 &-4962924162309705196
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fecb8ef7f94ca804a8ab72049b86782e, type: 3}
+  m_Name: parameter:/Footsteps/Speed Switch
+  m_EditorClassIdentifier: 
+  Name: Speed Switch
+  StudioPath: 
+  Min: 0
+  Max: 1
+  Default: 0
+  ID:
+    data1: 0
+    data2: 0
+  Type: 2
+  IsGlobal: 0
+  Labels:
+  - Walking
+  - Running
   Exists: 1
 --- !u!114 &-4124817778732053899
 MonoBehaviour:
@@ -443,7 +469,7 @@ MonoBehaviour:
   - {fileID: -5762368749265760871}
   StringsBanks:
   - {fileID: 1639715723525328603}
-  cacheTime: 637703403437541954
+  cacheTime: 637698996177035816
   cacheVersion: 9
 --- !u!114 &185667256776814312
 MonoBehaviour:
@@ -514,7 +540,7 @@ MonoBehaviour:
   Path: Assets/_SplitAeon/_Audio/FMOD/Split_Aeon_Audio/Build/Desktop/Master.strings.bank
   Name: Master.strings
   StudioPath: bank:/Master.strings
-  lastModified: 637703403437482112
+  lastModified: 637698996176605952
   FileSizes:
   - Name: Desktop
     Value: 2060
@@ -624,8 +650,8 @@ MonoBehaviour:
   Is3D: 1
   IsOneShot: 1
   Parameters:
-  - {fileID: -8388423217060488287}
-  - {fileID: -6313592559767368868}
+  - {fileID: -4962924162309705196}
+  - {fileID: 8265679701604040288}
   MinDistance: 1
   MaxDistance: 20
   Length: 0
@@ -790,6 +816,33 @@ MonoBehaviour:
   MinDistance: 1
   MaxDistance: 20
   Length: 1688
+--- !u!114 &8265679701604040288
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fecb8ef7f94ca804a8ab72049b86782e, type: 3}
+  m_Name: parameter:/Footsteps/Material
+  m_EditorClassIdentifier: 
+  Name: Material
+  StudioPath: 
+  Min: 0
+  Max: 2
+  Default: 0
+  ID:
+    data1: 0
+    data2: 0
+  Type: 2
+  IsGlobal: 0
+  Labels:
+  - Marble
+  - Wood
+  - Carpet
+  Exists: 1
 --- !u!114 &8442667915516446546
 MonoBehaviour:
   m_ObjectHideFlags: 0

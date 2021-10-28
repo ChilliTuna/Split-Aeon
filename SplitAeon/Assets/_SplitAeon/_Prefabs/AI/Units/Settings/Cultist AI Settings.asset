@@ -13,9 +13,9 @@ MonoBehaviour:
   m_Name: Cultist AI Settings
   m_EditorClassIdentifier: 
   enemyType: 1
-  moveSpeed: 12
-  angularSpeed: 260
-  acceleration: 18
+  moveSpeed: 7
+  angularSpeed: 90
+  acceleration: 8
   health: 100
   headMultiplier: 3
   upperTorsoMultipler: 2
@@ -33,3 +33,9 @@ MonoBehaviour:
   rotationLerpSpeed: 1
   afterAttackLerpSpeed: 1
   bodyDecayTime: 5
+  vaultMinDistanceCheck: 0.5
+  vaultgroundCheckOffset: 0.1
+  vaultSensitivity: 1
+  groundCheckLayer:
+    serializedVersion: 2
+    m_Bits: 4294967295
