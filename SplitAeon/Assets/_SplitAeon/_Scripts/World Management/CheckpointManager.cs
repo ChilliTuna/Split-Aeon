@@ -18,7 +18,7 @@ public class CheckpointManager : MonoBehaviour
 
     private List<AmmoData> ammoCounts = new List<AmmoData>();
 
-    private int cardCounts;
+    private int[] cardPools;
 
     private float health;
 
@@ -81,7 +81,12 @@ public class CheckpointManager : MonoBehaviour
 
     private void SaveAmmoCounts()
     {
-        cardCounts = player.GetComponentInChildren<CardManager>().cardLethalPool;
+
+        for (int i = 0; i < player.GetComponentInChildren<CardManager>().cards.Length; i++)
+        {
+            cardPools[i] = player.GetComponentInChildren<CardManager>().cards[i].cardPool;
+        }
+
         ammoCounts.Clear();
         Gun[] guns = player.transform.GetComponentsInChildren<Gun>();
         foreach (Gun gun in guns)
@@ -96,7 +101,12 @@ public class CheckpointManager : MonoBehaviour
 
     private void LoadAmmoCounts()
     {
-        player.GetComponentInChildren<CardManager>().cardLethalPool = cardCounts;
+
+        for (int i = 0; i < player.GetComponentInChildren<CardManager>().cards.Length; i++)
+        {
+            player.GetComponentInChildren<CardManager>().cards[i].cardPool = cardPools[i];
+        }
+
         Gun[] guns = player.transform.GetComponentsInChildren<Gun>();
         foreach (Gun gun in guns)
         {
