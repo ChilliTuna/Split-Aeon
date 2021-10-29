@@ -47,7 +47,7 @@ public class AnimationTestControl : MonoBehaviour
 
         public void TextureScroll(Vector3 direction)
         {
-            m_timer += speed * Time.deltaTime;
+            m_timer += speed * Time.deltaTime / 2;
             m_timer = Mathf.Repeat(m_timer, 1.0f);
             m_offset = -direction * m_timer;
 
