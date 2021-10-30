@@ -7,6 +7,7 @@ public class ManualPassiveSpawner : MonoBehaviour
     [System.Serializable]
     public struct PassiveSpawnPackage
     {
+        public string name;
         public Transform location;
         public List<Transform> patrolNodes;
     }
@@ -21,5 +22,10 @@ public class ManualPassiveSpawner : MonoBehaviour
     public void PassiveSpawn(int index)
     {
         enemySpawner.SpawnPassive(passiveSpawnPackages[index].location.position, passiveSpawnPackages[index].patrolNodes);
+    }
+
+    public void AggroSpawn(int index)
+    {
+        enemySpawner.SpawnAggro(passiveSpawnPackages[index].location.position);
     }
 }

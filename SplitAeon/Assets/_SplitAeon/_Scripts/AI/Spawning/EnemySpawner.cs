@@ -136,6 +136,18 @@ public class EnemySpawner : MonoBehaviour
         aiManager.spawnEvent.Invoke();
     }
 
+    public void SpawnAggro(Vector3 position)
+    {
+        if (GetEnemyAgent(out AIAgent agent))
+        {
+            SpawnEvent(agent, position, AIStates.StateIndex.chasePlayer);
+        }
+        else
+        {
+            // spawn will fail
+        }
+    }
+
     public void SpawnPassive(Vector3 position, List<Transform> patrolNodes)
     {
         if (GetEnemyAgent(out AIAgent agent))

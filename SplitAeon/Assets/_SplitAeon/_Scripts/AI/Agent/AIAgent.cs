@@ -195,6 +195,7 @@ public class AIAgent : MonoBehaviour
 
     public void DisablePoolObject()
     {
+        aiManager.ReduceAliveCount();
         attachedPoolObject.Disable();
     }
 
