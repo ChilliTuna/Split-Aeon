@@ -34,7 +34,7 @@ public class EnemySpawner : MonoBehaviour
         Init();
     }
 
-    private void Init()
+    public void Init()
     {
         if(m_isInitialised)
         {

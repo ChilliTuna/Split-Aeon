@@ -13,6 +13,10 @@ public class ManualPassiveSpawner : MonoBehaviour
 
     public EnemySpawner enemySpawner;
     public List<PassiveSpawnPackage> passiveSpawnPackages;
+    private void Start()
+    {
+        enemySpawner.Init();
+    }
 
     public void PassiveSpawn(int index)
     {
