@@ -3188,6 +3188,7 @@ GameObject:
   - component: {fileID: 8617707209697044214}
   - component: {fileID: -5212587816441370148}
   - component: {fileID: 979904294751401325}
+  - component: {fileID: -8529075321957381010}
   m_Layer: 25
   m_Name: Enemy_Cultist_M
   m_TagString: Enemy
@@ -3287,6 +3288,8 @@ MonoBehaviour:
   upperTorsoColliders: []
   lowerTorsoColliders: []
   limbColliders: []
+  postVaultState: 0
+  vaultSpeed: 0
   debugCurrentState: 0
   debugNeighbourCount: 0
   patrolNodes: []
@@ -3331,6 +3334,10 @@ MonoBehaviour:
   maxHealth: 20
   health: 0
   damageMultiplier: 1
+  enableHealing: 0
+  timeBeforeHeal: 0
+  healAmount: 0
+  healTick: 0
   onHitEvents:
     m_PersistentCalls:
       m_Calls: []
@@ -3381,3 +3388,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   armAttack: {fileID: 244612419321057485}
+--- !u!114 &-8529075321957381010
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8888230849861157185}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4d11614345353324e95476c4e0879381, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  player: {fileID: 0}
+  pushStrength: 5
+  pushSmoothTime: 0.1
