@@ -54,6 +54,11 @@ public class GameManager : MonoBehaviour
         pastAIManager.TogglePlayerInsideState();
         futureAIManager.TogglePlayerInsideState();
     }
+
+    public void DebugString(string message)
+    {
+        Debug.Log(message);
+    }
 }
 
 public static class Globals
