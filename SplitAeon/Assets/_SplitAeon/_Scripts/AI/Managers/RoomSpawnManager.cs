@@ -292,6 +292,7 @@ public class RoomSpawnManager : MonoBehaviour
     public void CompleteDressingRoom()
     {
         ClearTimers();
+        CompleteRoom();
     }
 
     public void EnterStageArea()
@@ -303,5 +304,6 @@ public class RoomSpawnManager : MonoBehaviour
         }
 
         CompleteDressingRoom();
+        SetSpawner(enemySpawnerRooms, currentSpawnerRoomIndex, true);
     }
 }
