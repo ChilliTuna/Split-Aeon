@@ -149,7 +149,7 @@ public class Timewarp : MonoBehaviour
 
     public void DoWarp()
     {
-        if (isInPast)
+        if (Globals.isInPast)
         {
             controller.enabled = false;
             player.transform.position = new Vector3(player.transform.position.x, player.transform.position.y - offsetAmount, player.transform.position.z);
@@ -240,6 +240,6 @@ public class CustomTimer
         currentTime = 0;
     }
 }
-    public void DoWarp()
-    {
-        if (Globals.isInPast)
+
+    
+        
