@@ -34,6 +34,7 @@ public class CheckpointManager : MonoBehaviour
 
     private void Start()
     {
+        cardPools = new int[4];
         player = GetComponent<Timewarp>().player;
         SetCheckpoint();
     }
@@ -82,7 +83,7 @@ public class CheckpointManager : MonoBehaviour
     private void SaveAmmoCounts()
     {
 
-        for (int i = 0; i < player.GetComponentInChildren<CardManager>().cards.Length; i++)
+        for (int i = 0; i < 4; i++)
         {
             cardPools[i] = player.GetComponentInChildren<CardManager>().cards[i].cardPool;
         }
