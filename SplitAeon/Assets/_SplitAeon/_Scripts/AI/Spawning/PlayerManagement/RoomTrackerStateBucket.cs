@@ -6,14 +6,50 @@ public static class RoomTrackerStateBucket
 {
     public static void SetUpStateMachine(StateMachine<RoomTracker> target)
     {
-        target.AddState(new FindStateDirection()); // 0
-        target.AddState(new InRoom()); // 1
-        target.AddState(new TryFindNeighbour()); // 2
-        target.AddState(new TryFindEnter()); // 3
+        target.AddState(new InitialState());
+        target.AddState(new FindStateDirection());
+        target.AddState(new InRoom());
+        target.AddState(new TryFindNeighbour());
+        target.AddState(new TryFindEnter());
     }
 }
 
-// 0
+enum RoomStateIndex
+{
+    initial,
+    directional,
+    inRoom,
+    findNeighbour,
+    findEnter
+}
+
+
+public class InitialState : IState<RoomTracker>
+{
+    void IState<RoomTracker>.Enter(RoomTracker tracker)
+    {
+        if(tracker.currentRoom != null)
+        {
+            tracker.SetState((int)RoomStateIndex.inRoom);
+        }
+        else
+        {
+            tracker.SetState((int)RoomStateIndex.directional);
+        }
+    }
+
+    void IState<RoomTracker>.Update(RoomTracker tracker)
+    {
+        // We should never have reached here, but just in case set the state to search for rooms
+        tracker.SetState((int)RoomStateIndex.findNeighbour);
+    }
+
+    void IState<RoomTracker>.Exit(RoomTracker tracker)
+    {
+
+    }
+}
+
 public class FindStateDirection : IState<RoomTracker>
 {
     void IState<RoomTracker>.Enter(RoomTracker tracker)
@@ -22,21 +58,21 @@ public class FindStateDirection : IState<RoomTracker>
         if (tracker.FindCurrentRoomFromPrevNeighbours())
         {
             Debug.Log("Found Neighbour: instantly");
-            tracker.SetState(1);
+            tracker.SetState((int)RoomStateIndex.inRoom);
             return;
         }
         else
         {
             // If we get here we did not enter another room
             // now we should try to find the neighbour room repeatedly for a small amount of time
-            tracker.SetState(2);
+            tracker.SetState((int)RoomStateIndex.findNeighbour);
         }
     }
 
     void IState<RoomTracker>.Update(RoomTracker tracker)
     {
         // We should never have reached here, but just in case set the state to search for rooms
-        tracker.SetState(2);
+        tracker.SetState((int)RoomStateIndex.findNeighbour);
     }
 
     void IState<RoomTracker>.Exit(RoomTracker tracker)
@@ -50,7 +86,7 @@ public class InRoom : IState<RoomTracker>
 {
     void IState<RoomTracker>.Enter(RoomTracker tracker)
     {
-        tracker.currentRoom.enterRoom.Invoke();
+        tracker.currentRoom.ProcessEnterEvent();
     }
 
     void IState<RoomTracker>.Update(RoomTracker tracker)
@@ -60,13 +96,13 @@ public class InRoom : IState<RoomTracker>
         if (!tracker.currentRoom.ExitContainsPoint(position))
         {
             Debug.Log("Exit room");
-            tracker.SetState(0);// Change to Find State
+            tracker.SetState((int)RoomStateIndex.directional);// Change to Find State
         }
     }
 
     void IState<RoomTracker>.Exit(RoomTracker tracker)
     {
-        tracker.currentRoom.exitRoom.Invoke();
+        tracker.currentRoom.ProcessExitEvent();
 
         tracker.previousRoom = tracker.currentRoom;
         tracker.currentRoom = null;
@@ -88,14 +124,14 @@ public class TryFindNeighbour : IState<RoomTracker>
         if (tryCount > 60)
         {
             Debug.Log("Could not find neighbour");
-            tracker.SetState(3);
+            tracker.SetState((int)RoomStateIndex.findEnter);
         }
 
         // Try to find neighbour room of previous
         if (tracker.FindCurrentRoomFromPrevNeighbours())
         {
             Debug.Log("Found current from prev neighbours");
-            tracker.SetState(1);
+            tracker.SetState((int)RoomStateIndex.inRoom);
         }
         tryCount++;
     }
@@ -124,7 +160,7 @@ public class TryFindEnter : IState<RoomTracker>
             {
                 Debug.Log("Found new room from all");
                 enterRoom = room;
-                tracker.SetState(1);
+                tracker.SetState((int)RoomStateIndex.inRoom);
             }
         }
     }

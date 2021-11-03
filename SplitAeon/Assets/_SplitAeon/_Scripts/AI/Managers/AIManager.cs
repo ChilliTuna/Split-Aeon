@@ -51,7 +51,7 @@ public class AIManager : MonoBehaviour
         zoneStateMachine.Init();
 
         spawnEvent.AddListener(() => { m_aliveCount++; });
-        agentdeathEvent.AddListener(() => { m_aliveCount--; });
+        //agentdeathEvent.AddListener(() => { m_aliveCount--; });
     }
 
     // Start is called before the first frame update
@@ -182,6 +182,22 @@ public class AIManager : MonoBehaviour
             }
         }
         return result;
+    }
+
+    public void ClearAllAgents()
+    {
+        List<AIAgent> allAgents = GetAllActiveAgents();
+        foreach (AIAgent agent in allAgents)
+        {
+            agent.DisablePoolObject();
+        }
+        m_aliveCount = 0;
+    }
+
+    // Only meant to be used for agent disable
+    public void ReduceAliveCount()
+    {
+        m_aliveCount--;
     }
 
     private void OnDrawGizmos()
