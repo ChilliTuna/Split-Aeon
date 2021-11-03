@@ -17,6 +17,7 @@ public class Timewarp : MonoBehaviour
 
     private CharacterController controller;
     public GameObject player;
+    public Animator watchViewmodelAnimator;
 
     public StudioEventEmitter warpSound;
 
@@ -63,6 +64,7 @@ public class Timewarp : MonoBehaviour
         volume.profile.TryGet(out exposure);
 
         controller = player.GetComponent<CharacterController>();
+        watchViewmodelAnimator = GameObject.Find("PlayerMagicViewmodel").GetComponent<Animator>();
 
         toPastWarpChecker = transform.Find("PastWarpChecker").GetComponent<WarpChecker>();
         toPastWarpChecker.transform.parent = player.transform;
@@ -137,14 +139,17 @@ public class Timewarp : MonoBehaviour
 
     public void SwapWorlds()
     {
-        player.GetComponent<Player>().viewmodelAnimator.SetTrigger("Warp");
+        //player.GetComponent<Player>().viewmodelAnimator.SetTrigger("Warp");
 
-        DoWarp();
+        //DoWarp();
+
+        watchViewmodelAnimator.SetTrigger("Warp");
+
     }
 
     public void DoWarp()
     {
-        if (Globals.isInPast)
+        if (isInPast)
         {
             controller.enabled = false;
             player.transform.position = new Vector3(player.transform.position.x, player.transform.position.y - offsetAmount, player.transform.position.z);
@@ -235,3 +240,6 @@ public class CustomTimer
         currentTime = 0;
     }
 }
+    public void DoWarp()
+    {
+        if (Globals.isInPast)
