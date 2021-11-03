@@ -21,13 +21,27 @@ public class RoomBounds : MonoBehaviour
     // Initialisation variables
     public HashSet<SpawnLocation> spawnLocations = new HashSet<SpawnLocation>();
 
+    public bool singleEvents = true;
+    bool m_hasEntered = false;
+    bool m_hasExited = false;
+
     void Awake()
+    {
+        Init();
+    }
+
+    private void Start()
+    {
+        
+    }
+
+    void Init()
     {
         entryBounds.center = transform.position;
         entryBounds.size = Vector3.zero;
-        List<Transform> allObjectsHeap = FindAllChildren();
-        var allBounds = FindAllBounds(allObjectsHeap);
-        FindMinAndMax(allBounds, out Vector3 min, out Vector3 max);
+
+        FindMinAndMax(out Vector3 min, out Vector3 max);
+
         entryBounds.SetMinMax(min, max);
 
         exitBounds.center = entryBounds.center;
@@ -35,9 +49,56 @@ public class RoomBounds : MonoBehaviour
         exitBounds.Expand(exitExpansion);
     }
 
-    private void Start()
+    protected virtual void FindMinAndMax(out Vector3 min, out Vector3 max)
     {
-        
+        List<Transform> allObjectsHeap = FindAllChildren();
+        var allBounds = FindAllBounds(allObjectsHeap);
+        FindMinAndMax(allBounds, out min, out max);
+    }
+
+    void ProcessEvent(UnityEvent targetEvent)
+    {
+        targetEvent.Invoke();
+        if (singleEvents)
+        {
+            targetEvent.RemoveAllListeners();
+        }
+    }
+
+    public void ProcessEnterEvent()
+    {
+        if(m_hasEntered)
+        {
+            return;
+        }
+        m_hasEntered = true;
+        timePartner.m_hasEntered = true;
+        ProcessEvent(enterRoom);
+        ProcessEvent(timePartner.enterRoom);
+    }
+
+    public void ProcessExitEvent()
+    {
+        if (m_hasExited)
+        {
+            return;
+        }
+        m_hasExited = true;
+        timePartner.m_hasExited = true;
+        ProcessEvent(exitRoom);
+        ProcessEvent(timePartner.exitRoom);
+    }
+
+    public void SetEnterStatus(bool status)
+    {
+        m_hasEntered = status;
+        timePartner.m_hasEntered = status;
+    }
+
+    public void SetExitStatus(bool status)
+    {
+        m_hasExited = status;
+        timePartner.m_hasExited = status;
     }
 
     List<Transform> FindAllChildren()

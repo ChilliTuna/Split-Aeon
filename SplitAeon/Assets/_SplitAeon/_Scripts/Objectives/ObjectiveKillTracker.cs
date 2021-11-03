@@ -39,9 +39,9 @@ public class ObjectiveKillTracker : MonoBehaviour
     {
         if (killCount >= killTarget)
         {
-            onTargetReached.Invoke();
-            ResetKills();
             isTrackingEnabled = false;
+            ResetKills();
+            onTargetReached.Invoke();
         }
     }
 

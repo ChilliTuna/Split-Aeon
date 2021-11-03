@@ -34,7 +34,7 @@ public class EnemySpawner : MonoBehaviour
         Init();
     }
 
-    private void Init()
+    public void Init()
     {
         if(m_isInitialised)
         {
@@ -134,6 +134,18 @@ public class EnemySpawner : MonoBehaviour
         agent.ResetHealth();
 
         aiManager.spawnEvent.Invoke();
+    }
+
+    public void SpawnAggro(Vector3 position)
+    {
+        if (GetEnemyAgent(out AIAgent agent))
+        {
+            SpawnEvent(agent, position, AIStates.StateIndex.chasePlayer);
+        }
+        else
+        {
+            // spawn will fail
+        }
     }
 
     public void SpawnPassive(Vector3 position, List<Transform> patrolNodes)
