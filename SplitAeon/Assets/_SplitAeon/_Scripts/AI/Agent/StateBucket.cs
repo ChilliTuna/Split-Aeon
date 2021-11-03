@@ -69,7 +69,9 @@ namespace AIStates
                     // begin vault
                     agent.ChangeState(StateIndex.beginVault);
                 }
-                
+
+                // Debug Traversal
+                agent.ChangeState(StateIndex.beginVault);
             }
 
             Update(agent);
@@ -236,7 +238,9 @@ namespace AIStates
             // set up state values
             m_playerTransform = agent.playerTransform;
             m_originalLocation = agent.transform.position;
-            m_attackDirection = (agent.playerTransform.position - agent.transform.position).normalized;
+            m_attackDirection = (agent.playerTransform.position - agent.transform.position);
+            m_attackDirection.y = 0;
+            m_attackDirection = m_attackDirection.normalized;
 
             // Set up animation
             agent.StopNavigating();
@@ -260,7 +264,9 @@ namespace AIStates
             else
             {
                 // start looking towards the player
-                agent.transform.forward = Vector3.Slerp(agent.transform.forward, m_playerTransform.position - agent.transform.position, agent.settings.afterAttackLerpSpeed);
+                Vector3 toPlayer = m_playerTransform.position - agent.transform.position;
+                toPlayer.y = 0;
+                agent.transform.forward = Vector3.Slerp(agent.transform.forward, toPlayer, agent.settings.afterAttackLerpSpeed);
             }
 
             // attack type update
