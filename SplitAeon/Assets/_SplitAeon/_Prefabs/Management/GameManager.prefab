@@ -258,7 +258,7 @@ GameObject:
   - component: {fileID: 7154132034173345726}
   - component: {fileID: 7154132034173345725}
   m_Layer: 10
-  m_Name: PresentZoneManager
+  m_Name: FutureZoneManager
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -307,7 +307,8 @@ GameObject:
   - component: {fileID: 7154132034257091902}
   - component: {fileID: 7393722739517978096}
   - component: {fileID: 1811081032925287176}
-  m_Layer: 10
+  - component: {fileID: 1357432338}
+  m_Layer: 8
   m_Name: GameManager
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -345,26 +346,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a06ca688de3f6574e897da72dcedaeb7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isInDebug: 0
+  isInDebug: 1
   presentZoneManager: {fileID: 7154132034173345725}
   pastZoneManager: {fileID: 7154132034666967276}
   pastAIManager: {fileID: 0}
   futureAIManager: {fileID: 0}
   onStart:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: 
-        m_MethodName: 
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: 
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
 --- !u!114 &7154132034257091902
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -372,13 +361,14 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7154132034257091900}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: a93c6ac5fe717374ba119372b7667fe2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   volume: {fileID: 7393722739517978096}
   player: {fileID: 0}
+  watchViewmodelAnimator: {fileID: 0}
   warpSound: {fileID: 0}
   offsetAmount: 100
   shouldDoWarpChecking: 1
@@ -388,9 +378,9 @@ MonoBehaviour:
   onTimeWarp:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: AIManager, Assembly-CSharp
-        m_MethodName: TogglePlayerInsideState
+      - m_Target: {fileID: 1811081032925287176}
+        m_TargetAssemblyTypeName: SilhouetteGenerator, Assembly-CSharp
+        m_MethodName: CreateSilhouettes
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -400,9 +390,21 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-      - m_Target: {fileID: 1811081032925287176}
-        m_TargetAssemblyTypeName: SilhouetteGenerator, Assembly-CSharp
-        m_MethodName: CreateSilhouettes
+      - m_Target: {fileID: 7154132034257091903}
+        m_TargetAssemblyTypeName: GameManager, Assembly-CSharp
+        m_MethodName: AIManagerTimeSwap
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 0}
+        m_TargetAssemblyTypeName: RoomTracker, Assembly-CSharp
+        m_MethodName: TimeSwap
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -441,7 +443,53 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 51e2a80c8e375344b9ea7615ef707d7d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  defaultSilhouette: {fileID: 1420187762586455130, guid: f8628b41fa3230343bbeced7bf504d24, type: 3}
+  cultistAttackSilhouette: {fileID: 1420187762586455130, guid: 068fdce5472a9f4448c1770a12a78bca, type: 3}
+  cultistRunSilhouette: {fileID: 1420187762586455130, guid: f8628b41fa3230343bbeced7bf504d24, type: 3}
+  belcherAttackSilhouette: {fileID: 1420187762586455130, guid: f2db990def16d7b4d98225678ea3901e, type: 3}
+  belcherRunSilhouette: {fileID: 1420187762586455130, guid: 9db1d5a387d30744895bd14871bb76c4, type: 3}
+  fadeDuration: 2
+--- !u!114 &1357432338
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7154132034257091900}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f838d8e9773da3446b855065a008136c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  onCheckpoint:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 0}
+        m_TargetAssemblyTypeName: RoomSpawnManager, Assembly-CSharp
+        m_MethodName: PlayerCheckpoint
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  onRespawn:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 0}
+        m_TargetAssemblyTypeName: RoomSpawnManager, Assembly-CSharp
+        m_MethodName: PlayerRespawn
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &7154132034666967275
 GameObject:
   m_ObjectHideFlags: 0
