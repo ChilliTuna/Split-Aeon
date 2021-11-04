@@ -25,7 +25,7 @@ public class Hazard : MonoBehaviour
     {
         if (other.CompareTag("Player"))
         {
-            if (timer <= damageTick)
+            if (timer >= damageTick)
             {
                 timer = 0;
 
