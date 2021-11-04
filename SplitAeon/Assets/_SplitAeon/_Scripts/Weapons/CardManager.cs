@@ -9,11 +9,24 @@ using FMODUnity;
 [System.Serializable]
 public class Card
 {
+    [Header("Card Assets")]
     public GameObject cardPrefab;
     public Sprite cardSprite;
+
+    [Header("Card Physics")]
     public float cardThrowForce;
     public float cardThrowLift;
     public float cardSpin;
+
+    [Header("Card Pooling")]
+    public int cardPool;
+    public int cardMaxPool;
+    public int cardStartingPool;
+
+    [Header("Unlock State")]
+    public bool isUnlocked;
+    public Button weaponWheelButton;
+
 }
 
 public class CardManager : MonoBehaviour
@@ -26,42 +39,22 @@ public class CardManager : MonoBehaviour
     public LayerMask playerMask;
     public PlayerMagicAnimations magicAnims;
 
+    [Space(10)]
+
+    [Header("Cards")]
+    private int cardIndex;
+    public Card[] cards;
+
     [Header("Universal Data")]
-    public int maxCardLethals;
     public Transform lethalSpawnLocation;
-
     public Image cardImage;
-
-    private GameObject selectedCard;
-
-    private enum CardTypes
-    {
-        Regular,
-        Warping,
-        Piercing,
-        Splash
-    }
-
-    CardTypes cardTypes;
 
     [Header("Weapon GUI")]
     public TextMeshProUGUI cardPoolReadout;
 
-    [Header("Card Types")]
-
-    public Card regularCard;
-    public Card warpingCard;
-    public Card piercingCard;
-    public Card splashCard;
-
     [Header("Audio")]
-    //public AudioSource weaponAudioSource;
-    //public AudioClip[] lethalThrowClips;
 
     public StudioEventEmitter cardSounds;
-
-    [HideInInspector]
-    public int cardLethalPool;
 
     private float throwForce, throwLift, cardSpin;
 
@@ -77,7 +70,10 @@ public class CardManager : MonoBehaviour
 
     void Start()
     {
-        cardLethalPool = maxCardLethals;
+        foreach (Card c in cards)
+        {
+            c.cardPool = c.cardStartingPool;
+        }
     }
 
     private void OnEnable()
@@ -94,93 +90,48 @@ public class CardManager : MonoBehaviour
 
     void Update()
     {
-        cardPoolReadout.text = cardLethalPool.ToString();
+        cardPoolReadout.text = cards[cardIndex].cardPool.ToString();
+        cardImage.sprite = cards[cardIndex].cardSprite;
 
-        switch (cardTypes)
+        foreach (Card c in cards)
         {
-            case CardTypes.Regular:
-                SetCurrentCard(regularCard);
-                break;
-
-            case CardTypes.Warping:
-                SetCurrentCard(warpingCard);
-                break;
-
-            case CardTypes.Piercing:
-                SetCurrentCard(piercingCard);
-                break;
-
-            case CardTypes.Splash:
-                SetCurrentCard(splashCard);
-                break;
+            c.weaponWheelButton.interactable = c.isUnlocked;
         }
 
     }
 
     void ThrowCard()
     {
-        if (!player.isBusy)
+        if (!player.isBusy && cards[cardIndex].cardPool > 0)
         {
             player.viewmodelAnimator.SetTrigger("Switch");
-
             Invoke("TriggerCardThrowAnimation", 0.3f);
-
-            //magicAnims.TriggerCardThrow();
-
-            //ThrowCardLethal();
         }
     }
 
     public void SetCardType(int index)
     {
-        if (index == 0)
-        {
-            cardTypes = CardTypes.Regular;
-        }
-        else if (index == 1)
-        {
-            cardTypes = CardTypes.Warping;
-        }
-        else if (index == 2)
-        {
-            cardTypes = CardTypes.Piercing;
-        }
-        else if (index == 3)
-        {
-            cardTypes = CardTypes.Splash;
-        }
-        else
-        {
-            cardTypes = CardTypes.Regular;
-        }
-    }
-
-    public void SetCurrentCard(Card card)
-    {
-        selectedCard = card.cardPrefab;
-        cardImage.sprite = card.cardSprite;
-        throwForce = card.cardThrowForce;
-        throwLift = card.cardThrowLift;
-        cardSpin = card.cardSpin;
+        cardIndex = index;
     }
 
     public void ThrowCardLethal()
     {
-        if (cardLethalPool > 0)
+        if (cards[cardIndex].cardPool > 0)
         {
-            Debug.LogWarning("Throwing Card");
 
-            //weaponAudioSource.PlayOneShot(lethalThrowClips[Mathf.FloorToInt(Random.Range(0, lethalThrowClips.Length))]);
+            throwForce = cards[cardIndex].cardThrowForce;
+            throwLift = cards[cardIndex].cardThrowLift;
+            cardSpin = cards[cardIndex].cardSpin;
 
             cardSounds.Play();
 
             GameObject thrownLethal;
-            thrownLethal = Instantiate(selectedCard, lethalSpawnLocation.transform.position, Quaternion.identity);
+            thrownLethal = Instantiate(cards[cardIndex].cardPrefab, lethalSpawnLocation.transform.position, Quaternion.identity);
 
             thrownLethal.GetComponent<Rigidbody>().velocity = lethalSpawnLocation.TransformDirection(0, throwLift, throwForce);
             thrownLethal.GetComponent<Rigidbody>().AddRelativeTorque(0, cardSpin, 0);
 
-            cardLethalPool -= 1;
+            cards[cardIndex].cardPool -= 1;
 
         }
     }

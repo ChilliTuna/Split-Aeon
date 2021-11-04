@@ -11,8 +11,7 @@ GameObject:
   - component: {fileID: 2959617678071810525}
   - component: {fileID: 2959617678071810524}
   - component: {fileID: 2959617678071810527}
-  - component: {fileID: 2959617678071810526}
-  - component: {fileID: 3665302298566855989}
+  - component: {fileID: 5708880743871840654}
   m_Layer: 0
   m_Name: BreakableBottle_Tall_01
   m_TagString: Untagged
@@ -50,11 +49,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   rend: {fileID: 6137161248715343661}
   particle: {fileID: 1051732577125932071}
-  clips:
-  - {fileID: 8300000, guid: 188ec0b74267aff46bf6171ec7a7f9e1, type: 3}
-  - {fileID: 8300000, guid: d91055653829c0341a03d7ceabd0c28f, type: 3}
-  - {fileID: 8300000, guid: 5f4cc521d11300a4d9fe5a85f7558512, type: 3}
-  - {fileID: 8300000, guid: 185bb48617faa504b98a8d107b66f227, type: 3}
 --- !u!114 &2959617678071810527
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -69,6 +63,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   maxHealth: 1
   health: 0
+  damageMultiplier: 1
   enableHealing: 0
   timeBeforeHeal: 0
   healAmount: 0
@@ -88,107 +83,17 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+  beforeDamageEvents:
+    m_PersistentCalls:
+      m_Calls: []
+  afterDamageEvents:
+    m_PersistentCalls:
+      m_Calls: []
   destroyOnDeath: 0
   onDeathEvents:
     m_PersistentCalls:
       m_Calls: []
---- !u!82 &2959617678071810526
-AudioSource:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2959617678071810521}
-  m_Enabled: 1
-  serializedVersion: 4
-  OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 0}
-  m_PlayOnAwake: 1
-  m_Volume: 0.3
-  m_Pitch: 1
-  Loop: 0
-  Mute: 0
-  Spatialize: 0
-  SpatializePostEffects: 0
-  Priority: 128
-  DopplerLevel: 1
-  MinDistance: 1
-  MaxDistance: 15
-  Pan2D: 0
-  rolloffMode: 0
-  BypassEffects: 0
-  BypassListenerEffects: 0
-  BypassReverbZones: 0
-  rolloffCustomCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 1
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    - serializedVersion: 3
-      time: 1
-      value: 0
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  panLevelCustomCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 1
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  spreadCustomCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 0
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  reverbZoneMixCustomCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 1
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
---- !u!114 &3665302298566855989
+--- !u!114 &5708880743871840654
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -5100,7 +5005,7 @@ BoxCollider:
   m_Enabled: 1
   serializedVersion: 2
   m_Size: {x: 0.2, y: 0.6, z: 0.2}
-  m_Center: {x: 0, y: 0.3, z: 2.94}
+  m_Center: {x: 0, y: 0.3, z: 0}
 --- !u!1001 &2959617676945268760
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -5118,7 +5023,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5122946604722367507, guid: a59c55105b48c0e47a6621ea243bb594, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -2.945
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5122946604722367507, guid: a59c55105b48c0e47a6621ea243bb594, type: 3}
       propertyPath: m_LocalRotation.x
@@ -5155,6 +5060,18 @@ PrefabInstance:
     - target: {fileID: 5499893948177807017, guid: a59c55105b48c0e47a6621ea243bb594, type: 3}
       propertyPath: m_Name
       value: Environment_Small_Bottle_01.1_001
+      objectReference: {fileID: 0}
+    - target: {fileID: 7125654011075677564, guid: a59c55105b48c0e47a6621ea243bb594, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7125654011075677564, guid: a59c55105b48c0e47a6621ea243bb594, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8019780933382026812, guid: a59c55105b48c0e47a6621ea243bb594, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: a59c55105b48c0e47a6621ea243bb594, type: 3}
