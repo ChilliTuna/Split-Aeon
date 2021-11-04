@@ -1,5 +1,32 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!114 &-9080157768440545514
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fecb8ef7f94ca804a8ab72049b86782e, type: 3}
+  m_Name: parameter:/Footsteps/Material
+  m_EditorClassIdentifier: 
+  Name: Material
+  StudioPath: 
+  Min: 0
+  Max: 2
+  Default: 0
+  ID:
+    data1: 0
+    data2: 0
+  Type: 2
+  IsGlobal: 0
+  Labels:
+  - Marble
+  - Wood
+  - Carpet
+  Exists: 1
 --- !u!114 &-8089051497737082844
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -240,8 +267,8 @@ MonoBehaviour:
   Is3D: 1
   IsOneShot: 1
   Parameters:
-  - {fileID: -3243115844976008983}
-  - {fileID: 3455482055713735690}
+  - {fileID: 5959416593939617065}
+  - {fileID: -9080157768440545514}
   MinDistance: 1
   MaxDistance: 20
   Length: 0
@@ -367,7 +394,7 @@ MonoBehaviour:
   Path: Assets/_SplitAeon/_Audio/FMOD/Split_Aeon_Audio/Build/Desktop/Master.strings.bank
   Name: Master.strings
   StudioPath: bank:/Master.strings
-  lastModified: 637698996176605952
+  lastModified: 637703397825280114
   FileSizes:
   - Name: Desktop
     Value: 2060
@@ -499,7 +526,7 @@ MonoBehaviour:
   - {fileID: 6018365509662061531}
   StringsBanks:
   - {fileID: -2674056261546100256}
-  cacheTime: 637698996177035816
+  cacheTime: 637703397825470159
   cacheVersion: 9
 --- !u!114 &36533632631641968
 MonoBehaviour:
@@ -824,6 +851,32 @@ MonoBehaviour:
   MinDistance: 1
   MaxDistance: 20
   Length: 1474
+--- !u!114 &5959416593939617065
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fecb8ef7f94ca804a8ab72049b86782e, type: 3}
+  m_Name: parameter:/Footsteps/Speed Switch
+  m_EditorClassIdentifier: 
+  Name: Speed Switch
+  StudioPath: 
+  Min: 0
+  Max: 1
+  Default: 0
+  ID:
+    data1: 0
+    data2: 0
+  Type: 2
+  IsGlobal: 0
+  Labels:
+  - Walking
+  - Running
+  Exists: 1
 --- !u!114 &6018365509662061531
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -839,7 +892,7 @@ MonoBehaviour:
   Path: Assets/_SplitAeon/_Audio/FMOD/Split_Aeon_Audio/Build/Desktop/Master.bank
   Name: Master
   StudioPath: bank:/Master
-  lastModified: 637698996177035816
+  lastModified: 637703397825470159
   FileSizes:
   - Name: Desktop
     Value: 1620768
