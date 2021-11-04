@@ -120,6 +120,7 @@ namespace AIStates
             if(m_timer > m_currentTargetTime)
             {
                 // bam, no more idle
+                agent.agentAudio.idleEmitter.Play();
                 agent.ChangeState(StateIndex.wander);
             }
 
@@ -251,6 +252,8 @@ namespace AIStates
 
             // Set up attack type
             agent.attack.AttackEnter(m_playerTransform, m_attackDirection);
+
+            agent.agentAudio.attackEmitter.Play();
         }
 
         public override void Update(AIAgent agent)
@@ -304,8 +307,11 @@ namespace AIStates
             agent.StopNavigating();
             agent.ragdoll.RagdollOn = true;
             agent.charCollider.enabled = false;
+            agent.innerCollider.enabled = false;
 
             m_timer = 0.0f;
+
+            agent.agentAudio.hurtEmitter.Play();
         }
 
         public override void Update(AIAgent agent)
@@ -323,6 +329,7 @@ namespace AIStates
             // clean up state Values
             agent.ragdoll.RagdollOn = false;
             agent.charCollider.enabled = true;
+            agent.innerCollider.enabled = true;
         }
     }
 
