@@ -43,6 +43,9 @@ public class AIAgent : MonoBehaviour
     public float currentSpeed { get { return m_currentSpeed; } }
     public float previousSpeed { get { return m_previousSpeed; } }
 
+    public bool isAlive { get { return m_stateMachine.currentIndex != (int)StateIndex.dead; } }
+    public StateIndex currentState { get { return (StateIndex)m_stateMachine.currentIndex; } }
+
     public StateIndex previousState { get { return m_previousState; } }
     public StateIndex postVaultState;
     public float vaultSpeed = 0.0f;

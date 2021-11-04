@@ -75,7 +75,7 @@ public class Timewarp : MonoBehaviour
 
     private void Update()
     {
-        timer.Count();
+        timer.DoTick();
 
         if (cromAb.intensity.value >= 0)
         {
@@ -202,7 +202,7 @@ public class CustomTimer
 
     private bool isActive = false;
 
-    public void Count()
+    public void DoTick()
     {
         if (isActive)
         {
