@@ -13,6 +13,8 @@ public class AIAgent : MonoBehaviour
     public Animator anim;
     public AttackType attack;
     public CapsuleCollider charCollider;
+    public CapsuleCollider innerCollider;
+    public AgentAudio agentAudio;
 
     bool m_isInitialised = false;
     StateMachine<AIAgent> m_stateMachine;
@@ -258,6 +260,11 @@ public class AIAgent : MonoBehaviour
     public Bounds GetBounds()
     {
         return charCollider.bounds;
+    }
+
+    void AgentFootStep()
+    {
+        agentAudio.footEmitter.Play();
     }
 
     private void OnDrawGizmos()
