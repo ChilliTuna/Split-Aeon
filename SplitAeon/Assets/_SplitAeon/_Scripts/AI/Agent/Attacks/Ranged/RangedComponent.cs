@@ -31,31 +31,46 @@ public class RangedComponent : AttackType
 
     public override void AttackUpdate()
     {
-        if(m_shotWaiting)
-        {
-            m_shotTimer += Time.deltaTime;
-
-            //var stateInfo = agent.anim.GetCurrentAnimatorStateInfo(0);
-
-            //if(stateInfo.normalizedTime > shootTime)
-            if (m_shotTimer > settings.animationShootTime)
-            {
-                // shoot here
-                m_shotWaiting = false;
-
-                Vector3 result = projectileOrigin.forward;
-                result.x *= m_originOffset.x;
-                result.y *= m_originOffset.y;
-                result.x *= m_originOffset.z;
-
-                ShootProjectile(projectileOrigin.position + FindHeadOffset());
-            }
-        }
+        //if(m_shotWaiting)
+        //{
+        //    m_shotTimer += Time.deltaTime;
+        //
+        //    //var stateInfo = agent.anim.GetCurrentAnimatorStateInfo(0);
+        //
+        //    //if(stateInfo.normalizedTime > shootTime)
+        //    if (m_shotTimer > settings.animationShootTime)
+        //    {
+        //        // shoot here
+        //        m_shotWaiting = false;
+        //
+        //        AnimBeginAttackEvent();
+        //    }
+        //}
     }
 
     public override void AttackExit()
     {
         m_currentTarget = null;
+    }
+
+    public override void AnimBeginAttackEvent()
+    {
+        Vector3 result = projectileOrigin.forward;
+        result.x *= m_originOffset.x;
+        result.y *= m_originOffset.y;
+        result.x *= m_originOffset.z;
+
+        ShootProjectile(projectileOrigin.position + FindHeadOffset());
+    }
+
+    void BelchAudioStart()
+    {
+        agent.agentAudio.attackEmitter.Play();
+    }
+
+    public override void AnimEndAttackEvent()
+    {
+        // This is not called for belchers
     }
 
     Vector3 FindHeadOffset()
