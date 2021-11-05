@@ -386,7 +386,7 @@ namespace AIStates
                 return;
             }
 
-            t += Time.deltaTime * agent.settings.vaultSensitivity * approachSpeed;
+            t += Time.deltaTime * agent.settings.vaultStartSensitivity * approachSpeed;
 
             if (t >= 1.0f)
             {
@@ -442,7 +442,7 @@ namespace AIStates
 
         public override void Update(AIAgent agent)
         {
-            t += Time.deltaTime * agent.settings.vaultSensitivity * approachSpeed;
+            t += Time.deltaTime * agent.settings.vaultEndSensitivity * approachSpeed;
 
             if (t < 1.0f)
             {
