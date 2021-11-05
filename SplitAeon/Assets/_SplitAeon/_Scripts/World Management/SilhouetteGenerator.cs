@@ -22,6 +22,8 @@ public class SilhouetteGenerator : MonoBehaviour
 
     private float offsetAmount;
 
+    private Coroutine fadeRoutine;
+
     private void Start()
     {
         GameManager gm = gameObject.GetComponent<GameManager>();
@@ -87,13 +89,15 @@ public class SilhouetteGenerator : MonoBehaviour
                 }
             }
         }
-        StartCoroutine(FadeSilhouettes(fadeDuration));
+        fadeRoutine = StartCoroutine(FadeSilhouettes(fadeDuration));
     }
 
     public void ClearSilhouettes()
     {
-        Debug.Log("Clear Silhouettes");
-        StopCoroutine(FadeSilhouettes());
+        if (fadeRoutine != null)
+        {
+            StopCoroutine(fadeRoutine);
+        }
         for (int i = 0; i < silhouettes.Count; i++)
         {
             Destroy(silhouettes[i]);
@@ -111,19 +115,17 @@ public class SilhouetteGenerator : MonoBehaviour
             }
 
             float currentFade = 0;
-            Debug.Log("Set CurrentFade");
 
             float currentParticleAmount = cultistAttackSilhouette.GetComponent<VisualEffect>().GetFloat("Particle Spawn Rate");
 
             while (totalFadeTime > currentFade)
             {
-                Debug.Log("Fade amount =" + currentFade);
                 currentFade += fadeIntervals;
                 currentParticleAmount -= currentParticleAmount * (currentFade / totalFadeTime);
 
                 if (silhouettes.Count == 0)
                 {
-                    StopCoroutine(FadeSilhouettes());
+                    StopCoroutine(fadeRoutine);
                 }
 
                 foreach (GameObject silhouette in silhouettes)
