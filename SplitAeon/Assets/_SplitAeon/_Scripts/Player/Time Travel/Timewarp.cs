@@ -40,6 +40,8 @@ public class Timewarp : MonoBehaviour
 
     private UserActions userActions;
 
+    public bool canManuallyTimeWarp;
+
     private void Awake()
     {
         userActions = new UserActions();
@@ -106,6 +108,9 @@ public class Timewarp : MonoBehaviour
 
     public void TryWarp()
     {
+        if (!canManuallyTimeWarp)
+            return;
+
         if (timer.GetIsActive())
         {
             if (timer.GetCurrentTime() < warpDelay)
@@ -199,6 +204,12 @@ public class Timewarp : MonoBehaviour
     {
         warpWarningImage.SetActive(newActive);
     }
+
+    public void ActivateWatch()
+    {
+        canManuallyTimeWarp = true;
+    }
+
 }
 
 public class CustomTimer
