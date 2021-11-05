@@ -15,7 +15,7 @@ MonoBehaviour:
   enemyType: 2
   moveSpeed: 5
   angularSpeed: 160
-  acceleration: 4
+  acceleration: 10
   health: 120
   headMultiplier: 2
   upperTorsoMultipler: 1.5
@@ -23,7 +23,7 @@ MonoBehaviour:
   limbMultiplier: 0.8
   maxIdleTime: 2
   minIdleTime: 1
-  stoppingDistance: 20
+  stoppingDistance: 0.5
   aggresionRadius: 5.33
   orbWalkRadius: 10.03
   attackChargeRadius: 10.61
@@ -81,3 +81,5 @@ MonoBehaviour:
   groundCheckLayer:
     serializedVersion: 2
     m_Bits: 4294967295
+  vaultInitialFallVelocity: 0
+  vaultStartforwardOffset: 0

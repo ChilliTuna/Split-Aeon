@@ -14,8 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   enemyType: 1
   moveSpeed: 7
-  angularSpeed: 240
-  acceleration: 8
+  angularSpeed: 480
+  acceleration: 20
   health: 100
   headMultiplier: 3
   upperTorsoMultipler: 2
@@ -99,3 +99,5 @@ MonoBehaviour:
   groundCheckLayer:
     serializedVersion: 2
     m_Bits: 4294967295
+  vaultInitialFallVelocity: -3.5
+  vaultStartforwardOffset: 0.05

@@ -74,6 +74,7 @@ namespace AIStates
                 {
                     // begin vault
                     agent.ChangeState(StateIndex.beginVault);
+                    return;
                 }
 
                 // Debug Traversal
@@ -365,6 +366,8 @@ namespace AIStates
             endForward.y = 0;
             endForward = endForward.normalized;
 
+            m_vaultPosition += endForward * agent.settings.vaultStartforwardOffset;
+
             m_startedVault = false;
 
             t = 0.0f;
@@ -376,7 +379,8 @@ namespace AIStates
 
         public override void Update(AIAgent agent)
         {
-            if(m_startedVault)
+            agent.ReuseLastAnimMoveSpeed();
+            if (m_startedVault)
             {
                 
                 return;
@@ -384,23 +388,18 @@ namespace AIStates
 
             t += Time.deltaTime * agent.settings.vaultSensitivity * approachSpeed;
 
-            if(t < 1.0f)
+            if (t >= 1.0f)
             {
-                var current = Vector3.Lerp(beginPos, m_vaultPosition, t);
-
-                agent.transform.position = current;
-            }
-
-            if(t < 1.0f)
-            {
-                agent.transform.forward = Vector3.Slerp(beginForward, endForward, t);
-            }
-
-            if(t >= 1.0f)
-            {
+                t = 1.0f;
                 m_startedVault = true;
                 agent.anim.SetTrigger("Vault");
             }
+
+            var current = Vector3.Lerp(beginPos, m_vaultPosition, t);
+
+            agent.transform.position = current;
+
+            agent.transform.forward = Vector3.Slerp(beginForward, endForward, t);
         }
 
         public override void Exit(AIAgent agent)
@@ -462,7 +461,7 @@ namespace AIStates
                 if(agent.VaultGroundCheck(agent.settings.vaultMinDistanceCheck))
                 {
                     agent.CompleteOffMeshLink("IdleTrigger");
-                    agent.navAgent.velocity = Vector3.zero;
+                    //agent.navAgent.velocity = Vector3.zero;
                 }
                 else
                 {
@@ -485,19 +484,20 @@ namespace AIStates
 
         public override void Enter(AIAgent agent)
         {
-            m_verticalVelocity = 0.0f;
+            m_verticalVelocity = agent.settings.vaultInitialFallVelocity;
         }
 
         public override void Update(AIAgent agent)
         {
-            m_verticalVelocity += Physics.gravity.y * Time.deltaTime * Time.deltaTime;
+            m_verticalVelocity += Physics.gravity.y * Time.deltaTime;
 
-            Vector3 move = Vector3.up * m_verticalVelocity;
+            Vector3 move = Vector3.up * m_verticalVelocity * Time.deltaTime;
 
-            if(agent.VaultGroundCheck(-m_verticalVelocity))
+            if(agent.VaultGroundCheck(-m_verticalVelocity * Time.deltaTime))
             {
                 agent.CompleteOffMeshLink("Land");
                 agent.navAgent.velocity = Vector3.zero;
+                agent.StopNavigating();
                 return;
             }
 
