@@ -92,6 +92,7 @@ public class SilhouetteGenerator : MonoBehaviour
 
     public void ClearSilhouettes()
     {
+        Debug.Log("Clear Silhouettes");
         StopCoroutine(FadeSilhouettes());
         for (int i = 0; i < silhouettes.Count; i++)
         {
@@ -110,12 +111,14 @@ public class SilhouetteGenerator : MonoBehaviour
             }
 
             float currentFade = 0;
+            Debug.Log("Set CurrentFade");
 
             float currentParticleAmount = cultistAttackSilhouette.GetComponent<VisualEffect>().GetFloat("Particle Spawn Rate");
 
             while (totalFadeTime > currentFade)
             {
-                currentFade += fadeIntervals + Time.deltaTime;
+                Debug.Log("Fade amount =" + currentFade);
+                currentFade += fadeIntervals;
                 currentParticleAmount -= currentParticleAmount * (currentFade / totalFadeTime);
 
                 if (silhouettes.Count == 0)
