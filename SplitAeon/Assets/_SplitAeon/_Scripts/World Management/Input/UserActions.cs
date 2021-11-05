@@ -323,7 +323,7 @@ public partial class @UserActions : IInputActionCollection2, IDisposable
                 {
                     ""name"": """",
                     ""id"": ""3c3f7dc0-065a-490a-bf67-429efde67a56"",
-                    ""path"": ""<Keyboard>/leftAlt"",
+                    ""path"": ""<Keyboard>/tab"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
