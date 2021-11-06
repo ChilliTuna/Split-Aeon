@@ -88,6 +88,15 @@ public class Health : MonoBehaviour
         afterDamageEvents.Invoke();
     }
 
+    public void Damage(float damage)
+    {
+        beforeDamageEvents.Invoke();
+        damage *= damageMultiplier;
+        health -= damage;
+        damageMultiplier = 1.0f;
+        afterDamageEvents.Invoke();
+    }
+
     /// <summary>
     /// Heals the current object by an amount.
     /// </summary>

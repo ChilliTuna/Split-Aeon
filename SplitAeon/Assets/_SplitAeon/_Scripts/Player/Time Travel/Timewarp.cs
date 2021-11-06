@@ -17,6 +17,7 @@ public class Timewarp : MonoBehaviour
 
     private CharacterController controller;
     public GameObject player;
+    public Animator watchViewmodelAnimator;
 
     public StudioEventEmitter warpSound;
 
@@ -38,6 +39,8 @@ public class Timewarp : MonoBehaviour
     public UnityEvent onTimeWarp;
 
     private UserActions userActions;
+
+    public bool canManuallyTimeWarp;
 
     private void Awake()
     {
@@ -63,6 +66,7 @@ public class Timewarp : MonoBehaviour
         volume.profile.TryGet(out exposure);
 
         controller = player.GetComponent<CharacterController>();
+        watchViewmodelAnimator = GameObject.Find("PlayerMagicViewmodel").GetComponent<Animator>();
 
         toPastWarpChecker = transform.Find("PastWarpChecker").GetComponent<WarpChecker>();
         toPastWarpChecker.transform.parent = player.transform;
@@ -75,7 +79,7 @@ public class Timewarp : MonoBehaviour
 
     private void Update()
     {
-        timer.Count();
+        timer.DoTick();
 
         if (cromAb.intensity.value >= 0)
         {
@@ -104,6 +108,9 @@ public class Timewarp : MonoBehaviour
 
     public void TryWarp()
     {
+        if (!canManuallyTimeWarp)
+            return;
+
         if (timer.GetIsActive())
         {
             if (timer.GetCurrentTime() < warpDelay)
@@ -137,9 +144,12 @@ public class Timewarp : MonoBehaviour
 
     public void SwapWorlds()
     {
-        player.GetComponent<Player>().viewmodelAnimator.SetTrigger("Warp");
+        //player.GetComponent<Player>().viewmodelAnimator.SetTrigger("Warp");
 
-        DoWarp();
+        //DoWarp();
+
+        watchViewmodelAnimator.SetTrigger("Warp");
+
     }
 
     public void DoWarp()
@@ -194,6 +204,12 @@ public class Timewarp : MonoBehaviour
     {
         warpWarningImage.SetActive(newActive);
     }
+
+    public void ActivateWatch()
+    {
+        canManuallyTimeWarp = true;
+    }
+
 }
 
 public class CustomTimer
@@ -202,7 +218,7 @@ public class CustomTimer
 
     private bool isActive = false;
 
-    public void Count()
+    public void DoTick()
     {
         if (isActive)
         {
@@ -235,3 +251,6 @@ public class CustomTimer
         currentTime = 0;
     }
 }
+
+    
+        

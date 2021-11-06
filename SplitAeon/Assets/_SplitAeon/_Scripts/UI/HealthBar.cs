@@ -7,15 +7,21 @@ public class HealthBar : MonoBehaviour
 {
     public Health health;
 
-    public Image bar;
+    public Image[] bars;
 
     void Start()
     {
-        bar.fillAmount = 1;
+        foreach (Image bar in bars)
+        {
+            bar.fillAmount = 1;
+        }
     }
 
     void Update()
     {
-        bar.fillAmount = health.health / health.maxHealth;
+        foreach (Image bar in bars)
+        {
+            bar.fillAmount = health.health / health.maxHealth;
+        }
     }
 }
