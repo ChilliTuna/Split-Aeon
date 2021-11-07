@@ -32,20 +32,7 @@ public class OpenableDoor : MonoBehaviour
 
     // Update is called once per frame
     void Update()
-    {
-        if(Input.GetMouseButtonDown(0))
-        {
-            Open();
-        }
-        if (Input.GetMouseButtonDown(1))
-        {
-            Close();
-        }
-        if (Input.GetMouseButtonDown(2))
-        {
-            actionDelegate = () => { };
-        }
-
+    {        
         actionDelegate.Invoke();
     }
 
@@ -57,7 +44,7 @@ public class OpenableDoor : MonoBehaviour
         }
         isClosed = false;
 
-        rotStart = doorTransform.eulerAngles;
+        rotStart = doorTransform.localEulerAngles;
         timeToAction = openTime * openProgress;
         targetRot = Vector3.up * openDegree;
         openProgress = 0.0f;
@@ -68,7 +55,7 @@ public class OpenableDoor : MonoBehaviour
     void OpenAction()
     {
         openProgress += Time.deltaTime / timeToAction;
-        doorTransform.eulerAngles = Vector3.Slerp(rotStart, targetRot, actionCurve.Evaluate(openProgress));
+        doorTransform.localEulerAngles = Vector3.Slerp(rotStart, targetRot, actionCurve.Evaluate(openProgress));
 
         if(openProgress > 1.0f)
         {
@@ -90,7 +77,7 @@ public class OpenableDoor : MonoBehaviour
         }
         isClosed = true;
 
-        rotStart = doorTransform.eulerAngles;
+        rotStart = doorTransform.localEulerAngles;
         if(rotStart.y == 0.0f)
         {
             return;
