@@ -5,7 +5,7 @@ using UnityEngine;
 public class HitBox : MonoBehaviour
 {
     public AIAgent attachedAgent;
-    public bool hitIsActive = false;
+    [HideInInspector]public bool hitIsActive = false;
 
     private void OnTriggerEnter(Collider other)
     {

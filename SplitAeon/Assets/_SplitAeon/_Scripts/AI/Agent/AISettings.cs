@@ -48,8 +48,11 @@ public class AISettings : ScriptableObject
     [Header("Vaulting")]
     public float vaultMinDistanceCheck = 0.5f;
     public float vaultgroundCheckOffset = 0.1f;
-    public float vaultSensitivity = 1.0f;
+    public float vaultStartSensitivity = 1.0f;
+    public float vaultEndSensitivity = 1.0f;
     public LayerMask groundCheckLayer = ~0;
+    public float vaultInitialFallVelocity = 0.0f;
+    public float vaultStartforwardOffset = 0.0f;
 
     private void OnValidate()
     {

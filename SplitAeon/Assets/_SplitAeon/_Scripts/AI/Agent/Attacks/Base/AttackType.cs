@@ -17,4 +17,8 @@ public abstract class AttackType : MonoBehaviour
     public abstract void AttackUpdate();
 
     public abstract void AttackExit();
+
+    public abstract void AnimBeginAttackEvent();
+
+    public abstract void AnimEndAttackEvent();
 }
