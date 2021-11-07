@@ -372,6 +372,7 @@ namespace AIStates
 
             t = 0.0f;
             approachSpeed = agent.previousSpeed;
+            approachSpeed = Mathf.Max(approachSpeed, agent.settings.moveSpeed); // TODO: Put a clamp here of the agents walk speed and run speed;
             agent.vaultSpeed = approachSpeed;
 
             agent.postVaultState = agent.previousState;
