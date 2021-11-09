@@ -63,6 +63,7 @@ namespace AIStates
     {
         void IState<AIAgent>.Enter(AIAgent agent)
         {
+            agent.agentAudio.idleEmitter.Play();
             Enter(agent);
         }
 
@@ -127,7 +128,6 @@ namespace AIStates
             if(m_timer > m_currentTargetTime)
             {
                 // bam, no more idle
-                agent.agentAudio.idleEmitter.Play();
                 agent.ChangeState(StateIndex.wander);
             }
 
@@ -315,8 +315,6 @@ namespace AIStates
             agent.innerCollider.enabled = false;
 
             m_timer = 0.0f;
-
-            agent.agentAudio.hurtEmitter.Play();
         }
 
         public override void Update(AIAgent agent)

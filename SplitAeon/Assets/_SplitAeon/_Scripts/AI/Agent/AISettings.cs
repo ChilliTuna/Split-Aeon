@@ -54,6 +54,10 @@ public class AISettings : ScriptableObject
     public float vaultInitialFallVelocity = 0.0f;
     public float vaultStartforwardOffset = 0.0f;
 
+    [Header("Audio")]
+    public float hurtDelay = 0.1f;
+    public float deathDelay = 0.1f;
+
     private void OnValidate()
     {
         if(Application.isPlaying)

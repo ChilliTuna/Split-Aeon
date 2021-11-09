@@ -52,6 +52,9 @@ public class AIAgent : MonoBehaviour
     public StateIndex postVaultState;
     public float vaultSpeed = 0.0f;
 
+    // audio
+    bool m_delayingSound = false;
+
     // Debug
     [Header("Debugging")]
     [SerializeField]
@@ -180,6 +183,30 @@ public class AIAgent : MonoBehaviour
         }
     }
 
+    public void OnHit()
+    {
+        if(health.health > 0)
+        {
+            // agent is hurt
+            //agentAudio.hurtEmitter.Play();
+            if(!m_delayingSound)
+            {
+                m_delayingSound = true;
+                StartCoroutine(SoundDelay(agentAudio.hurtEmitter, settings.hurtDelay));
+            }
+        }
+    }
+
+    IEnumerator SoundDelay(FMODUnity.StudioEventEmitter emitter, float delay)
+    {
+        for(float t = 0.0f; t < delay; t += Time.deltaTime)
+        {
+            yield return null;
+        }
+        emitter.Play();
+        m_delayingSound = false;
+    }
+
     public void Die()
     {
         if(m_stateMachine.currentIndex == (int)StateIndex.dead)
@@ -187,6 +214,8 @@ public class AIAgent : MonoBehaviour
             // Check if this is already in the dead state and if it is, do nothing
             return;
         }
+
+        StartCoroutine(SoundDelay(agentAudio.deathEmitter, settings.deathDelay));
 
         // This would ideally have an animation as well as some sort of clean up for corpses
         // For now just Change state to dead which will activate a ragdoll

@@ -121,7 +121,19 @@ MonoBehaviour:
   healTick: 0
   onHitEvents:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 367544850}
+        m_TargetAssemblyTypeName: AIAgent, Assembly-CSharp
+        m_MethodName: OnHit
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
   beforeDamageEvents:
     m_PersistentCalls:
       m_Calls:
@@ -259,9 +271,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f6540e3870c94e348be4f552875bb41c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  idleEmitter: {fileID: 6155833658733319987}
-  attackEmitter: {fileID: 6155833658733319987}
-  hurtEmitter: {fileID: 6155833658733319987}
+  idleEmitter: {fileID: 1340404327387065}
+  attackEmitter: {fileID: 5838693454339693655}
+  hurtEmitter: {fileID: 7780016768590141673}
+  deathEmitter: {fileID: 7612081797084395716}
   footEmitter: {fileID: 9028609962569796944}
 --- !u!114 &9028609962569796944
 MonoBehaviour:
@@ -278,11 +291,11 @@ MonoBehaviour:
   CollisionTag: 
   EventReference:
     Guid:
-      Data1: -766593364
-      Data2: 1277548140
-      Data3: -1367806323
-      Data4: -517737352
-    Path: event:/SFX/Player/Footsteps
+      Data1: 423334073
+      Data2: 1147294669
+      Data3: 1995179152
+      Data4: 1639548602
+    Path: event:/SFX/Cultist/Cultist_Footsteps
   Event: 
   PlayEvent: 0
   StopEvent: 0
@@ -1037,36 +1050,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   type: 0
---- !u!114 &6155833658733319987
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7448399272239588531}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9a6610d2e704f1648819acc8d7460285, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  CollisionTag: 
-  EventReference:
-    Guid:
-      Data1: -286617118
-      Data2: 1208493992
-      Data3: 2091015606
-      Data4: 792879231
-    Path: event:/SFX/Cultist/Cultist_Growl
-  Event: 
-  PlayEvent: 0
-  StopEvent: 0
-  AllowFadeout: 1
-  TriggerOnce: 0
-  Preload: 0
-  Params: []
-  OverrideAttenuation: 0
-  OverrideMinDistance: 1
-  OverrideMaxDistance: 20
 --- !u!54 &367544842
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -1243,6 +1226,160 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   type: 3
+--- !u!1 &7952881213914124328
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 3949781143316147547}
+  - component: {fileID: 1340404327387065}
+  - component: {fileID: 5838693454339693655}
+  - component: {fileID: 7780016768590141673}
+  - component: {fileID: 7612081797084395716}
+  m_Layer: 26
+  m_Name: HeadSoundEmitter
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &3949781143316147547
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7952881213914124328}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 4270604022067743337}
+  m_RootOrder: 1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1340404327387065
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7952881213914124328}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9a6610d2e704f1648819acc8d7460285, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  CollisionTag: 
+  EventReference:
+    Guid:
+      Data1: -286617118
+      Data2: 1208493992
+      Data3: 2091015606
+      Data4: 792879231
+    Path: event:/SFX/Cultist/Cultist_Growl
+  Event: 
+  PlayEvent: 0
+  StopEvent: 0
+  AllowFadeout: 1
+  TriggerOnce: 0
+  Preload: 0
+  Params: []
+  OverrideAttenuation: 0
+  OverrideMinDistance: 1
+  OverrideMaxDistance: 20
+--- !u!114 &5838693454339693655
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7952881213914124328}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9a6610d2e704f1648819acc8d7460285, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  CollisionTag: 
+  EventReference:
+    Guid:
+      Data1: 1209320104
+      Data2: 1265313550
+      Data3: -2094152804
+      Data4: -1260419504
+    Path: event:/SFX/Cultist/Cultist_Attack
+  Event: 
+  PlayEvent: 0
+  StopEvent: 0
+  AllowFadeout: 1
+  TriggerOnce: 0
+  Preload: 0
+  Params: []
+  OverrideAttenuation: 0
+  OverrideMinDistance: 1
+  OverrideMaxDistance: 20
+--- !u!114 &7780016768590141673
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7952881213914124328}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9a6610d2e704f1648819acc8d7460285, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  CollisionTag: 
+  EventReference:
+    Guid:
+      Data1: 1334214355
+      Data2: 1321917140
+      Data3: -1754952771
+      Data4: -434551136
+    Path: event:/SFX/Cultist/Cultist_Hurt
+  Event: 
+  PlayEvent: 0
+  StopEvent: 0
+  AllowFadeout: 1
+  TriggerOnce: 0
+  Preload: 0
+  Params: []
+  OverrideAttenuation: 0
+  OverrideMinDistance: 1
+  OverrideMaxDistance: 20
+--- !u!114 &7612081797084395716
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7952881213914124328}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9a6610d2e704f1648819acc8d7460285, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  CollisionTag: 
+  EventReference:
+    Guid:
+      Data1: 1281493978
+      Data2: 1165929091
+      Data3: 892674238
+      Data4: -990688556
+    Path: event:/SFX/Cultist/Cultist_Death
+  Event: 
+  PlayEvent: 0
+  StopEvent: 0
+  AllowFadeout: 1
+  TriggerOnce: 0
+  Preload: 0
+  Params: []
+  OverrideAttenuation: 0
+  OverrideMinDistance: 1
+  OverrideMaxDistance: 20
 --- !u!1001 &2999698823597507449
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2016,31 +2153,6 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 0510e7cc8bfe40843a0515c5fe12267f, type: 3}
---- !u!1 &6589871559756302887 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 8273956300578523486, guid: 0510e7cc8bfe40843a0515c5fe12267f, type: 3}
-  m_PrefabInstance: {fileID: 2999698823597507449}
-  m_PrefabAsset: {fileID: 0}
---- !u!1 &3684507759728125354 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: -7312981136808073517, guid: 0510e7cc8bfe40843a0515c5fe12267f, type: 3}
-  m_PrefabInstance: {fileID: 2999698823597507449}
-  m_PrefabAsset: {fileID: 0}
---- !u!1 &6022006951894494120 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: -417878991522404143, guid: 0510e7cc8bfe40843a0515c5fe12267f, type: 3}
-  m_PrefabInstance: {fileID: 2999698823597507449}
-  m_PrefabAsset: {fileID: 0}
---- !u!95 &8704199715063824104 stripped
-Animator:
-  m_CorrespondingSourceObject: {fileID: 5866666021909216657, guid: 0510e7cc8bfe40843a0515c5fe12267f, type: 3}
-  m_PrefabInstance: {fileID: 2999698823597507449}
-  m_PrefabAsset: {fileID: 0}
---- !u!1 &2136216200850097838 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: -5475163840721910313, guid: 0510e7cc8bfe40843a0515c5fe12267f, type: 3}
-  m_PrefabInstance: {fileID: 2999698823597507449}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &7103490882647901587 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: -3803930360621070614, guid: 0510e7cc8bfe40843a0515c5fe12267f, type: 3}
@@ -2051,6 +2163,36 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 5692292108060305354, guid: 0510e7cc8bfe40843a0515c5fe12267f, type: 3}
   m_PrefabInstance: {fileID: 2999698823597507449}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &6589871559756302887 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 8273956300578523486, guid: 0510e7cc8bfe40843a0515c5fe12267f, type: 3}
+  m_PrefabInstance: {fileID: 2999698823597507449}
+  m_PrefabAsset: {fileID: 0}
+--- !u!95 &8704199715063824104 stripped
+Animator:
+  m_CorrespondingSourceObject: {fileID: 5866666021909216657, guid: 0510e7cc8bfe40843a0515c5fe12267f, type: 3}
+  m_PrefabInstance: {fileID: 2999698823597507449}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &6022006951894494120 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: -417878991522404143, guid: 0510e7cc8bfe40843a0515c5fe12267f, type: 3}
+  m_PrefabInstance: {fileID: 2999698823597507449}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &3684507759728125354 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: -7312981136808073517, guid: 0510e7cc8bfe40843a0515c5fe12267f, type: 3}
+  m_PrefabInstance: {fileID: 2999698823597507449}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &2693288908986449448 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: 0510e7cc8bfe40843a0515c5fe12267f, type: 3}
+  m_PrefabInstance: {fileID: 2999698823597507449}
+  m_PrefabAsset: {fileID: 0}
+--- !u!4 &4270604022067743337 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: -7861831855079945968, guid: 0510e7cc8bfe40843a0515c5fe12267f, type: 3}
+  m_PrefabInstance: {fileID: 2999698823597507449}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1495893541267667601 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: -4799876848884336152, guid: 0510e7cc8bfe40843a0515c5fe12267f, type: 3}
@@ -2059,6 +2201,11 @@ GameObject:
 --- !u!1 &2051523190066223421 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: -5343121461258200508, guid: 0510e7cc8bfe40843a0515c5fe12267f, type: 3}
+  m_PrefabInstance: {fileID: 2999698823597507449}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &2136216200850097838 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: -5475163840721910313, guid: 0510e7cc8bfe40843a0515c5fe12267f, type: 3}
   m_PrefabInstance: {fileID: 2999698823597507449}
   m_PrefabAsset: {fileID: 0}
 --- !u!1 &1215605223224633737 stripped
@@ -2074,11 +2221,6 @@ GameObject:
 --- !u!1 &3601087649067577536 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: -7469026412346215495, guid: 0510e7cc8bfe40843a0515c5fe12267f, type: 3}
-  m_PrefabInstance: {fileID: 2999698823597507449}
-  m_PrefabAsset: {fileID: 0}
---- !u!1 &2693288908986449448 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: 0510e7cc8bfe40843a0515c5fe12267f, type: 3}
   m_PrefabInstance: {fileID: 2999698823597507449}
   m_PrefabAsset: {fileID: 0}
 --- !u!4 &1250930152134405346 stripped

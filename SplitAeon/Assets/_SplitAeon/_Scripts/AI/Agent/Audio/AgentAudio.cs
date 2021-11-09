@@ -10,19 +10,8 @@ public class AgentAudio : MonoBehaviour
 
     public StudioEventEmitter attackEmitter;
     public StudioEventEmitter hurtEmitter;
+    public StudioEventEmitter deathEmitter;
 
     [Header("Foot Emitter")]
     public StudioEventEmitter footEmitter;
-
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
 }
