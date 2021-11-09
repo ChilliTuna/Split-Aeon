@@ -183,11 +183,11 @@ public class Player : MonoBehaviour
         }
 
         playerVelocity.y += gravity * Time.deltaTime;
-        Vector3 moveDelta = move * movementSpeed * Time.deltaTime;
+        Vector3 moveTarget = move * movementSpeed;
 
-        m_playerCurrentMoveVelocity = Vector3.SmoothDamp(m_playerCurrentMoveVelocity, moveDelta, ref m_smoothMove, smoothMovetime);
+        m_playerCurrentMoveVelocity = Vector3.SmoothDamp(m_playerCurrentMoveVelocity, moveTarget, ref m_smoothMove, smoothMovetime);
 
-        Vector3 finalMoveDelta = m_playerCurrentMoveVelocity + playerVelocity * Time.deltaTime;
+        Vector3 finalMoveDelta = m_playerCurrentMoveVelocity * Time.deltaTime + playerVelocity * Time.deltaTime;
 
         controller.Move(finalMoveDelta);
 
