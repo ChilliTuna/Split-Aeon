@@ -48,6 +48,7 @@
 	<object class="MasterTrack" id="{02408750-b503-4e2a-a0ae-558a60793890}">
 		<relationship name="automationTracks">
 			<destination>{6566b470-233c-4446-9913-3ae107552cd4}</destination>
+			<destination>{16e30902-1cc0-4968-97a1-875192ed6130}</destination>
 		</relationship>
 		<relationship name="modules">
 			<destination>{8b842dcb-9d13-4264-8546-8257a4b11e8f}</destination>
@@ -76,6 +77,7 @@
 		</property>
 		<relationship name="automators">
 			<destination>{b4e1ff5d-0b18-426d-9ed7-b2d30fc4f59b}</destination>
+			<destination>{907416eb-7eba-41db-824b-fb5de32fc3ac}</destination>
 		</relationship>
 	</object>
 	<object class="MarkerTrack" id="{ade258a1-b264-44b0-8471-af6517348919}" />
@@ -161,6 +163,11 @@
 			<destination>{b4e1ff5d-0b18-426d-9ed7-b2d30fc4f59b}</destination>
 		</relationship>
 	</object>
+	<object class="AutomationTrack" id="{16e30902-1cc0-4968-97a1-875192ed6130}">
+		<relationship name="automator">
+			<destination>{907416eb-7eba-41db-824b-fb5de32fc3ac}</destination>
+		</relationship>
+	</object>
 	<object class="TransitionSourceSound" id="{8b842dcb-9d13-4264-8546-8257a4b11e8f}">
 		<property name="length">
 			<value>0</value>
@@ -200,6 +207,11 @@
 		<relationship name="automationCurves">
 			<destination>{635b9869-e296-46b1-85b1-6212688b04ce}</destination>
 		</relationship>
+	</object>
+	<object class="Automator" id="{907416eb-7eba-41db-824b-fb5de32fc3ac}">
+		<property name="nameOfPropertyBeingAutomated">
+			<value>minimumDistance</value>
+		</property>
 	</object>
 	<object class="SingleSound" id="{44e532be-f9a9-4ea1-8493-39d80662d81a}">
 		<property name="length">
@@ -711,7 +723,7 @@
 			<value>0.12069429494079656</value>
 		</property>
 		<property name="value">
-			<value>100</value>
+			<value>200</value>
 		</property>
 	</object>
 	<object class="MixerBusFader" id="{7e3d84f2-e264-4c20-a821-d521c51c3d63}" />

@@ -4,6 +4,10 @@
 		<property name="name">
 			<value>Ambience</value>
 		</property>
+		<relationship name="masters">
+			<destination>{7ee29eaa-6a0a-4cfc-8b20-6da4755605f7}</destination>
+			<destination>{e070868d-8c79-4fc4-9b18-4433381bfa2f}</destination>
+		</relationship>
 		<relationship name="effectChain">
 			<destination>{f399e627-ab13-47dc-9295-1af37a868e13}</destination>
 		</relationship>
@@ -11,7 +15,7 @@
 			<destination>{096544b0-02b2-4889-8795-e0cf02dc64e5}</destination>
 		</relationship>
 		<relationship name="output">
-			<destination>{d8a99fcf-acf4-4b8a-b03e-3328620c12c9}</destination>
+			<destination>{41dded89-9358-4e94-a591-77be68f53ac1}</destination>
 		</relationship>
 	</object>
 	<object class="MixerBusEffectChain" id="{f399e627-ab13-47dc-9295-1af37a868e13}">

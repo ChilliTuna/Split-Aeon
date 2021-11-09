@@ -4,6 +4,10 @@
 		<property name="name">
 			<value>SFX</value>
 		</property>
+		<relationship name="masters">
+			<destination>{7ee29eaa-6a0a-4cfc-8b20-6da4755605f7}</destination>
+			<destination>{e070868d-8c79-4fc4-9b18-4433381bfa2f}</destination>
+		</relationship>
 		<relationship name="effectChain">
 			<destination>{780a848c-7b00-4002-b1ee-592498a4540b}</destination>
 		</relationship>
@@ -17,8 +21,10 @@
 	<object class="MixerBusEffectChain" id="{780a848c-7b00-4002-b1ee-592498a4540b}">
 		<relationship name="effects">
 			<destination>{39d83bbb-6241-4f2e-ad0d-13a46869a431}</destination>
+			<destination>{8447edf1-5c92-492d-aa18-0fe8b712a2af}</destination>
 		</relationship>
 	</object>
 	<object class="MixerBusPanner" id="{b5d722c3-341d-41c9-8705-d0bac5b84d2d}" />
 	<object class="MixerBusFader" id="{39d83bbb-6241-4f2e-ad0d-13a46869a431}" />
+	<object class="Sidechain" id="{8447edf1-5c92-492d-aa18-0fe8b712a2af}" />
 </objects>
