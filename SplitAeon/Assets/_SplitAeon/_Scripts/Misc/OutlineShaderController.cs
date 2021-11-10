@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class OutlineShaderController : MonoBehaviour
 {
-    public Renderer outlineRenderer;
+    public Renderer[] outlineRenderers;
     public string intensityRef;
 
     public float targetIntensity = 0.007f;
@@ -43,7 +43,11 @@ public class OutlineShaderController : MonoBehaviour
             m_currentIntensity = targetIntensity;
             actionDelegate = () => { };
         }
-        outlineRenderer.material.SetFloat(intensityRef, m_currentIntensity);
+
+        foreach(var render in outlineRenderers)
+        {
+            render.material.SetFloat(intensityRef, m_currentIntensity);
+        }
     }
 
     public void SetIntensity(float value)
