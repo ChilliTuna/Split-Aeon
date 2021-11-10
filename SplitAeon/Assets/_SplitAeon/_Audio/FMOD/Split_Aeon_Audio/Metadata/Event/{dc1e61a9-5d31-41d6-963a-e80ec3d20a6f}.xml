@@ -53,7 +53,7 @@
 			<destination>{211e3bcc-b628-4fc1-9cc2-dbc7cabf94fe}</destination>
 		</relationship>
 		<relationship name="output">
-			<destination>{41dded89-9358-4e94-a591-77be68f53ac1}</destination>
+			<destination>{681fc8c0-6c7b-41a2-b411-98e714f2ac6e}</destination>
 		</relationship>
 	</object>
 	<object class="EventAutomatableProperties" id="{caf35ace-3590-47b0-8590-fdbe0c10e89b}" />
@@ -95,14 +95,23 @@
 		<property name="length">
 			<value>59</value>
 		</property>
+		<property name="startOffset">
+			<value>97.5</value>
+		</property>
 		<property name="volume">
 			<value>-10</value>
+		</property>
+		<property name="looping">
+			<value>true</value>
 		</property>
 		<relationship name="audioFile">
 			<destination>{4319d0d4-f90a-4fd1-b2ad-ac462c260373}</destination>
 		</relationship>
 	</object>
 	<object class="EventMixerGroup" id="{badc5486-be33-4827-875f-0a73a4a9f1d2}">
+		<property name="volume">
+			<value>-3</value>
+		</property>
 		<property name="name">
 			<value>Audio 1</value>
 		</property>

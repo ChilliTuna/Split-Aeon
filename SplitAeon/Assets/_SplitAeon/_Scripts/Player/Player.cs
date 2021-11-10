@@ -1,6 +1,8 @@
 ﻿using UnityEngine;
 using UnityEngine.InputSystem;
 
+using FMODUnity;
+
 public class Player : MonoBehaviour
 {
     #region Variables
@@ -28,6 +30,8 @@ public class Player : MonoBehaviour
 
     public float jumpHeight;
     private Vector3 playerVelocity;
+
+    public StudioEventEmitter jumpEmitter;
 
     #endregion Jumping
 
@@ -312,6 +316,8 @@ public class Player : MonoBehaviour
         if (isGrounded)
         {
             playerVelocity.y = Mathf.Sqrt(jumpHeight * -2f * gravity);
+
+            jumpEmitter.Play();
         }
     }
 

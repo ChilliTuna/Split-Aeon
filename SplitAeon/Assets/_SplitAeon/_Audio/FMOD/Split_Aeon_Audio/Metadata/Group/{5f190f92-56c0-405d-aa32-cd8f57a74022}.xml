@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<objects serializationModel="Studio.02.02.00">
+	<object class="MixerGroup" id="{5f190f92-56c0-405d-aa32-cd8f57a74022}">
+		<property name="name">
+			<value>Music</value>
+		</property>
+		<relationship name="modulators">
+			<destination>{dc7a8a74-365e-4374-b55b-e47b55f9b99a}</destination>
+		</relationship>
+		<relationship name="masters">
+			<destination>{7ee29eaa-6a0a-4cfc-8b20-6da4755605f7}</destination>
+			<destination>{9a11b178-78e9-4ae9-9a6f-27efcf55e0ee}</destination>
+		</relationship>
+		<relationship name="effectChain">
+			<destination>{5a88292c-5092-4c05-a222-51fd7f023bed}</destination>
+		</relationship>
+		<relationship name="panner">
+			<destination>{9e44c793-2b4b-40b8-b4de-ffddb6e5b371}</destination>
+		</relationship>
+		<relationship name="output">
+			<destination>{41dded89-9358-4e94-a591-77be68f53ac1}</destination>
+		</relationship>
+	</object>
+	<object class="SidechainModulator" id="{dc7a8a74-365e-4374-b55b-e47b55f9b99a}">
+		<property name="nameOfPropertyBeingModulated">
+			<value>volume</value>
+		</property>
+		<property name="amount">
+			<value>8</value>
+		</property>
+		<property name="attackTime">
+			<value>80</value>
+		</property>
+		<property name="releaseTime">
+			<value>1000</value>
+		</property>
+		<relationship name="sidechains">
+			<destination>{8447edf1-5c92-492d-aa18-0fe8b712a2af}</destination>
+		</relationship>
+	</object>
+	<object class="MixerBusEffectChain" id="{5a88292c-5092-4c05-a222-51fd7f023bed}">
+		<relationship name="effects">
+			<destination>{46e54c42-21af-4cf6-8376-53673cf67b2d}</destination>
+		</relationship>
+	</object>
+	<object class="MixerBusPanner" id="{9e44c793-2b4b-40b8-b4de-ffddb6e5b371}" />
+	<object class="MixerBusFader" id="{46e54c42-21af-4cf6-8376-53673cf67b2d}" />
+</objects>
