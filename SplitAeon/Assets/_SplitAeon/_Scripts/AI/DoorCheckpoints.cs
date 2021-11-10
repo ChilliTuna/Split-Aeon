@@ -7,7 +7,7 @@ public class DoorCheckpoints : MonoBehaviour
     OpenableDoor[] openableDoors;
 
     // Start is called before the first frame update
-    void Start()
+    void Awake()
     {
         openableDoors = FindObjectsOfType<OpenableDoor>();
     }
