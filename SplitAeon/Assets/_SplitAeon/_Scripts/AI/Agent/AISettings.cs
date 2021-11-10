@@ -41,6 +41,8 @@ public class AISettings : ScriptableObject
 
     [Header("Death")]
     public float bodyDecayTime = 5.0f;
+    public string dissolveShaderEffect;
+    public float dissolveTime = 1.0f;
 
     [Header("Animation")]
     public AnimationCurve moveAnimSpeed;

@@ -15,6 +15,8 @@ public class AIAgent : MonoBehaviour
     public CapsuleCollider charCollider;
     public CapsuleCollider innerCollider;
     public AgentAudio agentAudio;
+    public Renderer[] agentRenderers;
+    List<Material> m_dissovleMaterials;
 
     bool m_isInitialised = false;
     StateMachine<AIAgent> m_stateMachine;
@@ -40,6 +42,7 @@ public class AIAgent : MonoBehaviour
     public Transform playerTransform { get { return aiManager.playerTransform; } }
     public Ragdoll ragdoll {  get { return m_ragdoll; } }
     public Health health { get { return m_health; } }
+    public List<Material> dissolveMaterials { get { return m_dissovleMaterials; } }
     public List<Neighbour> neighbours { get { return m_neighbours; } }
 
     public float currentSpeed { get { return m_currentSpeed; } }
@@ -122,6 +125,12 @@ public class AIAgent : MonoBehaviour
 
         StabiliseSettings();
         ResetHealth();
+
+        m_dissovleMaterials = new List<Material>();
+        foreach(Renderer render in agentRenderers)
+        {
+            m_dissovleMaterials.Add(render.material);
+        }
     }
 
     public void ChangeState(int stateIndex)
