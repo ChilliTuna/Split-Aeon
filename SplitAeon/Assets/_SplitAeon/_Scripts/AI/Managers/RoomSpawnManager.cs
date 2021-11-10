@@ -151,8 +151,8 @@ public class RoomSpawnManager : MonoBehaviour
     {
         roomListeners = new UnityAction[enemySpawnerRooms.Length];
         roomListeners[0] = EnterGallery;
-        roomListeners[1] = EnterGenerator;
-        roomListeners[2] = EnterBarRoom;
+        roomListeners[1] = null;
+        roomListeners[2] = null;
         roomListeners[3] = EnterDressingRoom;
         roomListeners[4] = EnterStageArea;
     }
@@ -255,8 +255,8 @@ public class RoomSpawnManager : MonoBehaviour
         CompleteRoom((int)RoomIndex.gallery);
     }
 
-    // Walk Thourgh Generator - level pathing
-    public void EnterGenerator()
+    // Start Generator - objective
+    public void StartGenerator()
     {
         SetSpawner((int)RoomIndex.generator, true);
         EnableKillTracker(pastFlexibleKillTracker, 8, MiddleGenerator);
@@ -290,8 +290,8 @@ public class RoomSpawnManager : MonoBehaviour
         futurePassiveSpawner.PassiveSpawn(6);
     }
 
-    // Walk Though Bar - level pathing
-    public void EnterBarRoom()
+    // Start Bar - objective
+    public void StartBarRoom()
     {
         SetSpawner((int)RoomIndex.bar, true);
         EnableKillTracker(mixedKillTracker, 12, CompleteBar);
