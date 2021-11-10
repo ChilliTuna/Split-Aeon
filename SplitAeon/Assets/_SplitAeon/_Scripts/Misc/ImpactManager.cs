@@ -10,6 +10,8 @@ public class ImpactManager : MonoBehaviour
 
     public List<ImpactSurface> surfaces = new List<ImpactSurface>();
 
+    public GameObject bloodEffect;
+
     public GameObject fallbackImpact;
 
     private void OnEnable()
@@ -17,6 +19,12 @@ public class ImpactManager : MonoBehaviour
         if (Physics.CheckSphere(gameObject.transform.position, 0.2f, mask))
         {
             GameObject hitObject = Physics.OverlapSphere(gameObject.transform.position, 0.2f, mask)[0].gameObject;
+
+            if (hitObject.layer == 26)
+            {
+                GameObject bloodInstance = Instantiate(bloodEffect, transform.position, transform.rotation);
+                StartCoroutine(bloodInstance.GetComponent<TemporaryExistence>().LiveThenDieScaled(1));
+            }
 
             foreach (ImpactSurface s in surfaces)
             {
