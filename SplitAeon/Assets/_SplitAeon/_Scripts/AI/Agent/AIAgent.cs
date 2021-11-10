@@ -15,6 +15,8 @@ public class AIAgent : MonoBehaviour
     public CapsuleCollider charCollider;
     public CapsuleCollider innerCollider;
     public AgentAudio agentAudio;
+    public Renderer[] agentRenderers;
+    List<Material> m_dissovleMaterials;
 
     bool m_isInitialised = false;
     StateMachine<AIAgent> m_stateMachine;
@@ -40,6 +42,7 @@ public class AIAgent : MonoBehaviour
     public Transform playerTransform { get { return aiManager.playerTransform; } }
     public Ragdoll ragdoll {  get { return m_ragdoll; } }
     public Health health { get { return m_health; } }
+    public List<Material> dissolveMaterials { get { return m_dissovleMaterials; } }
     public List<Neighbour> neighbours { get { return m_neighbours; } }
 
     public float currentSpeed { get { return m_currentSpeed; } }
@@ -51,6 +54,9 @@ public class AIAgent : MonoBehaviour
     public StateIndex previousState { get { return m_previousState; } }
     public StateIndex postVaultState;
     public float vaultSpeed = 0.0f;
+
+    // audio
+    bool m_delayingSound = false;
 
     // Debug
     [Header("Debugging")]
@@ -119,6 +125,12 @@ public class AIAgent : MonoBehaviour
 
         StabiliseSettings();
         ResetHealth();
+
+        m_dissovleMaterials = new List<Material>();
+        foreach(Renderer render in agentRenderers)
+        {
+            m_dissovleMaterials.Add(render.material);
+        }
     }
 
     public void ChangeState(int stateIndex)
@@ -180,6 +192,30 @@ public class AIAgent : MonoBehaviour
         }
     }
 
+    public void OnHit()
+    {
+        if(health.health > 0)
+        {
+            // agent is hurt
+            //agentAudio.hurtEmitter.Play();
+            if(!m_delayingSound)
+            {
+                m_delayingSound = true;
+                StartCoroutine(SoundDelay(agentAudio.hurtEmitter, settings.hurtDelay));
+            }
+        }
+    }
+
+    IEnumerator SoundDelay(FMODUnity.StudioEventEmitter emitter, float delay)
+    {
+        for(float t = 0.0f; t < delay; t += Time.deltaTime)
+        {
+            yield return null;
+        }
+        emitter.Play();
+        m_delayingSound = false;
+    }
+
     public void Die()
     {
         if(m_stateMachine.currentIndex == (int)StateIndex.dead)
@@ -187,6 +223,8 @@ public class AIAgent : MonoBehaviour
             // Check if this is already in the dead state and if it is, do nothing
             return;
         }
+
+        StartCoroutine(SoundDelay(agentAudio.deathEmitter, settings.deathDelay));
 
         // This would ideally have an animation as well as some sort of clean up for corpses
         // For now just Change state to dead which will activate a ragdoll

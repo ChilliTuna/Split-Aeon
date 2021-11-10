@@ -63,6 +63,7 @@ namespace AIStates
     {
         void IState<AIAgent>.Enter(AIAgent agent)
         {
+            agent.agentAudio.idleEmitter.Play();
             Enter(agent);
         }
 
@@ -127,7 +128,6 @@ namespace AIStates
             if(m_timer > m_currentTargetTime)
             {
                 // bam, no more idle
-                agent.agentAudio.idleEmitter.Play();
                 agent.ChangeState(StateIndex.wander);
             }
 
@@ -306,6 +306,9 @@ namespace AIStates
     {
         float m_timer = 0.0f;
 
+        delegate void AgentAction(AIAgent agent);
+        AgentAction actionDelegate = (agent) => { };
+
         public override void Enter(AIAgent agent)
         {
             // set up state values
@@ -315,18 +318,12 @@ namespace AIStates
             agent.innerCollider.enabled = false;
 
             m_timer = 0.0f;
-
-            agent.agentAudio.hurtEmitter.Play();
+            actionDelegate = DecayTimer;
         }
 
         public override void Update(AIAgent agent)
         {
-            if(m_timer > agent.settings.bodyDecayTime)
-            {
-                agent.DisablePoolObject();
-            }
-
-            m_timer += Time.deltaTime;
+            actionDelegate.Invoke(agent);
         }
 
         public override void Exit(AIAgent agent)
@@ -335,6 +332,42 @@ namespace AIStates
             agent.ragdoll.RagdollOn = false;
             agent.charCollider.enabled = true;
             agent.innerCollider.enabled = true;
+            SetDissolveFloat(agent, 0.0f);
+            actionDelegate = (clearAgent) => { };
+        }
+
+        void DecayTimer(AIAgent agent)
+        {
+            if (m_timer > agent.settings.bodyDecayTime)
+            {
+                m_timer = 0.0f;
+                actionDelegate = DissolveTimer;
+            }
+
+            m_timer += Time.deltaTime;
+        }
+
+        void DissolveTimer(AIAgent agent)
+        {
+            if (m_timer > agent.settings.dissolveTime)
+            {
+                agent.DisablePoolObject();
+                actionDelegate = (clearAgent) => { };
+                return;
+            }
+
+            m_timer += Time.deltaTime;
+            SetDissolveFloat(agent, m_timer / agent.settings.dissolveTime);
+        }
+
+        void SetDissolveFloat(AIAgent agent, float value)
+        {
+            int id = Shader.PropertyToID(agent.settings.dissolveShaderEffect);
+
+            foreach(var mat in agent.dissolveMaterials)
+            {
+                mat.SetFloat(id, value);
+            }
         }
     }
 
