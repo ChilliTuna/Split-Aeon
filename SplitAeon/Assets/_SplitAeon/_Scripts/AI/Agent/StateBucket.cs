@@ -63,6 +63,7 @@ namespace AIStates
     {
         void IState<AIAgent>.Enter(AIAgent agent)
         {
+            agent.agentAudio.idleEmitter.Play();
             Enter(agent);
         }
 
@@ -113,7 +114,7 @@ namespace AIStates
             // Check for player Radius
             if(agent.settings.aggresionRadius * agent.settings.aggresionRadius > agent.distToPlayerSquared)
             {
-                agent.ChangeState(StateIndex.chasePlayer);
+                agent.ChasePlayer();
                 return;
             }
 
@@ -127,7 +128,6 @@ namespace AIStates
             if(m_timer > m_currentTargetTime)
             {
                 // bam, no more idle
-                agent.agentAudio.idleEmitter.Play();
                 agent.ChangeState(StateIndex.wander);
             }
 
@@ -159,7 +159,7 @@ namespace AIStates
             // Check for player Radius
             if (agent.settings.aggresionRadius * agent.settings.aggresionRadius > agent.distToPlayerSquared)
             {
-                agent.ChangeState(StateIndex.chasePlayer);
+                agent.ChasePlayer();
                 return;
             }
 
@@ -192,7 +192,6 @@ namespace AIStates
     public class ChasePlayer : MovementState
     {
         Transform m_playerTransform;
-        float attackCharge = 0.0f;
 
         public override void Enter(AIAgent agent)
         {
@@ -201,12 +200,16 @@ namespace AIStates
 
             agent.StartNavigating();
             agent.navAgent.SetDestination(m_playerTransform.position);
-
-            attackCharge = 0.0f;
         }
 
         public override void Update(AIAgent agent)
         {
+            // Don't do anything meaningful if the agent is hurting
+            if(agent.isHurting)
+            {
+                return;
+            }
+
             Vector3 toPlayer = (m_playerTransform.position - agent.transform.position).normalized;
             toPlayer *= agent.settings.orbWalkRadius;
 
@@ -217,10 +220,11 @@ namespace AIStates
             if(agent.distToPlayerSquared < agent.settings.attackChargeRadius * agent.settings.attackChargeRadius)
             {
                 // in range to charge attack
-                attackCharge += Time.deltaTime * agent.settings.attackChargeRate;
+                agent.attackCharge += Time.deltaTime * agent.settings.attackChargeRate;
 
-                if(attackCharge > agent.settings.attackChargeMax)
+                if(agent.attackCharge > agent.settings.attackChargeMax)
                 {
+                    agent.attackCharge -= agent.settings.attackChargeMax;
                     // The agent has successfully begun it's attack
                     agent.ChangeState(StateIndex.attackPlayer);
                     return;
@@ -306,6 +310,9 @@ namespace AIStates
     {
         float m_timer = 0.0f;
 
+        delegate void AgentAction(AIAgent agent);
+        AgentAction actionDelegate = (agent) => { };
+
         public override void Enter(AIAgent agent)
         {
             // set up state values
@@ -315,18 +322,12 @@ namespace AIStates
             agent.innerCollider.enabled = false;
 
             m_timer = 0.0f;
-
-            agent.agentAudio.hurtEmitter.Play();
+            actionDelegate = DecayTimer;
         }
 
         public override void Update(AIAgent agent)
         {
-            if(m_timer > agent.settings.bodyDecayTime)
-            {
-                agent.DisablePoolObject();
-            }
-
-            m_timer += Time.deltaTime;
+            actionDelegate.Invoke(agent);
         }
 
         public override void Exit(AIAgent agent)
@@ -335,6 +336,42 @@ namespace AIStates
             agent.ragdoll.RagdollOn = false;
             agent.charCollider.enabled = true;
             agent.innerCollider.enabled = true;
+            SetDissolveFloat(agent, 0.0f);
+            actionDelegate = (clearAgent) => { };
+        }
+
+        void DecayTimer(AIAgent agent)
+        {
+            if (m_timer > agent.settings.bodyDecayTime)
+            {
+                m_timer = 0.0f;
+                actionDelegate = DissolveTimer;
+            }
+
+            m_timer += Time.deltaTime;
+        }
+
+        void DissolveTimer(AIAgent agent)
+        {
+            if (m_timer > agent.settings.dissolveTime)
+            {
+                agent.DisablePoolObject();
+                actionDelegate = (clearAgent) => { };
+                return;
+            }
+
+            m_timer += Time.deltaTime;
+            SetDissolveFloat(agent, m_timer / agent.settings.dissolveTime);
+        }
+
+        void SetDissolveFloat(AIAgent agent, float value)
+        {
+            int id = Shader.PropertyToID(agent.settings.dissolveShaderEffect);
+
+            foreach(var mat in agent.dissolveMaterials)
+            {
+                mat.SetFloat(id, value);
+            }
         }
     }
 
