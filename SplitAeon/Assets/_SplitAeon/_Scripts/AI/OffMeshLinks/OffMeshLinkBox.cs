@@ -129,6 +129,7 @@ public class OffMeshLinkBox : MonoBehaviour
 
         Color startColour = Color.cyan;
         DrawCube(Vector3.zero, startSize, startColour);
+        Gizmos.DrawLine(Vector3.zero, endOffset);
         Color endColour = startColour * 0.5f;
         endColour.r = 1.0f - endColour.g;
         endColour.a = startColour.a;
