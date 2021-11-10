@@ -151,8 +151,8 @@ public class RoomSpawnManager : MonoBehaviour
     {
         roomListeners = new UnityAction[enemySpawnerRooms.Length];
         roomListeners[0] = EnterGallery;
-        roomListeners[1] = null;
-        roomListeners[2] = null;
+        roomListeners[1] = () => { };
+        roomListeners[2] = () => { };
         roomListeners[3] = EnterDressingRoom;
         roomListeners[4] = EnterStageArea;
     }
