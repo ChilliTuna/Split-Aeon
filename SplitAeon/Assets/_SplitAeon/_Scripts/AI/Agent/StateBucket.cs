@@ -114,7 +114,7 @@ namespace AIStates
             // Check for player Radius
             if(agent.settings.aggresionRadius * agent.settings.aggresionRadius > agent.distToPlayerSquared)
             {
-                agent.ChangeState(StateIndex.chasePlayer);
+                agent.ChasePlayer();
                 return;
             }
 
@@ -159,7 +159,7 @@ namespace AIStates
             // Check for player Radius
             if (agent.settings.aggresionRadius * agent.settings.aggresionRadius > agent.distToPlayerSquared)
             {
-                agent.ChangeState(StateIndex.chasePlayer);
+                agent.ChasePlayer();
                 return;
             }
 
@@ -192,7 +192,6 @@ namespace AIStates
     public class ChasePlayer : MovementState
     {
         Transform m_playerTransform;
-        float attackCharge = 0.0f;
 
         public override void Enter(AIAgent agent)
         {
@@ -201,12 +200,16 @@ namespace AIStates
 
             agent.StartNavigating();
             agent.navAgent.SetDestination(m_playerTransform.position);
-
-            attackCharge = 0.0f;
         }
 
         public override void Update(AIAgent agent)
         {
+            // Don't do anything meaningful if the agent is hurting
+            if(agent.isHurting)
+            {
+                return;
+            }
+
             Vector3 toPlayer = (m_playerTransform.position - agent.transform.position).normalized;
             toPlayer *= agent.settings.orbWalkRadius;
 
@@ -217,10 +220,11 @@ namespace AIStates
             if(agent.distToPlayerSquared < agent.settings.attackChargeRadius * agent.settings.attackChargeRadius)
             {
                 // in range to charge attack
-                attackCharge += Time.deltaTime * agent.settings.attackChargeRate;
+                agent.attackCharge += Time.deltaTime * agent.settings.attackChargeRate;
 
-                if(attackCharge > agent.settings.attackChargeMax)
+                if(agent.attackCharge > agent.settings.attackChargeMax)
                 {
+                    agent.attackCharge -= agent.settings.attackChargeMax;
                     // The agent has successfully begun it's attack
                     agent.ChangeState(StateIndex.attackPlayer);
                     return;
