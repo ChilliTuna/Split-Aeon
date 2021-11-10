@@ -128,7 +128,14 @@ public class EnemySpawner : MonoBehaviour
 
     void SpawnEvent(AIAgent agent, Vector3 position, AIStates.StateIndex stateIndex)
     {
-        agent.ChangeState(stateIndex);
+        if(stateIndex == AIStates.StateIndex.chasePlayer)
+        {
+            agent.ChasePlayer();
+        }
+        else
+        {
+            agent.ChangeState(stateIndex);
+        }
         agent.navAgent.Warp(position);
 
         agent.ResetHealth();

@@ -32,11 +32,11 @@ public class AIAgent : MonoBehaviour
 
     List<Neighbour> m_neighbours = new List<Neighbour>();
 
-    public List<Collider> headColliders;
-    public List<Collider> upperTorsoColliders;
-    public List<Collider> lowerTorsoColliders;
-    public List<Collider> limbColliders;
+    // anim
+    int m_hurtLayerIndex;
+    bool m_isHurting = false;
 
+    // getters
     public NavMeshAgent navAgent { get { return m_navAgent; } }
     public float distToPlayerSquared { get { return m_distToPlayerSquared; } }
     public Transform playerTransform { get { return aiManager.playerTransform; } }
@@ -51,9 +51,13 @@ public class AIAgent : MonoBehaviour
     public bool isAlive { get { return m_stateMachine.currentIndex != (int)StateIndex.dead; } }
     public StateIndex currentState { get { return (StateIndex)m_stateMachine.currentIndex; } }
 
+    public bool isHurting { get { return m_isHurting; } }
+
+    // statmeachine refences
     public StateIndex previousState { get { return m_previousState; } }
     public StateIndex postVaultState;
     public float vaultSpeed = 0.0f;
+    public float attackCharge = 0.0f;
 
     // audio
     bool m_delayingSound = false;
@@ -131,6 +135,8 @@ public class AIAgent : MonoBehaviour
         {
             m_dissovleMaterials.Add(render.material);
         }
+
+        m_hurtLayerIndex = anim.GetLayerIndex("Hurt Layer");
     }
 
     public void ChangeState(int stateIndex)
@@ -142,6 +148,12 @@ public class AIAgent : MonoBehaviour
     public void ChangeState(StateIndex stateIndex)
     {
         ChangeState((int)stateIndex);
+    }
+
+    public void ChasePlayer()
+    {
+        ChangeState(StateIndex.chasePlayer);
+        attackCharge = settings.attackChargeMax;
     }
 
     public void StartNavigating()
@@ -196,14 +208,47 @@ public class AIAgent : MonoBehaviour
     {
         if(health.health > 0)
         {
+            if(currentState < StateIndex.chasePlayer)
+            {
+                ChasePlayer();
+            }
+
             // agent is hurt
             //agentAudio.hurtEmitter.Play();
             if(!m_delayingSound)
             {
                 m_delayingSound = true;
                 StartCoroutine(SoundDelay(agentAudio.hurtEmitter, settings.hurtDelay));
+                StartHurt();
             }
         }
+    }
+
+    IEnumerator StartHurt(float timeLength)
+    {
+        if(m_isHurting)
+        {
+            for (float current = 0.0f; current < 1.0f; current += Time.deltaTime / timeLength)
+            {
+                anim.SetLayerWeight(m_hurtLayerIndex, current);
+                yield return null;
+            }
+            anim.SetLayerWeight(m_hurtLayerIndex, 1.0f);
+        }
+    }
+
+    void StartHurt()
+    {
+        m_isHurting = true;
+        anim.SetTrigger("Hurt");
+        StartCoroutine(StartHurt(0.01f));
+    }
+
+    // Relatable
+    void EndHurt()
+    {
+        m_isHurting = false;
+        anim.SetLayerWeight(m_hurtLayerIndex, 0.0f);
     }
 
     IEnumerator SoundDelay(FMODUnity.StudioEventEmitter emitter, float delay)
