@@ -30,6 +30,7 @@ public class Timewarp : MonoBehaviour
 
     public GameObject warpingBlockedText;
     public GameObject warpWarningImage;
+    public GameObject warpWarningGoodImage;
 
     public float warpDelay = 1;
 
@@ -203,6 +204,7 @@ public class Timewarp : MonoBehaviour
     public void ToggleWarpWarning(bool newActive)
     {
         warpWarningImage.SetActive(newActive);
+        warpWarningGoodImage.SetActive(!newActive);
     }
 
     public void ActivateWatch()
