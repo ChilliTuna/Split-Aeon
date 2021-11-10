@@ -13,6 +13,8 @@ public class AIAgent : MonoBehaviour
     public Animator anim;
     public AttackType attack;
     public CapsuleCollider charCollider;
+    public CapsuleCollider innerCollider;
+    public AgentAudio agentAudio;
 
     bool m_isInitialised = false;
     StateMachine<AIAgent> m_stateMachine;
@@ -43,6 +45,9 @@ public class AIAgent : MonoBehaviour
     public float currentSpeed { get { return m_currentSpeed; } }
     public float previousSpeed { get { return m_previousSpeed; } }
 
+    public bool isAlive { get { return m_stateMachine.currentIndex != (int)StateIndex.dead; } }
+    public StateIndex currentState { get { return (StateIndex)m_stateMachine.currentIndex; } }
+
     public StateIndex previousState { get { return m_previousState; } }
     public StateIndex postVaultState;
     public float vaultSpeed = 0.0f;
@@ -66,11 +71,12 @@ public class AIAgent : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        m_currentSpeed = m_navAgent.velocity.magnitude;
         m_stateMachine.Update();
 
-        m_currentSpeed = m_navAgent.velocity.magnitude;
+        float animMoveSpeed = EvaluateAnimMoveSpeed(m_currentSpeed);
+        anim.SetFloat("moveSpeed", animMoveSpeed);
         m_previousSpeed = m_currentSpeed;
-        anim.SetFloat("moveSpeed", settings.moveAnimSpeed.Evaluate(m_currentSpeed / navAgent.speed));
         //anim.SetFloat("moveSpeed", m_currentSpeed / navAgent.speed);
 
         // Debugging
@@ -129,13 +135,13 @@ public class AIAgent : MonoBehaviour
     public void StartNavigating()
     {
         m_navAgent.isStopped = false;
-        m_navAgent.updatePosition = true;
+        //m_navAgent.updatePosition = true;
     }
 
     public void StopNavigating()
     {
         m_navAgent.isStopped = true;
-        m_navAgent.updatePosition = false;
+        //m_navAgent.updatePosition = false;
     }
 
     public void DamagePlayer()
@@ -199,6 +205,7 @@ public class AIAgent : MonoBehaviour
         attachedPoolObject.Disable();
     }
 
+    // Called in an animation Event
     public void CompleteVault()
     {
         ChangeState(StateIndex.endVault);
@@ -258,6 +265,24 @@ public class AIAgent : MonoBehaviour
     public Bounds GetBounds()
     {
         return charCollider.bounds;
+    }
+
+    // This is called as an animation event
+    void AgentFootStep()
+    {
+        agentAudio.footEmitter.Play();
+    }
+
+    public float EvaluateAnimMoveSpeed(float currentMoveSpeed)
+    {
+        return settings.moveAnimSpeed.Evaluate(currentMoveSpeed / navAgent.speed);
+    }
+
+    // This should be called during States in the agents state machine when animations are driving the agent instead of navagent.
+    // For example vaulting offmesh links.
+    public void ReuseLastAnimMoveSpeed()
+    {
+        m_currentSpeed = m_previousSpeed;
     }
 
     private void OnDrawGizmos()

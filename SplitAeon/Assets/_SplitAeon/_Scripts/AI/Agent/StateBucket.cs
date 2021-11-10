@@ -13,7 +13,10 @@ namespace AIStates
         dead,
         beginVault,
         endVault,
-        falling
+        falling,
+
+        // Debug States
+        debugAlwaysAttack
     }
 
     public static class StateBucket
@@ -28,6 +31,9 @@ namespace AIStates
             target.AddState(new BeginVault());
             target.AddState(new EndVault());
             target.AddState(new Falling());
+
+            // Debug States
+            target.AddState(new AlwaysAttackPlayer());
         }
     }
 
@@ -68,6 +74,7 @@ namespace AIStates
                 {
                     // begin vault
                     agent.ChangeState(StateIndex.beginVault);
+                    return;
                 }
 
                 // Debug Traversal
@@ -120,6 +127,7 @@ namespace AIStates
             if(m_timer > m_currentTargetTime)
             {
                 // bam, no more idle
+                agent.agentAudio.idleEmitter.Play();
                 agent.ChangeState(StateIndex.wander);
             }
 
@@ -304,8 +312,11 @@ namespace AIStates
             agent.StopNavigating();
             agent.ragdoll.RagdollOn = true;
             agent.charCollider.enabled = false;
+            agent.innerCollider.enabled = false;
 
             m_timer = 0.0f;
+
+            agent.agentAudio.hurtEmitter.Play();
         }
 
         public override void Update(AIAgent agent)
@@ -323,6 +334,7 @@ namespace AIStates
             // clean up state Values
             agent.ragdoll.RagdollOn = false;
             agent.charCollider.enabled = true;
+            agent.innerCollider.enabled = true;
         }
     }
 
@@ -354,6 +366,8 @@ namespace AIStates
             endForward.y = 0;
             endForward = endForward.normalized;
 
+            m_vaultPosition += endForward * agent.settings.vaultStartforwardOffset;
+
             m_startedVault = false;
 
             t = 0.0f;
@@ -365,32 +379,27 @@ namespace AIStates
 
         public override void Update(AIAgent agent)
         {
-            if(m_startedVault)
+            agent.ReuseLastAnimMoveSpeed();
+            if (m_startedVault)
             {
                 
                 return;
             }
 
-            t += Time.deltaTime * agent.settings.vaultSensitivity * approachSpeed;
+            t += Time.deltaTime * agent.settings.vaultStartSensitivity * approachSpeed;
 
-            if(t < 1.0f)
+            if (t >= 1.0f)
             {
-                var current = Vector3.Lerp(beginPos, m_vaultPosition, t);
-
-                agent.transform.position = current;
-            }
-
-            if(t < 1.0f)
-            {
-                agent.transform.forward = Vector3.Slerp(beginForward, endForward, t);
-            }
-
-            if(t >= 1.0f)
-            {
+                t = 1.0f;
                 m_startedVault = true;
                 agent.anim.SetTrigger("Vault");
             }
 
+            var current = Vector3.Lerp(beginPos, m_vaultPosition, t);
+
+            agent.transform.position = current;
+
+            agent.transform.forward = Vector3.Slerp(beginForward, endForward, t);
         }
 
         public override void Exit(AIAgent agent)
@@ -433,7 +442,7 @@ namespace AIStates
 
         public override void Update(AIAgent agent)
         {
-            t += Time.deltaTime * agent.settings.vaultSensitivity * approachSpeed;
+            t += Time.deltaTime * agent.settings.vaultEndSensitivity * approachSpeed;
 
             if (t < 1.0f)
             {
@@ -452,7 +461,7 @@ namespace AIStates
                 if(agent.VaultGroundCheck(agent.settings.vaultMinDistanceCheck))
                 {
                     agent.CompleteOffMeshLink("IdleTrigger");
-                    agent.navAgent.velocity = Vector3.zero;
+                    //agent.navAgent.velocity = Vector3.zero;
                 }
                 else
                 {
@@ -475,19 +484,20 @@ namespace AIStates
 
         public override void Enter(AIAgent agent)
         {
-            m_verticalVelocity = 0.0f;
+            m_verticalVelocity = agent.settings.vaultInitialFallVelocity;
         }
 
         public override void Update(AIAgent agent)
         {
-            m_verticalVelocity += Physics.gravity.y * Time.deltaTime * Time.deltaTime;
+            m_verticalVelocity += Physics.gravity.y * Time.deltaTime;
 
-            Vector3 move = Vector3.up * m_verticalVelocity;
+            Vector3 move = Vector3.up * m_verticalVelocity * Time.deltaTime;
 
-            if(agent.VaultGroundCheck(-m_verticalVelocity))
+            if(agent.VaultGroundCheck(-m_verticalVelocity * Time.deltaTime))
             {
                 agent.CompleteOffMeshLink("Land");
                 agent.navAgent.velocity = Vector3.zero;
+                agent.StopNavigating();
                 return;
             }
 
@@ -497,6 +507,75 @@ namespace AIStates
         public override void Exit(AIAgent agent)
         {
             
+        }
+    }
+
+    public class AlwaysAttackPlayer : AgentState
+    {
+        Transform m_playerTransform;
+        Vector3 m_originalLocation;
+        Vector3 m_attackDirection;
+
+        public override void Enter(AIAgent agent)
+        {
+            // set up state values
+            m_playerTransform = agent.playerTransform;
+            m_originalLocation = agent.transform.position;
+            m_attackDirection = (agent.playerTransform.position - agent.transform.position);
+            m_attackDirection.y = 0;
+            m_attackDirection = m_attackDirection.normalized;
+
+            // Set up animation
+            agent.StopNavigating();
+
+            agent.anim.SetTrigger("attack");
+            agent.anim.SetBool("isAttacking", true);
+            agent.anim.SetBool("lockRotation", true);
+
+            // Set up attack type
+            agent.attack.AttackEnter(m_playerTransform, m_attackDirection);
+
+            //agent.agentAudio.attackEmitter.Play();
+        }
+
+        public override void Update(AIAgent agent)
+        {
+            // this would be the logic where the attack could take place and wait until it has ended.
+            if (agent.anim.GetBool("lockRotation"))
+            {
+                // only aim towards the initial attack direction
+                agent.transform.forward = Vector3.Slerp(agent.transform.forward, m_attackDirection, agent.settings.rotationLerpSpeed);
+            }
+            else
+            {
+                // start looking towards the player
+                Vector3 toPlayer = m_playerTransform.position - agent.transform.position;
+                toPlayer.y = 0;
+                agent.transform.forward = Vector3.Slerp(agent.transform.forward, toPlayer, agent.settings.afterAttackLerpSpeed);
+            }
+
+            // attack type update
+            agent.attack.AttackUpdate();
+
+            // check if the agent is still attacking
+            if (!agent.anim.GetBool("isAttacking"))
+            {
+                agent.ChangeState(StateIndex.debugAlwaysAttack);
+                return;
+            }
+        }
+
+        public override void Exit(AIAgent agent)
+        {
+            // clean up state Values
+            // clean up animation
+            agent.anim.SetBool("isAttacking", false);
+            agent.anim.SetBool("lockRotation", false);
+
+            // Clean up attack type
+            agent.attack.AttackExit();
+
+            agent.navAgent.nextPosition = agent.transform.position;
         }
     }
 }

@@ -51,7 +51,7 @@ public class CardWarp : MonoBehaviour
         }
         else
         {
-            timer.Count();
+            timer.DoTick();
             if (timer.GetCurrentTime() >= timeUntilWarp)
             {
                 WarpToOtherTime();

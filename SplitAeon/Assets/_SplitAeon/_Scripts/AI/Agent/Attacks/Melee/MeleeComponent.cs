@@ -8,15 +8,29 @@ public class MeleeComponent : AttackType
 
     public override void AttackEnter(Transform attackTarget, Vector3 attackDir)
     {
-        armAttack.hitIsActive = true;
+        // Set to false just in case the last time this tried to attack and the animation didn't exit properly
+        agent.anim.SetBool("hitBoxActive", false);
+        armAttack.hitIsActive = false;
+
+        agent.agentAudio.attackEmitter.Play();
     }
 
     public override void AttackUpdate()
     {
-        armAttack.hitIsActive = agent.anim.GetBool("hitBoxActive");
+        
     }
 
     public override void AttackExit()
+    {
+
+    }
+
+    public override void AnimBeginAttackEvent()
+    {
+        armAttack.hitIsActive = true;
+    }
+
+    public override void AnimEndAttackEvent()
     {
         agent.anim.SetBool("hitBoxActive", false);
         armAttack.hitIsActive = false;
