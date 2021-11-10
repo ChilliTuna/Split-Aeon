@@ -24951,6 +24951,7 @@ GameObject:
   - component: {fileID: 6477000487861736597}
   - component: {fileID: 1115849574751618867}
   - component: {fileID: 6742042278906081224}
+  - component: {fileID: 3551107428201523106}
   m_Layer: 22
   m_Name: Cube
   m_TagString: Untagged
@@ -25049,6 +25050,37 @@ MonoBehaviour:
   weapon: {fileID: 3508521248073143924}
   damageActive: 0
   pushActive: 0
+  emitter: {fileID: 3551107428201523106}
+--- !u!114 &3551107428201523106
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3248073032642180206}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9a6610d2e704f1648819acc8d7460285, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  CollisionTag: 
+  EventReference:
+    Guid:
+      Data1: 422290768
+      Data2: 1273419964
+      Data3: 497400728
+      Data4: 952113149
+    Path: event:/SFX/Player/Weapons/Cane/Hit_Enemy
+  Event: 
+  PlayEvent: 0
+  StopEvent: 0
+  AllowFadeout: 1
+  TriggerOnce: 0
+  Preload: 0
+  Params: []
+  OverrideAttenuation: 0
+  OverrideMinDistance: 1
+  OverrideMaxDistance: 20
 --- !u!1 &3253576678199719373
 GameObject:
   m_ObjectHideFlags: 0
@@ -56473,14 +56505,14 @@ PrefabInstance:
     m_RemovedComponents:
     - {fileID: 440746442114312849, guid: 65aaeb2771ef4784e94702c5ce78aa1c, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: 65aaeb2771ef4784e94702c5ce78aa1c, type: 3}
---- !u!4 &8685583935970845570 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 8190077017345215430, guid: 65aaeb2771ef4784e94702c5ce78aa1c, type: 3}
-  m_PrefabInstance: {fileID: 657977676125071428}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &6192912517920535948 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 6687913798703734216, guid: 65aaeb2771ef4784e94702c5ce78aa1c, type: 3}
+  m_PrefabInstance: {fileID: 657977676125071428}
+  m_PrefabAsset: {fileID: 0}
+--- !u!4 &8685583935970845570 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 8190077017345215430, guid: 65aaeb2771ef4784e94702c5ce78aa1c, type: 3}
   m_PrefabInstance: {fileID: 657977676125071428}
   m_PrefabAsset: {fileID: 0}
 --- !u!1001 &2994016295843689693
@@ -56631,13 +56663,13 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 65aaeb2771ef4784e94702c5ce78aa1c, type: 3}
---- !u!4 &4512691527287128453 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 8190077017345215430, guid: 65aaeb2771ef4784e94702c5ce78aa1c, type: 3}
-  m_PrefabInstance: {fileID: 5694998195330779715}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1430047384968484747 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 6687913798703734216, guid: 65aaeb2771ef4784e94702c5ce78aa1c, type: 3}
+  m_PrefabInstance: {fileID: 5694998195330779715}
+  m_PrefabAsset: {fileID: 0}
+--- !u!4 &4512691527287128453 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 8190077017345215430, guid: 65aaeb2771ef4784e94702c5ce78aa1c, type: 3}
   m_PrefabInstance: {fileID: 5694998195330779715}
   m_PrefabAsset: {fileID: 0}
