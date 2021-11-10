@@ -2,12 +2,16 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+using FMODUnity;
+
 public class MeleeHitbox : MonoBehaviour
 {
 
     public Melee weapon;
     public bool damageActive;
     public bool pushActive;
+
+    public StudioEventEmitter emitter;
 
     bool hasHit;
 
@@ -24,12 +28,18 @@ public class MeleeHitbox : MonoBehaviour
                 {
                     health.Hit(weapon.damage, other);
                     Debug.Log("Hit " + other.name);
+
+                    emitter.Play();
+
                     DisableDamage();
                 }
                 else if (target)
                 {
                     target.Hit();
                     Debug.Log("Hit " + other.name);
+
+                    emitter.Play();
+
                     DisableDamage();
                 }
             }

@@ -148,6 +148,8 @@ public class Timewarp : MonoBehaviour
 
         //DoWarp();
 
+        player.GetComponent<Player>().viewmodelAnimator.SetTrigger("Switch");
+
         watchViewmodelAnimator.SetTrigger("Warp");
 
     }
