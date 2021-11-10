@@ -13,6 +13,8 @@ public class FootstepManager : MonoBehaviour
 
     public Footstepper stepper;
 
+    public StudioEventEmitter jumper;
+
     public LayerMask mask;
 
     public float surfaceCheckInterval;
@@ -33,6 +35,8 @@ public class FootstepManager : MonoBehaviour
             {
                 stepper.footsteps.SetParameter("Material", 0);
 
+                jumper.SetParameter("Material", 0);
+
                 stepper.footsteps.Params[0].Value = 0;
 
                 Debug.Log("Setting material to marble");
@@ -42,6 +46,8 @@ public class FootstepManager : MonoBehaviour
             {
                 stepper.footsteps.SetParameter("Material", 1);
 
+                jumper.SetParameter("Material", 1);
+
                 stepper.footsteps.Params[0].Value = 1;
 
                 Debug.Log("Setting material to wood");
@@ -50,6 +56,8 @@ public class FootstepManager : MonoBehaviour
             else if (surface == "Carpet")
             {
                 stepper.footsteps.SetParameter("Material", 2);
+
+                jumper.SetParameter("Material", 2);
 
                 stepper.footsteps.Params[0].Value = 2;
 

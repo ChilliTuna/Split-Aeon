@@ -1137,6 +1137,7 @@ GameObject:
   - component: {fileID: 3300938857144358068}
   - component: {fileID: 2562344351647659398}
   - component: {fileID: 7775957608135949879}
+  - component: {fileID: 544882774968109620}
   m_Layer: 20
   m_Name: Footstep Manager
   m_TagString: Untagged
@@ -1192,6 +1193,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   stepper: {fileID: 2562344351647659398}
+  jumper: {fileID: 544882774968109620}
   mask:
     serializedVersion: 2
     m_Bits: 205390134
@@ -1248,6 +1250,36 @@ MonoBehaviour:
     Value: 0
   - Name: Speed Switch
     Value: 0
+  OverrideAttenuation: 0
+  OverrideMinDistance: 1
+  OverrideMaxDistance: 20
+--- !u!114 &544882774968109620
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 241240486518807500}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9a6610d2e704f1648819acc8d7460285, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  CollisionTag: 
+  EventReference:
+    Guid:
+      Data1: 725208168
+      Data2: 1182771721
+      Data3: -1720990794
+      Data4: 384734334
+    Path: event:/SFX/Player/Jump
+  Event: 
+  PlayEvent: 0
+  StopEvent: 0
+  AllowFadeout: 1
+  TriggerOnce: 0
+  Preload: 0
+  Params: []
   OverrideAttenuation: 0
   OverrideMinDistance: 1
   OverrideMaxDistance: 20
@@ -33433,6 +33465,7 @@ MonoBehaviour:
   smoothMovetime: 0.01
   gravity: -19.82
   jumpHeight: 1.5
+  jumpEmitter: {fileID: 544882774968109620}
   isRunning: 0
   isMoving: 0
   isBusy: 0
@@ -56519,14 +56552,14 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 65aaeb2771ef4784e94702c5ce78aa1c, type: 3}
---- !u!4 &6351234715265908507 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 8190077017345215430, guid: 65aaeb2771ef4784e94702c5ce78aa1c, type: 3}
-  m_PrefabInstance: {fileID: 2994016295843689693}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &8456880349993314581 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 6687913798703734216, guid: 65aaeb2771ef4784e94702c5ce78aa1c, type: 3}
+  m_PrefabInstance: {fileID: 2994016295843689693}
+  m_PrefabAsset: {fileID: 0}
+--- !u!4 &6351234715265908507 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 8190077017345215430, guid: 65aaeb2771ef4784e94702c5ce78aa1c, type: 3}
   m_PrefabInstance: {fileID: 2994016295843689693}
   m_PrefabAsset: {fileID: 0}
 --- !u!1001 &5694998195330779715
