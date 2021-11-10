@@ -374,6 +374,7 @@ MonoBehaviour:
   shouldDoWarpChecking: 1
   warpingBlockedText: {fileID: 4697747538201120285}
   warpWarningImage: {fileID: 6591957971937609561}
+  warpWarningGoodImage: {fileID: 6663192423095678838}
   warpDelay: 1
   onTimeWarp:
     m_PersistentCalls:
@@ -414,6 +415,7 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+  canManuallyTimeWarp: 0
 --- !u!114 &7393722739517978096
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -734,5 +736,10 @@ GameObject:
 --- !u!1 &6591957971937609561 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 497218024082991299, guid: 03446de92e95d654b8d72479d9e5df43, type: 3}
+  m_PrefabInstance: {fileID: 6745600529520799642}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &6663192423095678838 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 136592079176800492, guid: 03446de92e95d654b8d72479d9e5df43, type: 3}
   m_PrefabInstance: {fileID: 6745600529520799642}
   m_PrefabAsset: {fileID: 0}
