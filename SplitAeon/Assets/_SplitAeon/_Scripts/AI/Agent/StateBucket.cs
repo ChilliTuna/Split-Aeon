@@ -207,7 +207,15 @@ namespace AIStates
             // Don't do anything meaningful if the agent is hurting
             if(agent.isHurting)
             {
-                return;
+                agent.safeLeaveIsHurtTimer += Time.deltaTime;
+                if(agent.safeLeaveIsHurtTimer > 0.1f)
+                {
+                    agent.isHurting = false;
+                }
+                else
+                {
+                    return;
+                }
             }
 
             Vector3 toPlayer = (m_playerTransform.position - agent.transform.position).normalized;
