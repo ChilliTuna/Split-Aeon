@@ -6,8 +6,17 @@ public class WeaponWheelController : MonoBehaviour
 {
     private UserActions userActions;
 
-    public Animator anim;
     public bool isOpen = false;
+
+    public Animator cardsButtons;
+    public Animator weaponsButtons;
+
+    public Animator topBar;
+    public Animator bottomBar;
+
+    public Animator mask;
+
+    public CanvasGroup wheel;
 
     Player player;
 
@@ -58,14 +67,32 @@ public class WeaponWheelController : MonoBehaviour
         {
             player.isBusy = true;
 
-            anim.SetBool("isOpen", true);
+            cardsButtons.SetBool("isOpen", true);
+            weaponsButtons.SetBool("isOpen", true);
+
+            topBar.SetBool("isOpen", true);
+            bottomBar.SetBool("isOpen", true);
+
+            mask.SetBool("isOpen", true);
+
+            FadeIn();
+
             Cursor.lockState = CursorLockMode.Confined;
         }
         else
         {
             player.isBusy = false;
 
-            anim.SetBool("isOpen", false);
+            cardsButtons.SetBool("isOpen", false);
+            weaponsButtons.SetBool("isOpen", false);
+
+            topBar.SetBool("isOpen", false);
+            bottomBar.SetBool("isOpen", false);
+
+            mask.SetBool("isOpen", false);
+
+            FadeOut();
+
             Cursor.lockState = CursorLockMode.Locked;
         }
     }
@@ -79,6 +106,50 @@ public class WeaponWheelController : MonoBehaviour
         else if (!player.isBusy)
         {
             OpenWeaponWheel();
+        }
+    }
+
+    public void FadeIn()
+    {
+        StartCoroutine(FadeGroupIn(0.2f));
+        Invoke("Show", 0.2f);
+    }
+
+    public void FadeOut()
+    {
+        StartCoroutine(FadeGroupOut(0.5f));
+        Invoke("Hide", 0.5f);
+    }
+
+    public void Show()
+    {
+        wheel.alpha = 1;
+    }
+
+    public void Hide()
+    {
+        wheel.alpha = 0;
+    }
+
+    public IEnumerator FadeGroupIn(float time)
+    {
+        wheel.alpha = 0;
+
+        while (wheel.alpha < 1.0f)
+        {
+            wheel.alpha += (Time.deltaTime / time);
+            yield return null;
+        }
+    }
+
+    public IEnumerator FadeGroupOut(float time)
+    {
+        wheel.alpha = 1;
+
+        while (wheel.alpha > 0.0f)
+        {
+            wheel.alpha -= (Time.deltaTime / time);
+            yield return null;
         }
     }
 }

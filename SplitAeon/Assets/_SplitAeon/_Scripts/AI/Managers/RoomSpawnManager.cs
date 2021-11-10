@@ -29,9 +29,9 @@ public class RoomSpawnManager : MonoBehaviour
     List<AggroSpawnTimer> aggroSpawnTimers;
 
     // Used in checkpointing
-    int currentSpawnerRoomIndex = 0;
-    int checkpointSpawnerIndex = 0;
     RoomBounds checkpointRoom;
+
+    bool inDressingRoom = false;
 
     [System.Serializable]
     public class RoomSpawnerPair
@@ -39,6 +39,29 @@ public class RoomSpawnManager : MonoBehaviour
         [HideInInspector]public string name;
         public RoomBounds room;
         public EnemySpawner[] enemySpawners;
+
+        public UnityEvent onEnter;
+        public UnityEvent onComplete;
+
+        [HideInInspector] public bool completed = false;
+        [HideInInspector] public bool shouldResetOnRespawn = true;
+
+        public void SetSpawner(bool value)
+        {
+            foreach (var enemySpawner in enemySpawners)
+            {
+                enemySpawner.enabled = value;
+            }
+        }
+
+        public void ResetRoom(UnityAction listener)
+        {
+            room.enterRoom.RemoveAllListeners();
+            room.enterRoom.AddListener(listener);
+            room.SetEnterStatus(false);
+            room.SetExitStatus(false);
+            completed = !shouldResetOnRespawn;
+        }
     }
 
     public class AggroSpawnTimer
@@ -81,6 +104,15 @@ public class RoomSpawnManager : MonoBehaviour
         {
             updateEvent.RemoveListener(ExecuteTimer);
         }
+    }
+
+    enum RoomIndex
+    {
+        gallery,
+        generator,
+        bar,
+        dressing,
+        audotoriumLower
     }
 
     // Start is called before the first frame update
@@ -145,20 +177,9 @@ public class RoomSpawnManager : MonoBehaviour
         mixedKillTracker.LogKill();
     }
 
-    void SetSpawner(RoomSpawnerPair[] pairArray, int index, bool value)
+    void SetSpawner(int index, bool value)
     {
-        foreach(var enemySpawner in pairArray[index].enemySpawners)
-        {
-            enemySpawner.enabled = value;
-        }
-    }
-
-    void ResetRoom(RoomSpawnerPair[] pairArray, int index)
-    {
-        pairArray[index].room.enterRoom.RemoveAllListeners();
-        pairArray[index].room.enterRoom.AddListener(roomListeners[index]);
-        pairArray[index].room.SetEnterStatus(false);
-        pairArray[index].room.SetExitStatus(false);
+        enemySpawnerRooms[index].SetSpawner(value);
     }
 
     void EnableKillTracker(ObjectiveKillTracker killTracker, int targetKillCount, UnityAction targetGoalAction)
@@ -176,17 +197,22 @@ public class RoomSpawnManager : MonoBehaviour
 
     public void PlayerCheckpoint()
     {
-        checkpointSpawnerIndex = currentSpawnerRoomIndex;
         checkpointRoom = playerRoomTracker.currentRoom;
+        for (int i = 0; i < enemySpawnerRooms.Length; i++)
+        {
+            enemySpawnerRooms[i].shouldResetOnRespawn = !enemySpawnerRooms[i].completed;
+        }
     }
 
     public void PlayerRespawn()
     {
-        currentSpawnerRoomIndex = checkpointSpawnerIndex;
-        for (int i = currentSpawnerRoomIndex; i < enemySpawnerRooms.Length; i++)
+        for (int i = 0; i < enemySpawnerRooms.Length; i++)
         {
-            SetSpawner(enemySpawnerRooms, i, false);
-            ResetRoom(enemySpawnerRooms, i);
+            SetSpawner(i, false);
+            if(enemySpawnerRooms[i].shouldResetOnRespawn)
+            {
+                enemySpawnerRooms[i].ResetRoom(roomListeners[i]);
+            }
         }
         playerRoomTracker.currentRoom = checkpointRoom;
         DisableKillTracker(mixedKillTracker);
@@ -196,12 +222,13 @@ public class RoomSpawnManager : MonoBehaviour
         ClearTimers();
     }
 
-    void CompleteRoom()
+    void CompleteRoom(int roomIndex)
     {
-        currentSpawnerRoomIndex++;
         mixedKillTracker.onTargetReached.RemoveAllListeners();
         pastFlexibleKillTracker.onTargetReached.RemoveAllListeners();
         futureFlexibleKillTracker.onTargetReached.RemoveAllListeners();
+        enemySpawnerRooms[roomIndex].completed = true;
+        enemySpawnerRooms[roomIndex].onComplete.Invoke();
     }
 
     void ClearTimers()
@@ -216,23 +243,25 @@ public class RoomSpawnManager : MonoBehaviour
     // Walk though Gallery - level pathing
     public void EnterGallery()
     {
-        SetSpawner(enemySpawnerRooms, currentSpawnerRoomIndex, true);
+        SetSpawner((int)RoomIndex.gallery, true);
         EnableKillTracker(pastFlexibleKillTracker, 5, CompleteGallery);
+        enemySpawnerRooms[(int)RoomIndex.gallery].onEnter.Invoke();
     }
 
     public void CompleteGallery()
     {
-        SetSpawner(enemySpawnerRooms, currentSpawnerRoomIndex, false);
+        SetSpawner((int)RoomIndex.gallery, false);
         pastPassiveSpawner.PassiveSpawn(1);
-        CompleteRoom();
+        CompleteRoom((int)RoomIndex.gallery);
     }
 
     // Walk Thourgh Generator - level pathing
     public void EnterGenerator()
     {
-        SetSpawner(enemySpawnerRooms, currentSpawnerRoomIndex, true);
+        SetSpawner((int)RoomIndex.generator, true);
         EnableKillTracker(pastFlexibleKillTracker, 8, MiddleGenerator);
         EnableKillTracker(futureFlexibleKillTracker, 2, CompleteGenerator);
+        enemySpawnerRooms[(int)RoomIndex.generator].onEnter.Invoke();
     }
 
     public void MiddleGenerator()
@@ -245,10 +274,10 @@ public class RoomSpawnManager : MonoBehaviour
 
     public void CompleteGenerator()
     {
-        SetSpawner(enemySpawnerRooms, currentSpawnerRoomIndex, false);
+        SetSpawner((int)RoomIndex.generator, false);
         pastPassiveSpawner.PassiveSpawn(1);
         futurePassiveSpawner.PassiveSpawn(2);
-        CompleteRoom();
+        CompleteRoom((int)RoomIndex.generator);
     }
 
     // Turn On Projector - objective
@@ -264,14 +293,15 @@ public class RoomSpawnManager : MonoBehaviour
     // Walk Though Bar - level pathing
     public void EnterBarRoom()
     {
-        SetSpawner(enemySpawnerRooms, currentSpawnerRoomIndex, true);
+        SetSpawner((int)RoomIndex.bar, true);
         EnableKillTracker(mixedKillTracker, 12, CompleteBar);
+        enemySpawnerRooms[(int)RoomIndex.bar].onEnter.Invoke();
     }
 
     public void CompleteBar()
     {
-        SetSpawner(enemySpawnerRooms, currentSpawnerRoomIndex, false);
-        CompleteRoom();
+        SetSpawner((int)RoomIndex.bar, false);
+        CompleteRoom((int)RoomIndex.bar);
     }
 
 
@@ -287,23 +317,26 @@ public class RoomSpawnManager : MonoBehaviour
         {
             timer.AddToEvent(updateEvent);
         }
+        inDressingRoom = true;
+        enemySpawnerRooms[(int)RoomIndex.dressing].onEnter.Invoke();
     }
 
     public void CompleteDressingRoom()
     {
         ClearTimers();
-        CompleteRoom();
+        CompleteRoom((int)RoomIndex.audotoriumLower);
     }
 
     public void EnterStageArea()
     {
-        if(currentSpawnerRoomIndex != 3)
+        if(!inDressingRoom)
         {
-            enemySpawnerRooms[currentSpawnerRoomIndex].room.SetEnterStatus(false);
+            enemySpawnerRooms[(int)RoomIndex.audotoriumLower].room.SetEnterStatus(false);
             return;
         }
 
         CompleteDressingRoom();
-        SetSpawner(enemySpawnerRooms, currentSpawnerRoomIndex, true);
+        SetSpawner((int)RoomIndex.audotoriumLower, true);
+        enemySpawnerRooms[(int)RoomIndex.audotoriumLower].onEnter.Invoke();
     }
 }
