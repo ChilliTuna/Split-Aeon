@@ -35,6 +35,7 @@ public class AIAgent : MonoBehaviour
     // anim
     int m_hurtLayerIndex;
     bool m_isHurting = false;
+    [HideInInspector]public float safeLeaveIsHurtTimer = 0.0f;
 
     // getters
     public NavMeshAgent navAgent { get { return m_navAgent; } }
@@ -51,7 +52,7 @@ public class AIAgent : MonoBehaviour
     public bool isAlive { get { return m_stateMachine.currentIndex != (int)StateIndex.dead; } }
     public StateIndex currentState { get { return (StateIndex)m_stateMachine.currentIndex; } }
 
-    public bool isHurting { get { return m_isHurting; } }
+    public bool isHurting { get { return m_isHurting; } set { m_isHurting = value; } }
 
     // statmeachine refences
     public StateIndex previousState { get { return m_previousState; } }
@@ -226,6 +227,7 @@ public class AIAgent : MonoBehaviour
 
     IEnumerator StartHurt(float timeLength)
     {
+        safeLeaveIsHurtTimer = 0.0f;
         if(m_isHurting)
         {
             for (float current = 0.0f; current < 1.0f; current += Time.deltaTime / timeLength)

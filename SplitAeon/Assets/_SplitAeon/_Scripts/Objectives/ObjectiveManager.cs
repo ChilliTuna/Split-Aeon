@@ -95,6 +95,10 @@ public class ObjectiveManager : MonoBehaviour
 
     }
 
+    public void RestartCurrentObjective()
+    {
+        SetObjective(index);
+    }
 }
 
 [Serializable]
