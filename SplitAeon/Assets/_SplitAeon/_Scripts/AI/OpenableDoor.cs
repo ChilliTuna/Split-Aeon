@@ -24,6 +24,8 @@ public class OpenableDoor : MonoBehaviour
 
     AnimationCurve actionCurve;
 
+    bool checkPointStatus = false;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -34,6 +36,23 @@ public class OpenableDoor : MonoBehaviour
     void Update()
     {        
         actionDelegate.Invoke();
+    }
+
+    void OpenAction()
+    {
+        openProgress += Time.deltaTime / timeToAction;
+        doorTransform.localEulerAngles = Vector3.Slerp(rotStart, targetRot, actionCurve.Evaluate(openProgress));
+
+        if (openProgress > 1.0f)
+        {
+            openProgress = 1.0f;
+            actionDelegate = () => { };
+        }
+        else if (openProgress < 0.0f)
+        {
+            openProgress = 0.0f;
+            actionDelegate = () => { };
+        }
     }
 
     public void Open()
@@ -50,23 +69,6 @@ public class OpenableDoor : MonoBehaviour
         openProgress = 0.0f;
         actionCurve = openCurve;
         actionDelegate = OpenAction;
-    }
-
-    void OpenAction()
-    {
-        openProgress += Time.deltaTime / timeToAction;
-        doorTransform.localEulerAngles = Vector3.Slerp(rotStart, targetRot, actionCurve.Evaluate(openProgress));
-
-        if(openProgress > 1.0f)
-        {
-            openProgress = 1.0f;
-            actionDelegate = () => { };
-        }
-        else if(openProgress < 0.0f)
-        {
-            openProgress = 0.0f;
-            actionDelegate = () => { };
-        }
     }
 
     public void Close()
@@ -89,8 +91,21 @@ public class OpenableDoor : MonoBehaviour
         actionDelegate = OpenAction;
     }
 
-    void CloseAction()
+    public void SetCheckpoint()
     {
+        checkPointStatus = isClosed;
+    }
 
+    public void RespawnReset()
+    {
+        isClosed = checkPointStatus;
+        if (isClosed)
+        {
+            doorTransform.localEulerAngles = Vector3.zero;
+        }
+        else
+        {
+            doorTransform.localEulerAngles = Vector3.up * openDegree;
+        }
     }
 }

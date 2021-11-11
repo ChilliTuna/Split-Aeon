@@ -15,6 +15,8 @@ public class AIAgent : MonoBehaviour
     public CapsuleCollider charCollider;
     public CapsuleCollider innerCollider;
     public AgentAudio agentAudio;
+    public Renderer[] agentRenderers;
+    List<Material> m_dissovleMaterials;
 
     bool m_isInitialised = false;
     StateMachine<AIAgent> m_stateMachine;
@@ -30,16 +32,18 @@ public class AIAgent : MonoBehaviour
 
     List<Neighbour> m_neighbours = new List<Neighbour>();
 
-    public List<Collider> headColliders;
-    public List<Collider> upperTorsoColliders;
-    public List<Collider> lowerTorsoColliders;
-    public List<Collider> limbColliders;
+    // anim
+    int m_hurtLayerIndex;
+    bool m_isHurting = false;
+    [HideInInspector]public float safeLeaveIsHurtTimer = 0.0f;
 
+    // getters
     public NavMeshAgent navAgent { get { return m_navAgent; } }
     public float distToPlayerSquared { get { return m_distToPlayerSquared; } }
     public Transform playerTransform { get { return aiManager.playerTransform; } }
     public Ragdoll ragdoll {  get { return m_ragdoll; } }
     public Health health { get { return m_health; } }
+    public List<Material> dissolveMaterials { get { return m_dissovleMaterials; } }
     public List<Neighbour> neighbours { get { return m_neighbours; } }
 
     public float currentSpeed { get { return m_currentSpeed; } }
@@ -48,9 +52,16 @@ public class AIAgent : MonoBehaviour
     public bool isAlive { get { return m_stateMachine.currentIndex != (int)StateIndex.dead; } }
     public StateIndex currentState { get { return (StateIndex)m_stateMachine.currentIndex; } }
 
+    public bool isHurting { get { return m_isHurting; } set { m_isHurting = value; } }
+
+    // statmeachine refences
     public StateIndex previousState { get { return m_previousState; } }
     public StateIndex postVaultState;
     public float vaultSpeed = 0.0f;
+    public float attackCharge = 0.0f;
+
+    // audio
+    bool m_delayingSound = false;
 
     // Debug
     [Header("Debugging")]
@@ -119,6 +130,14 @@ public class AIAgent : MonoBehaviour
 
         StabiliseSettings();
         ResetHealth();
+
+        m_dissovleMaterials = new List<Material>();
+        foreach(Renderer render in agentRenderers)
+        {
+            m_dissovleMaterials.Add(render.material);
+        }
+
+        m_hurtLayerIndex = anim.GetLayerIndex("Hurt Layer");
     }
 
     public void ChangeState(int stateIndex)
@@ -130,6 +149,12 @@ public class AIAgent : MonoBehaviour
     public void ChangeState(StateIndex stateIndex)
     {
         ChangeState((int)stateIndex);
+    }
+
+    public void ChasePlayer()
+    {
+        ChangeState(StateIndex.chasePlayer);
+        attackCharge = settings.attackChargeMax;
     }
 
     public void StartNavigating()
@@ -180,6 +205,64 @@ public class AIAgent : MonoBehaviour
         }
     }
 
+    public void OnHit()
+    {
+        if(health.health > 0)
+        {
+            if(currentState < StateIndex.chasePlayer)
+            {
+                ChasePlayer();
+            }
+
+            // agent is hurt
+            //agentAudio.hurtEmitter.Play();
+            if(!m_delayingSound)
+            {
+                m_delayingSound = true;
+                StartCoroutine(SoundDelay(agentAudio.hurtEmitter, settings.hurtDelay));
+                StartHurt();
+            }
+        }
+    }
+
+    IEnumerator StartHurt(float timeLength)
+    {
+        safeLeaveIsHurtTimer = 0.0f;
+        if(m_isHurting)
+        {
+            for (float current = 0.0f; current < 1.0f; current += Time.deltaTime / timeLength)
+            {
+                anim.SetLayerWeight(m_hurtLayerIndex, current);
+                yield return null;
+            }
+            anim.SetLayerWeight(m_hurtLayerIndex, 1.0f);
+        }
+    }
+
+    void StartHurt()
+    {
+        m_isHurting = true;
+        anim.SetTrigger("Hurt");
+        StartCoroutine(StartHurt(0.01f));
+    }
+
+    // Relatable
+    void EndHurt()
+    {
+        m_isHurting = false;
+        anim.SetLayerWeight(m_hurtLayerIndex, 0.0f);
+    }
+
+    IEnumerator SoundDelay(FMODUnity.StudioEventEmitter emitter, float delay)
+    {
+        for(float t = 0.0f; t < delay; t += Time.deltaTime)
+        {
+            yield return null;
+        }
+        emitter.Play();
+        m_delayingSound = false;
+    }
+
     public void Die()
     {
         if(m_stateMachine.currentIndex == (int)StateIndex.dead)
@@ -187,6 +270,8 @@ public class AIAgent : MonoBehaviour
             // Check if this is already in the dead state and if it is, do nothing
             return;
         }
+
+        StartCoroutine(SoundDelay(agentAudio.deathEmitter, settings.deathDelay));
 
         // This would ideally have an animation as well as some sort of clean up for corpses
         // For now just Change state to dead which will activate a ragdoll

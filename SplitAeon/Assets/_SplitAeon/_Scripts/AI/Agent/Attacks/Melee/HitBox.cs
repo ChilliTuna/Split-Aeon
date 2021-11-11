@@ -9,6 +9,16 @@ public class HitBox : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
+        HitPlayer(other);
+    }
+
+    private void OnTriggerStay(Collider other)
+    {
+        HitPlayer(other);
+    }
+
+    void HitPlayer(Collider other)
+    {
         if (hitIsActive)
         {
             if (other.CompareTag("Player"))
