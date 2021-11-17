@@ -356,6 +356,7 @@ public class RoomSpawnManager : MonoBehaviour
     {
         SetSpawner((int)RoomIndex.bar, false); // Resuse Bar spawners. They have good numbers
         SetSpawner((int)RoomIndex.audotoriumLower, true);
+        ClearBelchers();
     }
 
     void StartPastAggroTimer(int passiveIndex)
@@ -382,6 +383,11 @@ public class RoomSpawnManager : MonoBehaviour
             }
         }
 
+        ClearBelchers();
+    }
+
+    public void ClearBelchers()
+    {
         foreach (var agent in futureAIManager.allAgents)
         {
             if (agent.isAlive)
