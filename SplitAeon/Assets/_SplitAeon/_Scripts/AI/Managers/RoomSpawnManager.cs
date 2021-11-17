@@ -296,8 +296,9 @@ public class RoomSpawnManager : MonoBehaviour
     public void StartBarRoom()
     {
         SetSpawner((int)RoomIndex.bar, true);
-        EnableKillTracker(mixedKillTracker, 12, CompleteBar);
+        EnableKillTracker(mixedKillTracker, 8, CompleteBar);
         enemySpawnerRooms[(int)RoomIndex.bar].onEnter.Invoke();
+        ClearAllDudes();
     }
 
     public void CompleteBar()
@@ -369,5 +370,24 @@ public class RoomSpawnManager : MonoBehaviour
         var futureTimer = new AggroSpawnTimer(futureAIManager, futurePassiveSpawner, passiveIndex);
         aggroSpawnTimers.Add(futureTimer);
         futureTimer.AddToEvent(updateEvent);
+    }
+
+    public void ClearAllDudes()
+    {
+        foreach(var agent in pastAIManager.allAgents)
+        {
+            if(agent.isAlive)
+            {
+                agent.DisablePoolObject();
+            }
+        }
+
+        foreach (var agent in futureAIManager.allAgents)
+        {
+            if (agent.isAlive)
+            {
+                agent.DisablePoolObject();
+            }
+        }
     }
 }
