@@ -226,6 +226,9 @@ public class RoomBounds : MonoBehaviour
     
             Gizmos.color = colour;
             Gizmos.DrawCube(exitBounds.center, exitBounds.size);
+
+            Gizmos.color = Color.blue;
+            Gizmos.DrawSphere(entryBounds.center + safeSpawnOffset, 0.5f);
         }
     }
 }

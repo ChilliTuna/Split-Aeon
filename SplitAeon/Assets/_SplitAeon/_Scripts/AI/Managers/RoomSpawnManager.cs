@@ -112,7 +112,8 @@ public class RoomSpawnManager : MonoBehaviour
         generator,
         bar,
         dressing,
-        audotoriumLower
+        audotoriumLower,
+        greenRoom
     }
 
     // Start is called before the first frame update
@@ -155,6 +156,7 @@ public class RoomSpawnManager : MonoBehaviour
         roomListeners[2] = () => { };
         roomListeners[3] = EnterDressingRoom;
         roomListeners[4] = EnterStageArea;
+        roomListeners[5] = EnterGreenRoom;
     }
 
     void AddRoomListeners()
@@ -294,37 +296,48 @@ public class RoomSpawnManager : MonoBehaviour
     public void StartBarRoom()
     {
         SetSpawner((int)RoomIndex.bar, true);
-        EnableKillTracker(mixedKillTracker, 12, CompleteBar);
+        EnableKillTracker(mixedKillTracker, 8, CompleteBar);
         enemySpawnerRooms[(int)RoomIndex.bar].onEnter.Invoke();
+        ClearAllDudes();
     }
 
     public void CompleteBar()
     {
         SetSpawner((int)RoomIndex.bar, false);
         CompleteRoom((int)RoomIndex.bar);
+
+        //StartPastAggroTimer(2);
+        StartFutureAggroTimer(7);
     }
 
 
     // Walk Through dressing Room - level pathing
     public void EnterDressingRoom()
     {
-        var pastTimer = new AggroSpawnTimer(pastAIManager, pastPassiveSpawner, 2);
-        aggroSpawnTimers.Add(pastTimer);
-        var futureTimer = new AggroSpawnTimer(futureAIManager, futurePassiveSpawner, 7);
-        aggroSpawnTimers.Add(futureTimer);
-
-        foreach(var timer in aggroSpawnTimers)
-        {
-            timer.AddToEvent(updateEvent);
-        }
+        ClearTimers();
+        StartPastAggroTimer(2);
         inDressingRoom = true;
         enemySpawnerRooms[(int)RoomIndex.dressing].onEnter.Invoke();
+        SetSpawner((int)RoomIndex.dressing, true);
     }
 
     public void CompleteDressingRoom()
     {
         ClearTimers();
-        CompleteRoom((int)RoomIndex.audotoriumLower);
+        CompleteRoom((int)RoomIndex.dressing);
+    }
+
+    public void EnterGreenRoom()
+    {
+        CompleteDressingRoom();
+        StartFutureAggroTimer(8);
+        enemySpawnerRooms[(int)RoomIndex.greenRoom].onEnter.Invoke();
+    }
+
+    public void CompleteGreenRoom()
+    {
+        ClearTimers();
+        CompleteRoom((int)RoomIndex.greenRoom);
     }
 
     public void EnterStageArea()
@@ -335,8 +348,52 @@ public class RoomSpawnManager : MonoBehaviour
             return;
         }
 
-        CompleteDressingRoom();
-        SetSpawner((int)RoomIndex.audotoriumLower, true);
+        CompleteGreenRoom();
         enemySpawnerRooms[(int)RoomIndex.audotoriumLower].onEnter.Invoke();
+    }
+
+    public void StartFinalFightWaves()
+    {
+        SetSpawner((int)RoomIndex.bar, false); // Resuse Bar spawners. They have good numbers
+        SetSpawner((int)RoomIndex.audotoriumLower, true);
+        ClearBelchers();
+    }
+
+    void StartPastAggroTimer(int passiveIndex)
+    {
+        var pastTimer = new AggroSpawnTimer(pastAIManager, pastPassiveSpawner, passiveIndex);
+        aggroSpawnTimers.Add(pastTimer);
+        pastTimer.AddToEvent(updateEvent);
+    }
+
+    void StartFutureAggroTimer(int passiveIndex)
+    {
+        var futureTimer = new AggroSpawnTimer(futureAIManager, futurePassiveSpawner, passiveIndex);
+        aggroSpawnTimers.Add(futureTimer);
+        futureTimer.AddToEvent(updateEvent);
+    }
+
+    public void ClearAllDudes()
+    {
+        foreach(var agent in pastAIManager.allAgents)
+        {
+            if(agent.isAlive)
+            {
+                agent.DisablePoolObject();
+            }
+        }
+
+        ClearBelchers();
+    }
+
+    public void ClearBelchers()
+    {
+        foreach (var agent in futureAIManager.allAgents)
+        {
+            if (agent.isAlive)
+            {
+                agent.DisablePoolObject();
+            }
+        }
     }
 }
