@@ -400,6 +400,11 @@ namespace AIStates
 
         public override void Enter(AIAgent agent)
         {
+            if (agent.navAgent.currentOffMeshLinkData.offMeshLink.area == 4)
+            {
+                return;
+            }
+
             // set up state values
             m_vaultPosition = agent.navAgent.currentOffMeshLinkData.startPos;
             m_vaultEnd = agent.navAgent.currentOffMeshLinkData.endPos;

@@ -40,7 +40,7 @@ public class ObjectivePointer : MonoBehaviour
         if (timer > pingTime)
         {
             timer -= pingTime;
-            NavMesh.CalculatePath(player.position, target.position, NavMesh.AllAreas, path);
+            NavMesh.CalculatePath(player.position, target.position, 23, path);
         }
 
         for (int i = 0; i < path.corners.Length - 1; i++)
